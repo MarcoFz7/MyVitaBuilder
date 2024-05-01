@@ -57,12 +57,12 @@
 }
   
 .icon {
-    font-size: 17px;
+    font-size: 16px;
     color: rgb(var(--white-rgb), 0.95);
 }
   
 .link-text {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: rgb(var(--white-rgb));
 }

@@ -3,9 +3,12 @@
 import './navbar.css'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Inter } from 'next/font/google';
 import React, { useState, useEffect } from 'react';
 import { TbStar } from 'react-icons/tb';
 import { GiHamburgerMenu } from 'react-icons/gi'
+
+const inter = Inter({weight: '400', style: "normal", subsets: ["latin"]})
 
 
 const menuMainItems=[
@@ -102,7 +105,7 @@ export default function SideNavBar() {
                     menuMainItems.map((item, index) => (                       
                         <Link href={item.path} key={index} className={`option group ${clickedMainIndex === index ? 'clicked-option' : ''}`} onClick={() => handleMainItemClick(index)}>
                           <div className={`group-hover:text-white icon ${clickedMainIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
-                          <h3 className={`group-hover:text-white link-text ${clickedMainIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
+                          <h3 className={`${inter.className} group-hover:text-white link-text ${clickedMainIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
                         </Link>
                     ))
                 }                      
@@ -112,10 +115,10 @@ export default function SideNavBar() {
                     menuSecondaryItems.map((item, index) => (                       
                         <Link href={item.path} key={index} className={`option group ${clickedSecondaryIndex === index ? 'clicked-option' : ''}`} onClick={() => handleSecondaryItemClick(index)}>
                             <div className={`group-hover:text-white icon ${clickedSecondaryIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
-                            <h3 className={`group-hover:text-white link-text ${clickedSecondaryIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
+                            <h3 className={`${inter.className} group-hover:text-white link-text ${clickedSecondaryIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
                         </Link>
                     ))
-                }                      
+                }
               </div>
             </div>  
           </div>
