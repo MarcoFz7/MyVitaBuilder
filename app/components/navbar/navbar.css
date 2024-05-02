@@ -6,7 +6,7 @@
 .navbar {
     width: 100vw;
     height: 2.5rem;
-    background: rgb(var(--green-blueish-rgb));
+    background: rgb(var(--dark-green-rgb));
     position: fixed;
     top: 0;
     left: 0;
@@ -18,7 +18,113 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.navbar-container-info {
+    height: 100%;
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    left: 5%;
+}
+
+.navbar-container-paths {
+    height: 100%;
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+
+    margin-right: 5%;
+}
+
+.sidebar-container-paths {
+    position: absolute;
+
+    right: 0;
+    top: 2.5rem;
+    height: 100vh;
+    width: 100%;
+
+    background-color: rgb(var(--sidebar-dark-green-rgb));
+
+    display: flex;
+    flex-direction: column;
+
+    padding-top: 0.75rem;
+
+    transition: right 0.2s ease-out 0.15s;
+}
+
+.sidebar-container-paths-closed {
+    position: absolute;
+
+    right: 100%;
+    top: 2.5rem;
+    height: 100vh;
+    width: 100%;
+
+    background-color: rgb(var(--sidebar-dark-green-rgb));
+
+    display: flex;
+    flex-direction: column;
+
+    padding-top: 0.75rem;
+
+    transition: right 0.2s ease-out 0.15s;
+}
+
+.navbar-app-name {
+    position: fixed;
+
+    left: 5%;
+
+    color: rgb(var(--lemon-green-rgb));
+    padding-right: 20px;
+    border-right: 1px solid rgb(var(--light-smoke-rgb));
+}
+
+.navbar-app-name-small-screen {
+    position: fixed;
+
+    right: 5%;
+
+    color: rgb(var(--lemon-green-rgb));
+    padding-left: 20px;
+    border-left: 1px solid rgb(var(--light-smoke-rgb));
+}
+
+.openclose-navbar-btn, .openclose-navbar-btn-closed {
+    position: fixed;
+
+    left: 5%;
+
+    color: rgb(var(--light-smoke-rgb));
+    border-radius: 0.1rem;
+    
+    width: 2rem;
+    height: 2rem;
+
+    display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.openclose-navbar-btn {
+    color: rgb(var(--lemon-green-rgb));
+}
+
+.openclose-navbar-btn svg, .openclose-navbar-btn-closed svg {
+    width: 80%;
+    height: auto;
+} 
+
+.openclose-navbar-btn:hover, .openclose-navbar-btn-closed:hover  {
+    color: rgb(var(--light-green-rgb));
+    transition: ease 0.5s;
 }
 
 .options {
@@ -28,6 +134,19 @@
     align-items: center;
     justify-content: center;
 }
+
+.options-small-screen {
+    position: relative;
+    left: 5.75%;
+
+    gap: 0.5rem;
+    padding-right: 10%;
+}
+.options-small-screen .option {
+    gap: 1rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
   
 .option {
     display: flex;
@@ -36,33 +155,37 @@
     padding: 0.2rem 0.3rem 0.2rem 0.2rem;
     margin-right: 1rem;
     cursor: pointer;
-    border-radius: 0.25rem;
+    border-radius: 0.1rem;
     transition: color 1s, color 0.2s, box-shadow 0.2s;
 }
 
-.option.clicked-option {
-    box-shadow: 1px 1px 2.5px rgba(var(--black-rgb), 0.5);
-}
-.option.clicked-option .icon, .option.clicked-option .link-text {
-    color: rgb(var(--light-green-rgb));
-}
-.option.clicked-option:hover .icon, .option.clicked-option:hover .link-text {
-    color: rgb(var(--light-green-rgb)) !important;
-}
 .option:hover {
-    box-shadow: 1px 1px 2.5px rgba(var(--black-rgb), 0.5);
+    box-shadow: inset 0 -10px 10px -10px rgba(var(--light-smoke-rgb), 0.3);
 }
 .option.group:hover .icon, .option.group:hover .link-text {
-    color: rgba(var(--black-rgb));
+    color: rgb(var(--light-green-rgb));
+}
+
+.option.clicked-option {
+    box-shadow: inset 0 -10px 10px -10px rgba(var(--light-smoke-rgb), 0.6);
+}
+.option.clicked-option:hover {
+    box-shadow: inset 0 -10px 10px -10px rgba(var(--light-smoke-rgb), 0.6) !important;
+}
+.option.clicked-option .icon, .option.clicked-option .link-text {
+    color: rgb(var(--lemon-green-rgb));
+}
+.option.clicked-option:hover .icon, .option.clicked-option:hover .link-text {
+    color: rgb(var(--lemon-green-rgb)) !important;
 }
   
 .icon {
     font-size: 16px;
-    color: rgb(var(--white-rgb), 0.95);
+    color: rgb(var(--light-smoke-rgb));
 }
   
 .link-text {
     font-size: 14px;
     font-weight: 600;
-    color: rgb(var(--white-rgb));
+    color: rgb(var(--light-smoke-rgb));
 }
