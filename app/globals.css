@@ -3,16 +3,23 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --min-height: 375px !important;
+  --min-width: 280px !important;
+  min-height: var(--min-height);
+  min-width: var(--min-width);
 
   /* Light scheme */
   --light-green-rgb: 190, 217, 50;
   --green-rgb: 116, 204, 82;
   --green-blueish-rgb: 4, 153, 119;
 
-  --black-rgb: 0, 0, 0;
+  --dark-green-rgb: 69, 82, 62;
+  --sidebar-dark-green-rgb: 122, 134, 116;
+  --light-smoke-rgb: 245, 236, 229;
+  --dark-smoke-rgb: 176, 172, 162;
+  --lemon-green-rgb: 191, 244, 123;
+  
+  --black-rgb: 1, 1, 1;
   --white-rgb: 255, 255, 255;
 }
 
