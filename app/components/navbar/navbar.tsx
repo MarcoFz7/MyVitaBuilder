@@ -88,11 +88,8 @@ export default function SideNavBar() {
           case "/nutrition":
             setClickedMainIndex(0);
             break;
-          case "/experience":
+          case "/goals":
             setClickedMainIndex(1);
-            break;
-          case "/projects":
-            setClickedMainIndex(2);
             break;
         } 
       }
