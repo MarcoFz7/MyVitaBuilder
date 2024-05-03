@@ -62,7 +62,7 @@ export default function SideNavBar() {
     const currentPage = usePathname();
     var width = useWindowWidth();
 
-    const [isNavbarOpen, setIsNavbarOpen] = useState(width <= 700);
+    const [isNavbarOpen, setIsNavbarOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(width <= 700);
     
     useEffect(() => {
