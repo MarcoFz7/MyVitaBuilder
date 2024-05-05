@@ -1,4 +1,121 @@
 .nutrition-page {
-    height: 100%;
-    width: 100%;
+    z-index: -1;
+
+    position: absolute;
+    left: 0.5%;
+    top: 0;
+
+    height: 100vh;
+    width: 99%;
+
+    padding-top: 2.85rem;
+    padding-bottom: 0.25rem;
+
+    display: grid;
+    grid-template-columns: 65% auto; 
+    grid-template-rows: auto; 
+    grid-gap: 0.35rem; 
+
+    min-width: var(--min-width);
 }
+
+.page-manual-calculator,
+.page-written-calculator {
+    grid-column: 1; 
+    background-color: rgb(var(--light-smoke-rgb));
+
+    border-radius: 5px;
+}
+
+.page-ai-calculator {
+    grid-column: 2; 
+    grid-row: span 2; 
+    background-color: rgba(var(--dark-smoke-rgb), 0.5);
+
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .nutrition-page {
+        grid-template-columns: 100%; 
+    }
+    .page-manual-calculator,
+    .page-written-calculator,
+    .page-ai-calculator {
+        grid-column: 1;
+        grid-row: span 1;
+    }
+}
+
+.ai-calculator-header {
+    display: inline-block;
+    width: 98%;
+    height: auto;
+
+    margin: 1% 0px 0px 1%;
+    padding: 0.5% 2% 1% 2%;
+
+    border-radius: 5px;
+
+    font-size: var(--medium-font);
+    background-color: rgb(var(--sidebar-dark-green-rgb));
+    color: rgb(var(--white-rgb));
+}
+.ai-calculator-header strong {
+    color: rgb(var(--lemon-green-rgb));
+}
+
+.ai-calculator-info {
+    display: inline-block;
+    width: 98%;
+    height: auto;
+
+    margin: 1% 0px 0px 1%;
+    padding: 0.5% 2% 1% 2%;
+
+    border-radius: 5px;
+
+    font-size: var(--small-font);
+    background-color: rgb(var(--sidebar-dark-green-rgb));
+    color: rgb(var(--white-rgb));
+}
+
+.weight-objective {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+}
+
+input[type='radio'] {
+    visibility: hidden;
+}
+    input[type='radio']:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: rgb(var(--white-rgb));
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid rgb(var(--dark-green-rgb));
+        cursor: pointer;
+
+        transition: all 0.5s ease;
+    }
+    input[type='radio']:checked:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: rgb(var(--lemon-green-rgb));
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid rgb(var(--dark-green-rgb));
+        cursor: pointer;
+    }
