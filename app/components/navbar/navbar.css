@@ -4,6 +4,8 @@
 }
 
 .navbar {
+    min-width: 280px;
+
     width: 100vw;
     height: 2.5rem;
     background: rgb(var(--dark-green-rgb));
@@ -180,12 +182,12 @@
 }
   
 .icon {
-    font-size: 16px;
+    font-size: var(--big-font);
     color: rgb(var(--light-smoke-rgb));
 }
   
 .link-text {
-    font-size: 14px;
+    font-size: var(--medium-font);
     font-weight: 600;
     color: rgb(var(--light-smoke-rgb));
 }

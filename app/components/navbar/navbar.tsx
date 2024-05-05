@@ -32,7 +32,7 @@ const menuSecondaryItems=[
   }
 ]
 
-// Custom hook to get the width of the largest (in 99% of cases) element in experiences list
+// Custom hook to get the width of the screen
 function useWindowWidth() {
   const [width, setWidth] = useState(0);
 
@@ -40,10 +40,11 @@ function useWindowWidth() {
     function updateWidth() {
       setWidth(window.innerWidth);
     }
-    // Call initially to get the width
-    updateWidth(); 
+
     // Add resize event listener
     window.addEventListener("resize", updateWidth); 
+    // Call initially to get the width
+    updateWidth(); 
 
     return () => {
       // Cleanup event listener
@@ -56,6 +57,7 @@ function useWindowWidth() {
 
 
 export default function SideNavBar() {
+    const [isSmallScreen, setIsSmallScreen] = useState<boolean>();
     const [clickedMainIndex, setClickedMainIndex] = useState(-1);
     const [clickedSecondaryIndex, setClickedSecondaryIndex] = useState(-1);
 
@@ -63,21 +65,18 @@ export default function SideNavBar() {
     var width = useWindowWidth();
 
     const [isNavbarOpen, setIsNavbarOpen] = useState(false);
-    const [isSmallScreen, setIsSmallScreen] = useState(width <= 700);
     
     useEffect(() => {
-      if (width <= 700) {
+      if (width <= 768) {
         if (!isSmallScreen) {
           setIsSmallScreen(true);
         } 
-        else 
-        {
-          return;
+      } 
+      else 
+      {
+        if (isSmallScreen) {
+          setIsSmallScreen(false);
         }
-      }
-
-      if (width > 700 && isSmallScreen) {
-        setIsSmallScreen(false);
       }
     }, [width]);
 
@@ -105,9 +104,8 @@ export default function SideNavBar() {
     const handleMainItemClick = (index: number) => {
       setClickedSecondaryIndex(-1);
 
-      // Check if is small screen (width)
-      // if is small screen 
-      if (window.innerWidth <= 700 && index != clickedMainIndex) {
+      // Check if is small screen 
+      if (isSmallScreen && index != clickedMainIndex) {
         toggleNavbar();
         
         resetNavbarLogic();
@@ -119,9 +117,8 @@ export default function SideNavBar() {
     const handleSecondaryItemClick = (index: number) => {
       setClickedMainIndex(-1);
 
-      // Check if is small screen (width)
-      // if is small screen 
-      if (window.innerWidth <= 825 && index != clickedSecondaryIndex) {
+      // Check if is small screen
+      if (isSmallScreen && index != clickedSecondaryIndex) {
         toggleNavbar();
         
         resetNavbarLogic();
