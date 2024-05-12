@@ -33,6 +33,10 @@
     background-color: rgba(var(--dark-smoke-rgb), 0.5);
 
     border-radius: 5px;
+
+    display: grid; 
+    grid-template-rows: auto 1fr;
+    padding-bottom: 1%;
 }
 
 @media (max-width: 768px) {
