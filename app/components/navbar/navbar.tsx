@@ -60,11 +60,16 @@ export default function SideNavBar() {
     const [isSmallScreen, setIsSmallScreen] = useState<boolean>();
     const [clickedMainIndex, setClickedMainIndex] = useState(-1);
     const [clickedSecondaryIndex, setClickedSecondaryIndex] = useState(-1);
+    const [isNavbarReady, setIsNavbarReady] = useState(false);
 
     const currentPage = usePathname();
     var width = useWindowWidth();
 
     const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
+    useEffect(() => {
+      setIsNavbarReady(true);
+    }, []);
     
     useEffect(() => {
       if (width <= 768) {
@@ -144,38 +149,40 @@ export default function SideNavBar() {
     return (
         <div className='navbar-panel'>
           <div className='navbar'>
-            <div className='navbar-container'>
-              <div className='navbar-container-info'>
-                {isSmallScreen ? 
-                <button type='button' title='Open/Close Navbar' className={`openclose-navbar-btn${isNavbarOpen ? '' : '-closed'}`} onClick={toggleNavbar}>
-                  <GiHamburgerMenu/>
-                </button>
-                : null }
-                <h3 className={`${inter.className} navbar-app-name${isSmallScreen ? '-small-screen' : ''}`}>MyVitaBuilder</h3>
-              </div>
-              <div className={isSmallScreen ? `sidebar-container-paths${isNavbarOpen ? '' : '-closed'}` : 'navbar-container-paths'}>
-                <div className={`options${isSmallScreen ? '-small-screen' : ''}`}>                     
-                  {
-                      menuMainItems.map((item, index) => (                       
-                          <Link href={item.path} key={index} className={`option group ${clickedMainIndex === index ? 'clicked-option' : ''}`} onClick={() => handleMainItemClick(index)}>
-                            <div className={`group-hover:text-white icon ${clickedMainIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
-                            <h3 className={`${inter.className} group-hover:text-white link-text ${clickedMainIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
-                          </Link>
-                      ))
-                  }                      
+            {isNavbarReady ? 
+              <div className='navbar-container'>
+                <div className='navbar-container-info'>
+                  {isSmallScreen ? 
+                  <button type='button' title='Open/Close Navbar' className={`openclose-navbar-btn${isNavbarOpen ? '' : '-closed'}`} onClick={toggleNavbar}>
+                    <GiHamburgerMenu/>
+                  </button>
+                  : null }
+                  <h3 className={`${inter.className} navbar-app-name${isSmallScreen ? '-small-screen' : ''}`}>MyVitaBuilder</h3>
                 </div>
-                <div className={`options${isSmallScreen ? '-small-screen' : ''}`}>                     
-                  {
-                      menuSecondaryItems.map((item, index) => (                       
-                          <Link href={item.path} key={index} className={`option group ${clickedSecondaryIndex === index ? 'clicked-option' : ''}`} onClick={() => handleSecondaryItemClick(index)}>
-                              <div className={`group-hover:text-white icon ${clickedSecondaryIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
-                              <h3 className={`${inter.className} group-hover:text-white link-text ${clickedSecondaryIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
-                          </Link>
-                      ))
-                  }
+                <div className={isSmallScreen ? `sidebar-container-paths${isNavbarOpen ? '' : '-closed'}` : 'navbar-container-paths'}>
+                  <div className={`options${isSmallScreen ? '-small-screen' : ''}`}>                     
+                    {
+                        menuMainItems.map((item, index) => (                       
+                            <Link href={item.path} key={index} className={`option group ${clickedMainIndex === index ? 'clicked-option' : ''}`} onClick={() => handleMainItemClick(index)}>
+                              <div className={`group-hover:text-white icon ${clickedMainIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
+                              <h3 className={`${inter.className} group-hover:text-white link-text ${clickedMainIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
+                            </Link>
+                        ))
+                    }                      
+                  </div>
+                  <div className={`options${isSmallScreen ? '-small-screen' : ''}`}>                     
+                    {
+                        menuSecondaryItems.map((item, index) => (                       
+                            <Link href={item.path} key={index} className={`option group ${clickedSecondaryIndex === index ? 'clicked-option' : ''}`} onClick={() => handleSecondaryItemClick(index)}>
+                                <div className={`group-hover:text-white icon ${clickedSecondaryIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
+                                <h3 className={`${inter.className} group-hover:text-white link-text ${clickedSecondaryIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
+                            </Link>
+                        ))
+                    }
+                  </div>
                 </div>
               </div>
-            </div>  
+            : null }  
           </div>
         </div>           
     )
