@@ -119,6 +119,7 @@ const Page = () => {
           <div className='multi-select-div h-auto'>
             <Select className='select first-section'
               closeMenuOnSelect={false}
+              blurInputOnSelect={false}
               components={animatedComponents}
               isMulti
               options={userAllergiesAndIntolerancesOptions}
@@ -130,6 +131,7 @@ const Page = () => {
             <span className="icon-and-title mt-1"><FaCookieBite/><strong>Meal information</strong></span>
             <Select className='select'
               closeMenuOnSelect={false}
+              blurInputOnSelect={false}
               components={animatedComponents}
               isMulti
               options={mealObjectiveOptions}
