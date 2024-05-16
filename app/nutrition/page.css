@@ -94,6 +94,7 @@
     .icon-and-title svg {
         display: inline-block;
         margin-right: 0.375rem;
+        margin-bottom: 0.05rem;
     }
 
 .weight-objective {
