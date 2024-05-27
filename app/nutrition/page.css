@@ -70,7 +70,8 @@
 }
 
 .ai-calculator-info {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     width: 98%;
     height: auto;
 
@@ -88,13 +89,22 @@
 .icon-and-title {
     display: flex;
     align-items: center;
-    margin-left: 0.25rem;
     margin-bottom: 0.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
     .icon-and-title svg {
         display: inline-block;
-        margin-right: 0.375rem;
-        margin-bottom: 0.05rem;
+        margin-right: 0.375rem;     
+    }
+
+.icon-and-title.right {
+    margin: 0;
+}
+    .icon-and-title.right svg {
+        margin: 0;
+        margin-left: 0.25rem;
     }
 
 .weight-objective {
@@ -158,6 +168,9 @@ input[type='radio'] {
     .select .css-1fdsijx-ValueContainer {
         padding-left: 0.25rem;
     }
+    .select .css-1fdsijx-ValueContainer .css-1dimb5e-singleValue {
+        font-size: var(--smaller-font);
+    }
     .select .css-3w2yfm-ValueContainer {
         padding-left: 0.25rem;
         padding-top: 1px;
@@ -177,7 +190,7 @@ input[type='radio'] {
     .select .css-1p3m7a8-multiValue {
         font-size: var(--small-font);
     }
-    .select .css-1n6sfyn-MenuList {
+    .select.first-section .css-1n6sfyn-MenuList {
         font-size: var(--smaller-font);
         height: 290px;
     }
@@ -224,3 +237,20 @@ input[type='radio'] {
         background-color: rgba(var(--dark-smoke-rgb), 0.75);
         color: rgb(var(--black-rgb));
     }
+
+.photo-scan-btn {
+    background-color: rgb(var(--dark-green-rgb));
+    margin-top: 0.075rem;
+}
+    .photo-scan-btn:hover {
+        color: rgb(var(--lemon-green-rgb));
+    }
+
+.ingredients-input {
+    color: rgb(var(--black-rgb));
+    padding-top: 0.38rem;
+}
+
+textarea::placeholder {
+    color: rgba(var(--black-rgb), 0.5);
+}
