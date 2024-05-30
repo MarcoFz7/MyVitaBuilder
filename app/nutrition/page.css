@@ -6,6 +6,8 @@
     top: 0;
 
     height: 100vh;
+    max-height: 100vh;
+    
     width: 99%;
 
     padding-top: 2.85rem;
@@ -13,7 +15,7 @@
 
     display: grid;
     grid-template-columns: 65% auto; 
-    grid-template-rows: auto; 
+    grid-template-rows: 0.5fr; 
     grid-gap: 0.5rem; 
 
     min-width: var(--min-width);
@@ -25,6 +27,9 @@
     background-color: rgb(var(--light-smoke-rgb));
 
     border-radius: 5px;
+
+    width: 100%;
+    height: 100%;
 }
 
 .page-ai-calculator {
@@ -37,18 +42,9 @@
     display: grid; 
     grid-template-rows: auto 1fr;
     padding-bottom: 1%;
-}
 
-@media (max-width: 768px) {
-    .nutrition-page {
-        grid-template-columns: 100%; 
-    }
-    .page-manual-calculator,
-    .page-written-calculator,
-    .page-ai-calculator {
-        grid-column: 1;
-        grid-row: span 1;
-    }
+    max-height: 100%;
+    height: 100%;
 }
 
 .ai-calculator-header {
@@ -57,7 +53,7 @@
     height: auto;
 
     margin: 1% 0px 0px 1%;
-    padding: 0.5% 2% 1% 2%;
+    padding: 0.5% 2% 1% 0.75rem;
 
     border-radius: 5px;
 
@@ -74,16 +70,33 @@
     flex-direction: column;
     width: 98%;
     height: auto;
+    max-height:min-content;
 
     margin: 1% 0px 0px 1%;
-    padding: 0.5% 2% 1% 2%;
-    padding-right: 1rem;
+    padding: 0.5% 3% 2% 2%;
 
     border-radius: 5px;
 
     font-size: var(--small-font);
     background-color: rgb(var(--sidebar-dark-green-rgb));
     color: rgb(var(--white-rgb));
+
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .nutrition-page {
+        grid-template-columns: 100%; 
+    }
+    .page-manual-calculator,
+    .page-written-calculator,
+    .page-ai-calculator {
+        grid-column: 1;
+        grid-row: span 1;
+    }
+    .ai-calculator-info {
+        max-height: 750px;
+    }
 }
 
 .icon-and-title {
@@ -253,4 +266,19 @@ input[type='radio'] {
 
 textarea::placeholder {
     color: rgba(var(--black-rgb), 0.5);
+}
+
+.confirm-btn {
+    background-color: rgb(var(--dark-green-rgb));
+    color: rgb(var(--lemon-green-rgb));
+
+    transition: all 0.25s ease;
+}
+    .confirm-btn:hover {
+        background-color: rgb(var(--lemon-green-rgb));
+        color: rgb(var(--black-rgb));
+    }
+
+.icon-color {
+    color: rgb(var(--lemon-green-rgb));
 }
