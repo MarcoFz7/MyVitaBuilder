@@ -8,6 +8,7 @@ import makeAnimated from 'react-select/animated';
 import { FaDrumstickBite, FaUser, FaReceipt } from "react-icons/fa";
 import { IoScanSharp, IoCheckmark  } from "react-icons/io5";
 import { RiRobot2Fill } from "react-icons/ri";
+
 import { Inter } from 'next/font/google';
 
 const inter = Inter({weight: '400', style: "normal", subsets: ["latin"]});
@@ -72,8 +73,11 @@ const Page = () => {
   /*
     Consts related to the answer text area
   */
-  const [isRotated, setIsRotated] = useState<boolean>(false);
+  const [isRobotRotated, setIsRobotRotated] = useState<boolean>(false);
+  const [isRobotTextBoxAnimated, setIsRobotTextBoxAnimated] = useState<boolean>(false);
+  const [robotTextBoxText, setRobotTextBoxText] = useState<string>('');
   const [answerReceived, setAnswerReceived] = useState<boolean>(false);
+  const [preAnswerReceived, setPreAnswerReceived] = useState<boolean>(false);
   const [displayedAnswer, setDisplayedAnswer] = useState<string>('');
   const [lastAnswer, setLastAnswer] = useState<string>('This is a answer sample test!');
   const [fullAnswer, setFullAnswer] = useState<string[]>([]); 
@@ -112,7 +116,7 @@ const Page = () => {
   };
 
   const setIngredientsTextArea = () => {
-    setIngredientsTextAreaValue("Text area test for one row sesseses es! Text area test for one row sesseses es!");
+    setIngredientsTextAreaValue("Text area test for one row and more tests! Text area test for one row and more tests!");
   };
 
   const handleTextAreaValueChange = (event: any) => {
@@ -136,7 +140,27 @@ const Page = () => {
   }, [ingredientsTextAreaValue]);
 
   const handleRobotIconAnimation = () => {
-    setIsRotated(!isRotated);
+    setIsRobotRotated(!isRobotRotated);
+  };
+
+  const handleRobotIconAnimationOnMouseEnter = () => {
+    setIsRobotRotated(!isRobotRotated);
+    setRobotTextBoxText('Test me!');
+
+    setIsRobotTextBoxAnimated(true);
+    setTimeout(() => {
+      setIsRobotTextBoxAnimated(false);
+    }, 1000);
+  };
+
+  const handleRobotIconAnimationOnMouseLeave = () => {
+    setIsRobotRotated(!isRobotRotated);
+    setRobotTextBoxText("Bye Bye!")
+
+    setIsRobotTextBoxAnimated(true);
+    setTimeout(() => {
+      setIsRobotTextBoxAnimated(false);
+    }, 1000);
   };
 
   const handleTextTypingAnimation = () => {
@@ -147,27 +171,54 @@ const Page = () => {
 
     let currentIndex = -1;
 
-    const intervalId = setInterval(() => {
-      setDisplayedAnswer((prev) => {
-        if (currentIndex < lastAnswer.length) {
-          return prev + lastAnswer[currentIndex];    
-        } else {
-          clearInterval(intervalId);
-          return prev;
-        }
-      });
-      currentIndex++;
-    }, 10);
+    setTimeout(() => {
+      const intervalId = setInterval(() => {
+        setDisplayedAnswer((prev) => {
+          if (currentIndex < lastAnswer.length) {
+            //console.log(currentIndex);
 
-    return () => { clearInterval(intervalId);}; 
+            if (currentIndex != -1) {
+              return prev + lastAnswer[currentIndex];   
+            } else {
+              return prev + lastAnswer[currentIndex + 1];   
+            }
+          } else {
+            clearInterval(intervalId);
+            return prev;
+          }
+        });
+        currentIndex++;
+      }, 10);
+    
+
+      return () => { clearInterval(intervalId); }; 
+    }, 500);
   };
 
   const handleRequestConfirmation = () => {
     console.log("CONFIRM BTN");
 
-    // All this stuff is to be done when an answer is actually received from the back end, not when the request is sent!
-    console.log("WL:" + isWeightLossSelected + " ;WG: " + isWeightGainSelected); 
-    setAnswerReceived(true); 
+    console.log("WL: " + isWeightLossSelected + "; WG: " + isWeightGainSelected);
+    console.log("Allergies and intolerances: " + JSON.stringify(selectedAllergiesAndIntoleranceOptions));
+    console.log("Meal objectives: " + JSON.stringify(selectedMealObjectiveOptions));
+    console.log("Dietary: " + JSON.stringify(selectedDietaryOption));
+    console.log("Caloric intake: " + JSON.stringify(selectedCalorieIntakeOption));
+    console.log("Ingredients: " + JSON.stringify(ingredientsTextAreaValue));
+
+    // Reset selected options
+    setisWeightGainSelected(false);
+    setisWeightLossSelected(false);
+    setSelectedAllergiesAndIntoleranceOptions([]);
+    setSelectedMealObjectiveOptions([]);
+    setSelectedDietaryOption([]);
+    setSelectedCalorieIntakeOption([]);
+    setIngredientsTextAreaValue('');
+
+    // All this stuff is to be done when an answer is actually received from the back end, not when the request is sent! 
+    setPreAnswerReceived(true);
+    setTimeout(() => {
+      setAnswerReceived(true);
+    }, 500);
     handleTextTypingAnimation();
     setFullAnswer(prevState => [...prevState, "This is a answer sample!"]);
     setNumberOfAnswers(numberOfAnswers + 1);
@@ -185,7 +236,7 @@ const Page = () => {
     <div className="nutrition-page">
       <div className="page-manual-calculator">
       </div>
-      <div className="page-ai-calculator" onMouseEnter={handleRobotIconAnimation} onMouseLeave={handleRobotIconAnimation}>
+      <div className="page-ai-calculator" onMouseEnter={handleRobotIconAnimationOnMouseEnter} onMouseLeave={handleRobotIconAnimationOnMouseLeave}>
         <span className={`${inter.className} ai-calculator-header`}>
           Get <b>better results</b> through your meals and preparation using <strong>AI</strong>!
         </span>
@@ -257,28 +308,32 @@ const Page = () => {
             <textarea ref={textareaRef} placeholder='ex. 1 Banana, 1 egg ...' className='ingredients-input rounded mt-1 p-1 pl-1.5 pr-1.5 w-full h-8 min-h-8' value={ingredientsTextAreaValue} onChange={handleTextAreaValueChange}></textarea>
           </div>
           <div>
-            <button type='button' className='confirm-btn rounded p-1 pl-1.5 pr-1.5 ml-1 mt-0.5 w-fit' title='Confirm!' onClick={handleRequestConfirmation}>
+            <button type='button' className='confirm-btn rounded p-1 pl-1.5 pr-1.5 ml-1 mt-0.5 w-fit' title='Submit!' onClick={handleRequestConfirmation}>
               <span className="icon-and-title right mt-1"><strong>Confirm</strong><IoCheckmark/></span>
             </button>
           </div>
-          <div className="ml-1 h-min flex-1 mb-4 min-h-24">
+          <div className="ml-1 flex-1 mb-4 h-full min-h-24">
             <label className="block mt-1.5 mb-1.5 text-sm text-white-900 pt-px bg-white/50"></label>
-            <div className='h-full w-full rounded-sm bg-white/50 flex flex-col justify-end'>
+            <div className='h-full w-full rounded-sm bg-white/50 flex flex-col justify-end'>            
               <div className={`flex flex-col p-1 ${answerReceived ? 'overflow-y-auto' : 'overflow-y-hidden'}`}>
                 {!answerReceived ? (
-                  <div className='flex flex-col items-center transition-all duration-1000 ease'>
-                    <RiRobot2Fill className={`${isRotated ? 'animate-rotate-360' : 'animate-rotate-360-minus'} w-16 h-16 text-black justify-start mt-1.5 ml-1.5 mr-1 transition-all duration-1000 ease`} onClick={handleRobotIconAnimation}/>
-                  </div> 
+                  <div className={`flex flex-col items-center transition-all duration-250 ease ${preAnswerReceived ? 'opacity-0' : 'opacity-1'}`}>
+                    <div className={`div-color relative left-12 ${isRobotTextBoxAnimated ? 'top-5 opacity-1' : 'top-7 opacity-0'} p-1 w-auto h-auto bg-white text-black border border-black rounded z-20 transition-top duration-500 ease`}>
+                        <span>{robotTextBoxText}</span>
+                    </div>
+                    <div className={`div-color-multiple relative w-0 h-0 border-r-[10px] border-r-transparent border-t-[10px] border-t-black ${isRobotTextBoxAnimated ? 'top-[16px] opacity-1' : 'top-[24px] opacity-0'} left-[20px] z-4 transition-top duration-500 ease`}></div>
+                    <RiRobot2Fill className={`${isRobotRotated ? 'animate-rotate-360' : 'animate-rotate-360-minus'} w-16 h-16 text-black justify-start mt-1.5 ml-1.5 mr-1`} onClick={handleRobotIconAnimation}/>
+                </div> 
                 ) : (
                   <>
                     {
                       fullAnswer.map((answer, index) => (
-                        <div key={`${answer}-${index}`} className='flex flex-row pt-0.5 transition-all duration-1000 ease'>
-                          <RiRobot2Fill className='w-6 h-6 min-w-6 min-h-6 text-black justify-start mt-1.5 ml-1.5 mr-1 transition-all duration-1000 ease'/>
+                        <div key={`${answer}-${index}`} className='flex flex-row pt-0.5 transition-all duration-250 ease'>
+                          <RiRobot2Fill className='w-6 h-6 min-w-6 min-h-6 text-black justify-start mt-1.5 ml-1.5 mr-1 transition-all duration-250 ease'/>
                           {numberOfAnswers != (index + 1) ? (
-                            <span className='text-black mt-1 p-1 pl-1.5 pr-1.5 transition-all duration-1000 ease'>{answer}</span>
+                            <span className='text-black mt-1 p-1 pl-1.5 pr-1.5 transition-all duration-250 ease'>{answer}</span>
                           ) : (
-                            <span id='lastAnswer' className='text-black mt-1 p-1 pl-1.5 pr-1.5 transition-all duration-1000 ease'>{displayedAnswer}</span>
+                            <span id='lastAnswer' className='text-black mt-1 p-1 pl-1.5 pr-1.5 transition-all duration-250 ease'>{displayedAnswer}</span>
                           )}
                         </div>   
                       ))
