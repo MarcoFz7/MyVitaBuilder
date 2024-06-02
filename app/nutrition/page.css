@@ -282,3 +282,12 @@ textarea::placeholder {
 .icon-color {
     color: rgb(var(--lemon-green-rgb));
 }
+
+.div-color {
+    border-color: rgb(var(--sidebar-dark-green-rgb));
+}
+
+.div-color-multiple {
+    border-right: 10px solid transparent;
+    border-top: 10px solid rgb(var(--sidebar-dark-green-rgb));
+}
