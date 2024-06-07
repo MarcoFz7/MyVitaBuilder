@@ -5,9 +5,10 @@ import './page.css'
 import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-import { FaDrumstickBite, FaUser, FaReceipt } from "react-icons/fa";
+import { FaDrumstickBite, FaUser, FaReceipt, FaRegCopy } from "react-icons/fa";
 import { IoScanSharp, IoCheckmark  } from "react-icons/io5";
-import { RiRobot2Fill } from "react-icons/ri";
+import { RiRobot2Fill, RiDeleteBack2Line  } from "react-icons/ri";
+import { MdOutlineAutoFixHigh  } from "react-icons/md";
 
 import { Inter } from 'next/font/google';
 
@@ -82,6 +83,8 @@ const Page = () => {
   const [lastAnswer, setLastAnswer] = useState<string>('This is a answer sample test!');
   const [fullAnswer, setFullAnswer] = useState<string[]>([]); 
   const [numberOfAnswers, setNumberOfAnswers] = useState<number>(0); 
+  const [answerCopiedSucessfuly, setAnswerCopiedSucessfuly] = useState<boolean>(false);
+  const [answerCopiedSucessfulyIndex, setAnswerCopiedSucessfulyIndex] = useState<number>(-1);  
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -220,17 +223,47 @@ const Page = () => {
       setAnswerReceived(true);
     }, 500);
     handleTextTypingAnimation();
-    setFullAnswer(prevState => [...prevState, "This is a answer sample!"]);
+    setFullAnswer(prevState => [...prevState, "This is a answer sample! This is a answer sample! "]);
     setNumberOfAnswers(numberOfAnswers + 1);
 
     setTimeout(() => {
       const lastAnswer = document.getElementById('lastAnswer');
+      console.log("entrou " + lastAnswer);
 
       if (lastAnswer) {
         lastAnswer.scrollIntoView({ behavior: 'smooth' });
+        console.log("entrou");
       }
     }, 50);
   }
+
+  const cleanAllAnswers = () => {
+    setFullAnswer([]);
+    setAnswerReceived(false);
+    setPreAnswerReceived(false);
+    setNumberOfAnswers(0);
+  };
+
+  const copyAnswer = (answer: string, index: number) => {
+    setAnswerCopiedSucessfulyIndex(index);
+
+    navigator.clipboard.writeText(answer).then(() => {
+      console.log('Answer copied!');
+
+      setAnswerCopiedSucessfuly(true);
+
+      setTimeout(() => {
+        setAnswerCopiedSucessfuly(false);
+      }, 2500);
+
+  }).catch(err => {
+      console.error('Failed to copy to clipboard: ', err);
+  });
+  };
+
+  const convertAnswerToPost = () => {
+  
+  };
   
   return (
     <div className="nutrition-page">
@@ -312,9 +345,9 @@ const Page = () => {
               <span className="icon-and-title right mt-1"><strong>Confirm</strong><IoCheckmark/></span>
             </button>
           </div>
-          <div className="ml-1 flex-1 mb-4 h-full min-h-24">
+          <div className="ml-1 flex-1 mb-4 h-full min-h-32">
             <label className="block mt-1.5 mb-1.5 text-sm text-white-900 pt-px bg-white/50"></label>
-            <div className='h-full w-full rounded-sm bg-white/50 flex flex-col justify-end'>            
+            <div className='h-full w-full rounded-sm bg-white/50 flex flex-col justify-end'>       
               <div className={`flex flex-col p-1 ${answerReceived ? 'overflow-y-auto' : 'overflow-y-hidden'}`}>
                 {!answerReceived ? (
                   <div className={`flex flex-col items-center transition-all duration-250 ease ${preAnswerReceived ? 'opacity-0' : 'opacity-1'}`}>
@@ -326,15 +359,39 @@ const Page = () => {
                 </div> 
                 ) : (
                   <>
+                    <div className={`flex justify-end sticky top-0 w-full h-min z-10 transition-all duration-250 ease ${fullAnswer.length > 3 ? 'opacity-1' : 'opacity-0'}`}>
+                      <button type='button' className='clean-btn rounded p-px pl-1 pr-1 w-min transition-all duration-250 ease' title='Clean all answers' onClick={cleanAllAnswers}>
+                        <span className="icon-and-title right mt-0.5"><strong>Clean</strong><RiDeleteBack2Line className='w-4 h-4'/></span>
+                      </button>  
+                    </div> 
                     {
                       fullAnswer.map((answer, index) => (
-                        <div key={`${answer}-${index}`} className='flex flex-row pt-0.5 transition-all duration-250 ease'>
-                          <RiRobot2Fill className='w-6 h-6 min-w-6 min-h-6 text-black justify-start mt-1.5 ml-1.5 mr-1 transition-all duration-250 ease'/>
-                          {numberOfAnswers != (index + 1) ? (
-                            <span className='text-black mt-1 p-1 pl-1.5 pr-1.5 transition-all duration-250 ease'>{answer}</span>
-                          ) : (
-                            <span id='lastAnswer' className='text-black mt-1 p-1 pl-1.5 pr-1.5 transition-all duration-250 ease'>{displayedAnswer}</span>
-                          )}
+                        <div key={`${answer}-${index}`} className='flex flex-col pt-0.5 transition-all duration-250 ease'>
+                          {index != 0 ? (
+                            <label className="separator block mt-1 mb-1 text-sm text-white-900 pt-px bg-white/50 w-9/12"></label>
+                          ) : null}
+                          <div className='flex flex-row'>
+                            <RiRobot2Fill className='w-6 h-6 min-w-6 min-h-6 text-black justify-start mt-0.5 ml-1.5 mr-1 transition-all duration-250 ease'/>
+                            {numberOfAnswers != (index + 1) ? (
+                              <span className='text-black mt-0 p-1 pl-1.5 pr-1.5 transition-all duration-250 ease'>{answer}</span>
+                            ) : (
+                              <span id='lastAnswer' className='text-black mt-0 p-1 pl-1.5 pr-1.5 transition-all duration-250 ease'>{displayedAnswer}</span>
+                            )}
+                          </div>
+                          {fullAnswer.length - index < 4 ? (
+                            <div className='response-utils flex flex-row justify-center z-20'>
+                              <button type='button' className='response-utils-btn rounded p-1 w-min mr-1' title='Copy Response' onClick={() => { numberOfAnswers != (index + 1) ? copyAnswer(answer, index) : copyAnswer(displayedAnswer, index)}}>
+                                {answerCopiedSucessfuly && answerCopiedSucessfulyIndex == index ? (
+                                  <IoCheckmark className={`w-4 h-4 ${answerCopiedSucessfuly ? 'opacity-1' : 'opacity-0'}`}/>
+                                ) : (
+                                  <FaRegCopy className='w-4 h-4'/>
+                                )}
+                              </button>
+                              <button type='button' className='response-utils-btn rounded p-1 w-min transition-all duration-250 ease' title='Convert to Post' onClick={convertAnswerToPost}>
+                                <MdOutlineAutoFixHigh className='w-4 h-4'/>
+                              </button>
+                            </div>
+                          ) : null}
                         </div>   
                       ))
                     }                    

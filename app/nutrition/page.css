@@ -30,6 +30,8 @@
 
     width: 100%;
     height: 100%;
+
+    min-height: 100px;
 }
 
 .page-ai-calculator {
@@ -82,6 +84,7 @@
     color: rgb(var(--white-rgb));
 
     overflow: hidden;
+    overflow-y: auto;
 }
 
 @media (max-width: 768px) {
@@ -96,6 +99,9 @@
     }
     .ai-calculator-info {
         max-height: 750px;
+
+        overflow: hidden;
+        overflow-y: hidden;
     }
 }
 
@@ -291,3 +297,26 @@ textarea::placeholder {
     border-right: 10px solid transparent;
     border-top: 10px solid rgb(var(--sidebar-dark-green-rgb));
 }
+
+.clean-btn {
+    background-color: rgb(var(--dark-green-rgb));
+}
+    .clean-btn:hover {
+        color: rgb(var(--lemon-green-rgb));
+    }
+
+.separator {
+    margin-left: 12.5%;
+}
+
+.response-utils-btn {
+    color: rgb(var(--dark-green-rgb));
+}
+    .response-utils-btn:hover {
+        color: rgb(var(--lemon-green-rgb));
+        background-color: rgb(var(--dark-green-rgb));
+    }
+    .response-utils-btn:focus {
+        color: rgb(var(--lemon-green-rgb));
+        background-color: rgb(var(--dark-green-rgb));
+    }
