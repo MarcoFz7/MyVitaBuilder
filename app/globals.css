@@ -43,4 +43,24 @@ body {
 }
 
 
+::-webkit-scrollbar {
+  width: 0.25rem;
+  height: 0.25rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: lightgray;
+  border-radius: 0.125rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 0.125rem;
+}
+
+* {
+  scrollbar-width: thin; /* "auto" or "thin" */
+  scrollbar-color: gray lightgray; /* thumb and track color */
+}
+
 
