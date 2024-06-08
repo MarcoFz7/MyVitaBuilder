@@ -58,9 +58,4 @@ body {
   border-radius: 0.125rem;
 }
 
-* {
-  scrollbar-width: thin; /* "auto" or "thin" */
-  scrollbar-color: gray lightgray; /* thumb and track color */
-}
-
 
