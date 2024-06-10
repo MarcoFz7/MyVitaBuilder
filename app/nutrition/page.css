@@ -15,13 +15,13 @@
 
     display: grid;
     grid-template-columns: 65% auto; 
-    grid-template-rows: 0.5fr; 
+    grid-template-rows: 0.58fr; 
     grid-gap: 0.5rem; 
 
     min-width: var(--min-width);
 }
 
-.page-manual-calculator,
+.page-post-section,
 .page-written-calculator {
     grid-column: 1; 
     background-color: rgb(var(--light-smoke-rgb));
@@ -30,11 +30,9 @@
 
     width: 100%;
     height: 100%;
-
-    min-height: 100px;
 }
 
-.page-ai-calculator {
+.page-ai-calculator-section {
     grid-column: 2; 
     grid-row: span 2; 
     background-color: rgba(var(--dark-smoke-rgb), 0.5);
@@ -87,49 +85,42 @@
     overflow-y: auto;
 }
 
+@media (max-width: 618px) {
+    .div-reference {
+        flex-direction: column;
+    }
+
+    .div-reference-two {
+        width: 100%;
+    }
+
+    .div-reference-two.new {
+        min-height: 275px !important;
+    }
+}
+
 @media (max-width: 768px) {
     .nutrition-page {
         grid-template-columns: 100%; 
     }
-    .page-manual-calculator,
+
+    .page-post-section,
     .page-written-calculator,
-    .page-ai-calculator {
+    .page-ai-calculator-section {
         grid-column: 1;
         grid-row: span 1;
     }
+
     .ai-calculator-info {
         max-height: 750px;
 
         overflow: hidden;
         overflow-y: hidden;
     }
-}
 
-.icon-and-title {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.1rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-    .icon-and-title svg {
-        display: inline-block;
-        margin-right: 0.375rem;     
+    .div-reference-two.new {
+        min-height: 375px;
     }
-
-.icon-and-title.right {
-    margin: 0;
-}
-    .icon-and-title.right svg {
-        margin: 0;
-        margin-left: 0.25rem;
-    }
-
-.weight-objective {
-    display: flex;
-    flex-direction: row;
-    gap: 25px;
 }
 
 input[type='radio'] {
@@ -255,68 +246,4 @@ input[type='radio'] {
     .single-select-div .select .css-1n6sfyn-MenuList div[aria-selected="true"] {
         background-color: rgba(var(--dark-smoke-rgb), 0.75);
         color: rgb(var(--black-rgb));
-    }
-
-.photo-scan-btn {
-    background-color: rgb(var(--dark-green-rgb));
-    margin-top: 0.075rem;
-}
-    .photo-scan-btn:hover {
-        color: rgb(var(--lemon-green-rgb));
-    }
-
-.ingredients-input {
-    color: rgb(var(--black-rgb));
-    padding-top: 0.38rem;
-}
-
-textarea::placeholder {
-    color: rgba(var(--black-rgb), 0.5);
-}
-
-.confirm-btn {
-    background-color: rgb(var(--dark-green-rgb));
-    color: rgb(var(--lemon-green-rgb));
-
-    transition: all 0.25s ease;
-}
-    .confirm-btn:hover {
-        background-color: rgb(var(--lemon-green-rgb));
-        color: rgb(var(--black-rgb));
-    }
-
-.icon-color {
-    color: rgb(var(--lemon-green-rgb));
-}
-
-.div-color {
-    border-color: rgb(var(--sidebar-dark-green-rgb));
-}
-
-.div-color-multiple {
-    border-right: 10px solid transparent;
-    border-top: 10px solid rgb(var(--sidebar-dark-green-rgb));
-}
-
-.clean-btn {
-    background-color: rgb(var(--dark-green-rgb));
-}
-    .clean-btn:hover {
-        color: rgb(var(--lemon-green-rgb));
-    }
-
-.separator {
-    margin-left: 12.5%;
-}
-
-.response-utils-btn {
-    color: rgb(var(--dark-green-rgb));
-}
-    .response-utils-btn:hover {
-        color: rgb(var(--lemon-green-rgb));
-        background-color: rgb(var(--dark-green-rgb));
-    }
-    .response-utils-btn:focus {
-        color: rgb(var(--lemon-green-rgb));
-        background-color: rgb(var(--dark-green-rgb));
     }
