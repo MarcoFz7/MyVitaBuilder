@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --min-height: 375px !important;
+  --min-height: 500px !important;
   --min-width: 280px !important;
   min-height: var(--min-height);
   min-width: var(--min-width);
