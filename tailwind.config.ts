@@ -32,12 +32,16 @@ const config: Config = {
         'c-green' : '#74CC52',
         'c-green-bluish': '#049977',
         'c-dark-green': '#45523E',
-        'c-sidebar-dark-green': '#7A8674',
+        'c-sidebar-dark-green': '#737E6D',
         'c-light-smoke': '#F5ECE5',     
         'c-dark-smoke': '#B0ACA2',
         'c-lemon-green': '#BFF47B',
         'c-light-dark': '#383838',
       },
+      screens: {
+        'sm': '618px',
+        'md': '768px',
+      }
     },
   },
   plugins: [],
