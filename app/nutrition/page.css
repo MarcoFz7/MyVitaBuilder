@@ -15,8 +15,8 @@
 
     display: grid;
     grid-template-columns: 65% auto; 
-    grid-template-rows: 0.58fr; 
-    grid-gap: 0.5rem; 
+    grid-template-rows: 0.50fr; 
+    grid-gap: 0.375rem; 
 
     min-width: var(--min-width);
 }
@@ -24,7 +24,6 @@
 .page-post-section,
 .page-written-calculator {
     grid-column: 1; 
-    background-color: rgb(var(--light-smoke-rgb));
 
     border-radius: 5px;
 
@@ -85,20 +84,6 @@
     overflow-y: auto;
 }
 
-@media (max-width: 618px) {
-    .div-reference {
-        flex-direction: column;
-    }
-
-    .div-reference-two {
-        width: 100%;
-    }
-
-    .div-reference-two.new {
-        min-height: 275px !important;
-    }
-}
-
 @media (max-width: 768px) {
     .nutrition-page {
         grid-template-columns: 100%; 
@@ -116,10 +101,6 @@
 
         overflow: hidden;
         overflow-y: hidden;
-    }
-
-    .div-reference-two.new {
-        min-height: 375px;
     }
 }
 
