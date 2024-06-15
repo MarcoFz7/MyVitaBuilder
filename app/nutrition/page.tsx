@@ -3,6 +3,7 @@
 import './page.css'
 
 import CustomInput from '../components/customInput/customInput';
+import CustomTextArea from '../components/customTextArea/customTextArea';
 
 import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
@@ -82,12 +83,25 @@ const Page = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>();
   const [imageName, setImageName] = useState<string | null>('');
 
+  const [descriptionTextareaValue, setDescriptionTextareaValue] = useState<string>('');
+
+  /**
+   * Function to retrieve the value of the description text are and use on Post request
+   * Resets the prop being used as a request trigger (descriptionTextareaValueRequest)
+   * 
+   * @param responseValue 
+   */
+  const handleDescriptionTextAreaResponse = (responseValue: string) => {
+    setDescriptionTextareaValue(responseValue); 
+
+  };
+
   const handlePostConfirmation = () => {
-   
+
   };
 
   const handlePostDiscard = () => {
-   
+
   };
 
   const handleAddImageToPost = () => {
@@ -125,8 +139,12 @@ const Page = () => {
   const handleRemoveImage = () => {
     setSelectedImage(null);
     setImageName(null);
-  }
 
+    // Reset inputFile value to allow to add the removed image again
+    if (inputFile.current) {
+      inputFile.current.value = '';
+    }
+  }
 
 
   // ---------------------------- Start of const/hooks/functions and more, related to AI CALCULATOR SECTION ----------------------------
@@ -385,11 +403,11 @@ const Page = () => {
   
   return (
     <div className={`${inter.className} nutrition-page`}>
-      <div className="page-post-section">
-        <div className='flex flex-col w-full h-full text-sm min-h-[550px] sm:min-h-[400px] md:min-h-full'>
-          <div className='flex flex-col sm:flex-row p-1 w-full h-4/5 gap-1.5 min-h-[500px] sm:min-h-[350px]'>
+      <div className="page-post-section bg-c-dark-smoke-50 min-h-[550px] sm:min-h-[433px]">
+        <div className='flex flex-col w-full h-full text-sm'>
+          <div className='flex flex-col sm:flex-row gap-1.5 p-1 w-full h-[87.5%] min-h-[500px] sm:min-h-[350px]'>
 
-            <div className='div-reference-two new flex flex-col gap-[1%] bg-c-dark-smoke rounded h-full p-1 w-1/3 min-w-[205px]'>
+            <div className='flex flex-col gap-[1%] bg-c-light-smoke rounded h-full p-1 w-full sm:w-1/3 min-w-[205px]'>
               <div className='flex flex-row gap-1.5 w-full h-[12%]'>
                 <div className='flex w-1/2 h-full bg-c-sidebar-dark-green rounded justify-center items-center p-1'>
                   <button type='button' className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title='Add Post!' onClick={handlePostConfirmation}>
@@ -426,14 +444,14 @@ const Page = () => {
                 </div>
               </div> 
             </div>
-            <div className='bg-c-dark-smoke rounded h-full w-full sm:w-2/3 p-1 min-w-[205px] text-white' >
+            <div className='bg-c-light-smoke rounded h-full w-full sm:w-2/3 p-1 min-w-[205px] text-white' >
               <div className='flex flex-col bg-c-sidebar-dark-green w-full h-full rounded'>
                 <div className='flex-1 flex flex-row rounded w-[99%] h-[12%] min-h-[30px] max-h-[12%] pl-[4%] sm:pl-[2%] justify-center'>
                   <div className='flex w-[32.5%] h-full justify-center items-center'>
                     <span className='font-bold'>Meal Details</span>
                   </div>
                   <div className='w-[64%]'>
-                    <CustomInput title='Calories' placeholder='ex.420' isDisabled={true} topic='Calories' hasUnit={true} unit='kcal'/>
+                    <CustomInput title='Calories' placeholder='ex. 42' isDisabled={true} topic='Calories' hasUnit={true} unit='kcal'/>
                   </div>
                 </div>
                 <div className='pl-0 ml-[4%] w-[92%] h-px bg-white'></div>
@@ -444,7 +462,13 @@ const Page = () => {
               </div>
             </div>         
           </div>
-          <div className='w-full h-1/5'></div>
+          <div className='w-full h-[12.5%] p-1'>
+              <div className='flex bg-c-light-smoke w-full h-full p-1 rounded items-center'>
+                <div className='flex w-full h-8 min-h-8'>            
+                  <CustomTextArea placeholder='Type a small description ...' isSizeRestricted={true} maxCharacters={255} isDisabled={false} isResizable={false} onTextareaValueRequest={handleDescriptionTextAreaResponse}/>
+                </div>
+              </div>
+          </div>
         </div>    
       </div>
       <div className="page-ai-calculator-section" onMouseEnter={handleRobotIconAnimationOnMouseEnter} onMouseLeave={handleRobotIconAnimationOnMouseLeave}>
@@ -516,7 +540,7 @@ const Page = () => {
                 <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Scan</strong><IoScanSharp className='ml-[0.25rem] mt-px'/></span>
               </button>
             </div>
-            <textarea ref={textareaRef} placeholder='ex. 1 Banana, 1 egg ...' className='text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded mt-1 p-1 pl-1.5 pr-1.5 w-full h-8 min-h-8' value={ingredientsTextAreaValue} onChange={handleTextAreaValueChange}></textarea>
+            <textarea ref={textareaRef} placeholder='ex. 1 Banana, 1 egg ...' className='text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded mt-1 p-1 pl-1.5 pr-1.5 w-full h-8 min-h-8 !max-h-[115px]' value={ingredientsTextAreaValue} onChange={handleTextAreaValueChange}></textarea>
           </div>
           <div>
             <button type='button' className='bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 ml-1 mt-0.5 w-fit transition-all duration-250 ease' title='Submit!' onClick={handleRequestConfirmation}>
@@ -581,7 +605,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <div className="page-written-calculator"></div>
+      <div className="page-written-calculator bg-c-dark-smoke-50"></div>
     </div>
   );
 };
