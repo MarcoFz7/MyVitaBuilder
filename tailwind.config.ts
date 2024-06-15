@@ -35,8 +35,10 @@ const config: Config = {
         'c-sidebar-dark-green': '#737E6D',
         'c-light-smoke': '#F5ECE5',     
         'c-dark-smoke': '#B0ACA2',
+        'c-dark-smoke-50': '#D7D5D0',
         'c-lemon-green': '#BFF47B',
         'c-light-dark': '#383838',
+        'c-fail-red': '#EF5350',
       },
       screens: {
         'sm': '618px',
