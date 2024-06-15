@@ -56,7 +56,7 @@ function useWindowWidth() {
 }
 
 
-export default function SideNavBar() {
+export default function NavBar() {
     const [isSmallScreen, setIsSmallScreen] = useState<boolean>();
     const [clickedMainIndex, setClickedMainIndex] = useState(-1);
     const [clickedSecondaryIndex, setClickedSecondaryIndex] = useState(-1);
