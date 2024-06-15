@@ -2,6 +2,8 @@
 
 import './page.css'
 
+import CustomInput from '../components/customInput/customInput';
+
 import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -382,29 +384,30 @@ const Page = () => {
   };
   
   return (
-    <div className="nutrition-page">
-      <div className="page-post-section min-h-[500px]">
+    <div className={`${inter.className} nutrition-page`}>
+      <div className="page-post-section min-h-[650px]">
         <div className='flex flex-col w-full h-full text-sm'>
           <div className='div-reference flex flex-row p-1 w-full h-4/5 gap-1.5'>
-            <div className='div-reference-two new flex flex-col gap-1.5 bg-c-dark-smoke rounded h-full p-1 w-1/3 min-w-[205px]'>
-              <div className='flex flex-row gap-1.5 w-full h-1/5  min-h-[30px] max-h-[45px]'>
+
+            <div className='div-reference-two new flex flex-col gap-[1%] bg-c-dark-smoke rounded h-full p-1 w-1/3 min-w-[205px]'>
+              <div className='flex flex-row gap-1.5 w-full h-[10%]'>
                 <div className='flex w-1/2 h-full bg-c-sidebar-dark-green rounded justify-center items-center p-1'>
-                  <button type='button' className='flex justify-center items-center bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title='Add Post!' onClick={handlePostConfirmation}>
+                  <button type='button' className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title='Add Post!' onClick={handlePostConfirmation}>
                     <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden"><IoAddOutline className='mr-[0.25rem] w-5 h-5'/><strong>Post</strong></span>
                   </button>
                 </div>
                 <div className='flex w-1/2 h-full bg-c-sidebar-dark-green rounded justify-center items-center p-1'>
-                  <button type='button' className='flex justify-center items-center bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title='Discard Post!' onClick={handlePostDiscard}>
+                  <button type='button' className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title='Discard Post!' onClick={handlePostDiscard}>
                     <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden"><MdDeleteOutline className='mr-[0.25rem]'/><strong>Discard</strong></span>
                   </button>
-                </div>
+                </div> 
               </div>
-              <div className='w-full h-full bg-c-sidebar-dark-green rounded p-2.5 pt-[2%] pb-[2%]'>
+              <div className='w-full h-[89%] bg-c-sidebar-dark-green rounded p-2.5 pt-[2%] pb-[2%] sm:max-h-full'>
                 <div className='border border-c-dark-smoke w-full h-[80%] flex justify-center items-center rounded shadow-md'>
                   <input title='myimageinput' type='file' id='file' accept="image/*" ref={inputFile} style={{display: 'none'}} onChange={handleImageUpload}/>
                   {selectedImage ? (
                     <div className='flex justify-center items-center w-full h-full bg-c-light-dark rounded'>
-                      <img src={selectedImage} alt="Selected" className="w-full h-auto opacity-100"/>
+                      <img src={selectedImage} alt="Selected" className="max-w-full max-h-full object-contain opacity-100"/>
                     </div>
                   )
                   : (
@@ -414,31 +417,44 @@ const Page = () => {
                   )}
                 </div>
                 <div className='flex flex-row mt-[1.5%] h-[19%] items-center'>
-                  <button type='button' className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green rounded text-white p-1 pl-1.5 pr-1.5 ml-0.5 h-1/2 min-h-[30px]' title='Remove image!' onClick={handleRemoveImage}>
+                  <button type='button' disabled={selectedImage == null} className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green disabled:text-c-dark-smoke disabled:hover:text-c-dark-smoke rounded text-white p-1 pl-1.5 pr-1.5 ml-0.5 h-1/2 min-h-[30px]' title={`${selectedImage == null ? "Disabled" : ""} Remove image!`} onClick={handleRemoveImage}>
                     <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Remove</strong><LuImageMinus className='ml-[0.25rem]'/></span>
                   </button>
-                  <div className='flex justify-center items-center w-full h-1/2 ml-1.5'>
-                    <span className='border-b border-white text-white h-auto w-fit mt-0.5'>{(imageName == '' || imageName == null) ? 'No image selected.' : imageName}</span>
+                  <div className='flex flex-auto justify-center items-center w-1/2 h-1/2 ml-1.5'>
+                    <span className='border-b border-white text-white h-auto w-fit mt-0.5 whitespace-nowrap	overflow-hidden text-ellipsis'>{(imageName == '' || imageName == null) ? 'No image selected' : imageName}</span>
                   </div>
                 </div>
-              </div>
+              </div> 
             </div>
-            <div className='div-reference-two bg-c-dark-smoke rounded h-full w-2/3'>
-              <div></div>
-              <div></div>  
+            <div className='bg-c-dark-smoke rounded h-full w-full sm:w-2/3 p-1 min-w-[205px] text-white' >
+              <div className='flex flex-col bg-c-sidebar-dark-green w-full h-full rounded'>
+                <div className='flex-1 flex flex-row rounded w-[99%] h-1/5 min-h-[30px] max-h-[45px] pl-[4%] sm:pl-[2%] justify-center'>
+                  <div className='flex w-[32.5%] h-full justify-center items-center'>
+                    <span className='font-bold'>Meal Details</span>
+                  </div>
+                  <div className='w-[64%]'>
+                    <CustomInput title='Calories' placeholder='ex.420' isDisabled={true} topic='Calories' hasUnit={true} unit='kcal'/>
+                  </div>
+                </div>
+                <div className='pl-0 ml-[4%] w-[92%] h-px bg-white'></div>
+                <div className='flex-1 flex flex-col md:flex-row bg-c-sidebar-dark-green w-full h-full pl-[2%]'>
+                  <div className='h-1/2 w-full md:h-full md:w-1/2'></div>
+                  <div className='h-1/2 w-full md:h-full md:w-1/2'></div>
+                </div>  
+              </div>
             </div>         
           </div>
           <div className='w-full h-1/5'></div>
         </div>    
       </div>
       <div className="page-ai-calculator-section" onMouseEnter={handleRobotIconAnimationOnMouseEnter} onMouseLeave={handleRobotIconAnimationOnMouseLeave}>
-        <span className={`${inter.className} ai-calculator-header`}>
+        <span className='ai-calculator-header'>
           Get <b>better results</b> through your meals and preparation using <strong>AI</strong>
         </span>
-        <div className={`${inter.className} ai-calculator-info`}>
+        <div className='ai-calculator-info'>
           <div>
             <label className="block mb-1.5 text-sm text-white-900 pt-px ml-1.5">Please configure this section accordingly.</label>
-            <span className="flex items-center mb-[0.1rem] whitespace-nowrap overflow-hidden text-ellipsis mt-1 ml-1"><FaUser className='text-c-lemon-green inline-block mr-[0.375rem]'/><strong>Personal information</strong></span>
+            <span className="flex items-center mb-[0.1rem] text-c-lemon-green whitespace-nowrap overflow-hidden text-ellipsis mt-1 ml-1"><FaUser className='text-c-lemon-green inline-block mr-[0.375rem]'/><strong>Personal information</strong></span>
             <div className='flex flex-row gap-[25px] ml-1'>
               <div className="flex items-center">
                 <input id="weight-loss-radio" title='weight-loss-radio' type="radio" value="" name="weight-radio" className="w-4 h-4 focus:ring-2 pb-2" checked={isWeightLossSelected} onChange={handleWeightLossRadioClick} onClick={handleWeightLossRadioClick}></input>
@@ -462,7 +478,7 @@ const Page = () => {
               onChange={handleSelectAllergiesAndIntoleranceOptions}
             />
             <label className="block mt-2 mb-1.5 text-sm text-white-900 text-sm pt-px"></label>
-            <span className="flex items-center mb-[0.1rem] whitespace-nowrap overflow-hidden mt-1 ml-1"><FaDrumstickBite className='text-c-lemon-green inline-block mr-[0.375rem]'/><strong>Meal information</strong></span>
+            <span className="flex items-center mb-[0.1rem] text-c-lemon-green whitespace-nowrap overflow-hidden mt-1 ml-1"><FaDrumstickBite className='text-c-lemon-green inline-block mr-[0.375rem]'/><strong>Meal information</strong></span>
             <Select className='select'
               closeMenuOnSelect={false}
               blurInputOnSelect={false}
@@ -495,7 +511,7 @@ const Page = () => {
           <div className="ml-1">
             <label className="block mt-1.5 mb-1.5 text-sm text-white-900 pt-px"></label>
             <div className='flex items-center justify-between w-full'>
-              <span className="flex items-center mb-[0.1rem] whitespace-nowrap overflow-hidden mt-1 ml-0"><FaReceipt className='text-c-lemon-green mb-px inline-block mr-[0.375rem]'/><strong className='truncate'>Enter ingredients or...</strong></span>
+              <span className="flex items-center mb-[0.1rem] text-c-lemon-green whitespace-nowrap overflow-hidden mt-1 ml-0"><FaReceipt className='text-c-lemon-green mb-px inline-block mr-[0.375rem]'/><strong className='truncate'>Enter ingredients or...</strong></span>
               <button type='button' className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green rounded p-1 pl-1.5 pr-1.5 ml-1.5' title='Photograph Ingredients' onClick={setIngredientsTextArea}>
                 <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Scan</strong><IoScanSharp className='ml-[0.25rem] mt-px'/></span>
               </button>
