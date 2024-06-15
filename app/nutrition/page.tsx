@@ -385,12 +385,12 @@ const Page = () => {
   
   return (
     <div className={`${inter.className} nutrition-page`}>
-      <div className="page-post-section min-h-[650px]">
-        <div className='flex flex-col w-full h-full text-sm'>
-          <div className='div-reference flex flex-row p-1 w-full h-4/5 gap-1.5'>
+      <div className="page-post-section">
+        <div className='flex flex-col w-full h-full text-sm min-h-[550px] sm:min-h-[400px] md:min-h-full'>
+          <div className='flex flex-col sm:flex-row p-1 w-full h-4/5 gap-1.5 min-h-[500px] sm:min-h-[350px]'>
 
             <div className='div-reference-two new flex flex-col gap-[1%] bg-c-dark-smoke rounded h-full p-1 w-1/3 min-w-[205px]'>
-              <div className='flex flex-row gap-1.5 w-full h-[10%]'>
+              <div className='flex flex-row gap-1.5 w-full h-[12%]'>
                 <div className='flex w-1/2 h-full bg-c-sidebar-dark-green rounded justify-center items-center p-1'>
                   <button type='button' className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title='Add Post!' onClick={handlePostConfirmation}>
                     <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden"><IoAddOutline className='mr-[0.25rem] w-5 h-5'/><strong>Post</strong></span>
@@ -402,7 +402,7 @@ const Page = () => {
                   </button>
                 </div> 
               </div>
-              <div className='w-full h-[89%] bg-c-sidebar-dark-green rounded p-2.5 pt-[2%] pb-[2%] sm:max-h-full'>
+              <div className='w-full h-[87%] bg-c-sidebar-dark-green rounded p-2.5 pt-[2%] pb-[2%] max-h-[200px] sm:max-h-full'>
                 <div className='border border-c-dark-smoke w-full h-[80%] flex justify-center items-center rounded shadow-md'>
                   <input title='myimageinput' type='file' id='file' accept="image/*" ref={inputFile} style={{display: 'none'}} onChange={handleImageUpload}/>
                   {selectedImage ? (
@@ -428,7 +428,7 @@ const Page = () => {
             </div>
             <div className='bg-c-dark-smoke rounded h-full w-full sm:w-2/3 p-1 min-w-[205px] text-white' >
               <div className='flex flex-col bg-c-sidebar-dark-green w-full h-full rounded'>
-                <div className='flex-1 flex flex-row rounded w-[99%] h-1/5 min-h-[30px] max-h-[45px] pl-[4%] sm:pl-[2%] justify-center'>
+                <div className='flex-1 flex flex-row rounded w-[99%] h-[12%] min-h-[30px] max-h-[12%] pl-[4%] sm:pl-[2%] justify-center'>
                   <div className='flex w-[32.5%] h-full justify-center items-center'>
                     <span className='font-bold'>Meal Details</span>
                   </div>
