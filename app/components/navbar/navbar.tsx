@@ -72,7 +72,7 @@ export default function NavBar() {
     }, []);
     
     useEffect(() => {
-      if (width <= 768) {
+      if (width <= 828) {
         if (!isSmallScreen) {
           setIsSmallScreen(true);
         } 
@@ -164,7 +164,7 @@ export default function NavBar() {
                     {
                         menuMainItems.map((item, index) => (                       
                             <Link href={item.path} key={index} className={`option group ${clickedMainIndex === index ? 'clicked-option' : ''}`} onClick={() => handleMainItemClick(index)}>
-                              <div className={`group-hover:text-white icon ${clickedMainIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
+                              <div className={`text-c-paper-white group-hover:text-white icon ${clickedMainIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
                               <h3 className={`${inter.className} group-hover:text-white link-text ${clickedMainIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
                             </Link>
                         ))
@@ -174,7 +174,7 @@ export default function NavBar() {
                     {
                         menuSecondaryItems.map((item, index) => (                       
                             <Link href={item.path} key={index} className={`option group ${clickedSecondaryIndex === index ? 'clicked-option' : ''}`} onClick={() => handleSecondaryItemClick(index)}>
-                                <div className={`group-hover:text-white icon ${clickedSecondaryIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
+                                <div className={`text-c-paper-white group-hover:text-white icon ${clickedSecondaryIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
                                 <h3 className={`${inter.className} group-hover:text-white link-text ${clickedSecondaryIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
                             </Link>
                         ))
