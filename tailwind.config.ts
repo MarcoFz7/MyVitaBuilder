@@ -39,10 +39,12 @@ const config: Config = {
         'c-lemon-green': '#BFF47B',
         'c-light-dark': '#383838',
         'c-fail-red': '#EF5350',
+
+        'c-paper-white': '#FDFDFD',
       },
       screens: {
         'sm': '618px',
-        'md': '768px',
+        'md': '828px',
       }
     },
   },
