@@ -4,6 +4,7 @@ import './page.css'
 
 import CustomInput from '../components/customInput/customInput';
 import CustomTextArea from '../components/customTextArea/customTextArea';
+import CustomMessage from '../components/customMessage/customMessage';
 
 import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
@@ -11,7 +12,7 @@ import makeAnimated from 'react-select/animated';
 import { FaDrumstickBite, FaUser, FaReceipt, FaRegCopy } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { IoScanSharp, IoCheckmark, IoAddOutline } from "react-icons/io5";
-import { RiRobot2Fill } from "react-icons/ri";
+import { RiRobot2Fill, RiInformation2Fill } from "react-icons/ri";
 import { MdOutlineAutoFixHigh, MdDeleteSweep, MdDeleteOutline  } from "react-icons/md";
 import { LuImageMinus, LuImagePlus } from "react-icons/lu";
 
@@ -76,32 +77,132 @@ const mealCaloricIntakeOptions: Option[] = [
   { value: 'Very High', label: '>1200 kcal' }
 ]
 
+
 const Page = () => {
   // ---------------------------- Start of const/hooks/functions and more, related to POST SECTION ----------------------------
   const inputFile = useRef<HTMLInputElement | null>(null);
 
+  const [postHasContent, setPostHasContent] = useState<boolean>(false);
+
   const [selectedImage, setSelectedImage] = useState<string | null>();
   const [imageName, setImageName] = useState<string | null>('');
 
+  const [energyInputValue, setEnergyInputValue] = useState<string>('');
+  const [proteinInputValue, setProteinInputValue] = useState<string>('');
+  const [totalFatInputValue, setTotalFatInputValue] = useState<string>('');
+  const [saturatedFatInputValue, setSaturatedFatInputValue] = useState<string>('');
+  const [transFatInputValue, setTransFatInputValue] = useState<string>('');
+  const [totalCarbsInputValue, setTotalCarbsInputValue] = useState<string>('');
+  const [sugarsInputValue, setSugarsInputValue] = useState<string>('');
+  const [fiberInputValue, setFiberInputValue] = useState<string>('');
+  const [sodiumInputValue, setSodiumInputValue] = useState<string>('');
+  const [cholesterolInputValue, setCholesterolInputValue] = useState<string>('');
+  const [vitaminsInputValue, setVitaminsInputValue] = useState<string>('');
+
   const [descriptionTextareaValue, setDescriptionTextareaValue] = useState<string>('');
+  const [resetDescriptionTextareaValue, setResetDescriptionTextareaValue] = useState<boolean>(false);
+
+  const [showPostWarningMessage, setShowPostWarningMessage] = useState<boolean>(false);
+  const [changePostWarningMessageOpacity, setChangePostWarningMessageOpacity] = useState<boolean>(false);
+
+  const postInputValuesToValidate = [
+    energyInputValue, proteinInputValue, totalFatInputValue, saturatedFatInputValue, transFatInputValue, totalCarbsInputValue,
+    sugarsInputValue, fiberInputValue, sodiumInputValue, cholesterolInputValue, vitaminsInputValue
+  ];
+
+  const allInputValues = [
+    imageName, energyInputValue, proteinInputValue, totalFatInputValue, saturatedFatInputValue, transFatInputValue, totalCarbsInputValue,
+    sugarsInputValue, fiberInputValue, sodiumInputValue, cholesterolInputValue, vitaminsInputValue, descriptionTextareaValue
+  ];
+
+  // Function to handle post validation (All Nutriotinal information section fields are mandatory)
+  const handlePostValidation = () => {
+    for (const inputValue of postInputValuesToValidate) {
+      if (inputValue == '') {
+        return false;
+      }
+    }
+  
+    return true;
+  }
 
   /**
-   * Function to retrieve the value of the description text are and use on Post request
-   * Resets the prop being used as a request trigger (descriptionTextareaValueRequest)
-   * 
-   * @param responseValue 
+   * Function to handle the Post confirmation
+   * This function call one more helper function - handlePostValidation
    */
-  const handleDescriptionTextAreaResponse = (responseValue: string) => {
-    setDescriptionTextareaValue(responseValue); 
-
-  };
-
   const handlePostConfirmation = () => {
+    var isPostValidated = handlePostValidation();
+    
+    if (isPostValidated) {
+      setShowPostWarningMessage(false);
+      setChangePostWarningMessageOpacity(false);
 
+      console.log("Selected image value: " + selectedImage);
+      console.log("Image name value: " + imageName);
+      console.log("Energy value: " + energyInputValue);  
+      console.log("Protein value: " + proteinInputValue); 
+      console.log("Total fat value: " + totalFatInputValue);  
+      console.log("Saturated fat value: " + saturatedFatInputValue); 
+      console.log("Trans fat value: " + transFatInputValue);  
+      console.log("Total carbs value: " + totalCarbsInputValue); 
+      console.log("Sugars value: " + sugarsInputValue);  
+      console.log("Fiber value: " + fiberInputValue); 
+      console.log("Sodium value: " + sodiumInputValue);  
+      console.log("Cholesterol value: " + cholesterolInputValue); 
+      console.log("Vitamins value: " + vitaminsInputValue);   
+      console.log("Description value: " + descriptionTextareaValue);   
+
+    } else {     
+
+      setShowPostWarningMessage(true);
+      setChangePostWarningMessageOpacity(true);
+    }
   };
 
-  const handlePostDiscard = () => {
+  /**
+   * UseEffect to controll if Discard Btn should be disabled or not
+   */
+  useEffect(() => {
+    var count = 0;
+    
+    for (const inputValue of allInputValues) {
+      if (inputValue != '') {
+        count++;
+      }
+    }
+  
+    if (count > 0) {
+      setPostHasContent(true);
+    } else {
+      setPostHasContent(false);
+    }
+  }, [imageName, energyInputValue, proteinInputValue, totalFatInputValue, saturatedFatInputValue, transFatInputValue, totalCarbsInputValue, sugarsInputValue, fiberInputValue, sodiumInputValue, cholesterolInputValue, vitaminsInputValue, descriptionTextareaValue]);
 
+  /**
+   * Function to discard current Post
+   * Resets all the sections
+   */
+  const handlePostDiscard = () => {
+    // Optional Image section
+    setSelectedImage(null);
+    setImageName('');
+
+    // Nutritional Information section
+    setEnergyInputValue('');
+    setProteinInputValue('');
+    setTotalFatInputValue('');
+    setSaturatedFatInputValue('');
+    setTransFatInputValue('');
+    setTotalCarbsInputValue('');
+    setSugarsInputValue('');
+    setFiberInputValue('');
+    setSodiumInputValue('');
+    setCholesterolInputValue('');
+    setVitaminsInputValue('');
+
+    // Optional description section
+    setDescriptionTextareaValue('');
+    setResetDescriptionTextareaValue(true);
   };
 
   const handleAddImageToPost = () => {
@@ -145,6 +246,15 @@ const Page = () => {
       inputFile.current.value = '';
     }
   }
+
+  /**
+   * Function to retrieve the value of the description text are and use on Post request
+   * 
+   * @param responseValue 
+   */
+  const handleDescriptionTextAreaResponse = (responseValue: string) => {
+    setDescriptionTextareaValue(responseValue); 
+  };
 
 
   // ---------------------------- Start of const/hooks/functions and more, related to AI CALCULATOR SECTION ----------------------------
@@ -382,7 +492,7 @@ const Page = () => {
    */
   const copyAnswer = (answer: string, index: number) => {
     navigator.clipboard.writeText(answer).then(() => {
-      setCopiedStatusTrueOrFalse(index, 'true');
+      setCopiedStatusTrueOrFalse(index, 'false');
 
       setTimeout(() => {
         setCopiedStatusTrueOrFalse(index, '');
@@ -403,25 +513,25 @@ const Page = () => {
   
   return (
     <div className={`${inter.className} nutrition-page`}>
-      <div className="page-post-section bg-c-dark-smoke-50 min-h-[550px] sm:min-h-[433px]">
+      <div className="page-post-section bg-c-light-smoke min-h-[635px] sm:min-h-[430px]">
         <div className='flex flex-col w-full h-full text-sm'>
-          <div className='flex flex-col sm:flex-row gap-1.5 p-1 w-full h-[87.5%] min-h-[500px] sm:min-h-[350px]'>
+          <div className='flex flex-col sm:flex-row gap-1.5 p-1 w-full h-[90%] min-h-[500px] sm:min-h-[350px]'>
 
-            <div className='flex flex-col gap-[1%] bg-c-light-smoke rounded h-full p-1 w-full sm:w-1/3 min-w-[205px]'>
-              <div className='flex flex-row gap-1.5 w-full h-[12%]'>
-                <div className='flex w-1/2 h-full bg-c-sidebar-dark-green rounded justify-center items-center p-1'>
-                  <button type='button' className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title='Add Post!' onClick={handlePostConfirmation}>
+            <div className='flex flex-col gap-[1%] bg-c-light-smoke rounded h-full p-1 w-full sm:w-1/3 min-w-[205px] shadow-md'>
+              <div className='flex flex-row gap-1.5 w-full h-[12%] pb-0.5 sm:pb-0'>
+                <div className='bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-1'>
+                  <button type='button' className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full shadow-lg' title='Add Post!' onClick={handlePostConfirmation}>
                     <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden"><IoAddOutline className='mr-[0.25rem] w-5 h-5'/><strong>Post</strong></span>
                   </button>
                 </div>
-                <div className='flex w-1/2 h-full bg-c-sidebar-dark-green rounded justify-center items-center p-1'>
-                  <button type='button' className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title='Discard Post!' onClick={handlePostDiscard}>
+                <div className='bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-1'>
+                  <button type='button' disabled={!postHasContent} className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:text-c-dark-smoke disabled:hover:bg-c-dark-green rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full shadow-lg' title={`${!postHasContent ? "Disabled. Post has no content." : "Discard Post!"}`} onClick={handlePostDiscard}>
                     <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden"><MdDeleteOutline className='mr-[0.25rem]'/><strong>Discard</strong></span>
                   </button>
                 </div> 
               </div>
-              <div className='w-full h-[87%] bg-c-sidebar-dark-green rounded p-2.5 pt-[2%] pb-[2%] max-h-[200px] sm:max-h-full'>
-                <div className='border border-c-dark-smoke w-full h-[80%] flex justify-center items-center rounded shadow-md'>
+              <div className='w-full h-[87%] bg-c-paper-white rounded p-2.5 pt-[2%] pb-[2%] max-h-[200px] sm:max-h-full'>
+                <div className='w-full h-[80%] flex justify-center items-center rounded border border-c-light-smoke border-t-c-paper-white shadow-sm'>
                   <input title='myimageinput' type='file' id='file' accept="image/*" ref={inputFile} style={{display: 'none'}} onChange={handleImageUpload}/>
                   {selectedImage ? (
                     <div className='flex justify-center items-center w-full h-full bg-c-light-dark rounded'>
@@ -435,37 +545,79 @@ const Page = () => {
                   )}
                 </div>
                 <div className='flex flex-row mt-[1.5%] h-[19%] items-center'>
-                  <button type='button' disabled={selectedImage == null} className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green disabled:text-c-dark-smoke disabled:hover:text-c-dark-smoke rounded text-white p-1 pl-1.5 pr-1.5 ml-0.5 h-1/2 min-h-[30px]' title={`${selectedImage == null ? "Disabled" : ""} Remove image!`} onClick={handleRemoveImage}>
+                  <button type='button' disabled={selectedImage == null} className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green disabled:text-c-dark-smoke disabled:hover:text-c-dark-smoke rounded text-white p-1 pl-1.5 pr-1.5 ml-0.5 h-1/2 min-h-[30px] shadow-md' title={`${selectedImage == null ? "Disabled. No image selected." : "Remove image!"}`} onClick={handleRemoveImage}>
                     <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Remove</strong><LuImageMinus className='ml-[0.25rem]'/></span>
                   </button>
                   <div className='flex flex-auto justify-center items-center w-1/2 h-1/2 ml-1.5'>
-                    <span className='border-b border-white text-white h-auto w-fit mt-0.5 whitespace-nowrap	overflow-hidden text-ellipsis'>{(imageName == '' || imageName == null) ? 'No image selected' : imageName}</span>
+                    <span className='border-b border-c-dark-green text-c-dark-green h-auto w-fit mt-0.5 whitespace-nowrap	overflow-hidden text-ellipsis'>{(imageName == '' || imageName == null) ? 'No image selected' : imageName}</span>
                   </div>
                 </div>
               </div> 
             </div>
-            <div className='bg-c-light-smoke rounded h-full w-full sm:w-2/3 p-1 min-w-[205px] text-white' >
-              <div className='flex flex-col bg-c-sidebar-dark-green w-full h-full rounded'>
-                <div className='flex-1 flex flex-row rounded w-[99%] h-[12%] min-h-[30px] max-h-[12%] pl-[4%] sm:pl-[2%] justify-center'>
-                  <div className='flex w-[32.5%] h-full justify-center items-center'>
-                    <span className='font-bold'>Meal Details</span>
-                  </div>
-                  <div className='w-[64%]'>
-                    <CustomInput title='Calories' placeholder='ex. 42' isDisabled={true} topic='Calories' hasUnit={true} unit='kcal'/>
-                  </div>
+            <div className='bg-c-light-smoke rounded h-full w-full sm:w-2/3 p-1 min-w-[205px] text-white shadow-md transition-all duration-2500 ease' >
+              <div className='flex flex-col bg-c-paper-white w-full h-full rounded transition-all duration-2500 ease'>
+                <div className='bg-c-paper-white flex-1 flex flex-row rounded w-[99%] h-[12%] min-h-[35px] max-h-[12%] pl-[2%] sm:pl-[4%] justify-center pr-[2%] sm:pr-[4%]'>
+                  { showPostWarningMessage ?                
+                    <CustomMessage type={2} message='This section fields are Mandatory' iconSize='text-base' isOpacityOne={changePostWarningMessageOpacity} onTransitionEnd={() => setShowPostWarningMessage(false)}/>
+                  :  
+                    <div className='flex w-full h-full justify-center items-center'>
+                      <span className="flex items-center text-c-dark-green whitespace-nowrap overflow-hidden "><RiInformation2Fill className='text-c-dark-green inline-block mr-[0.375rem] h-[18px] w-[18px]'/><strong>Meal Nutritional Details</strong></span>                       
+                    </div>
+                  }         
                 </div>
-                <div className='pl-0 ml-[4%] w-[92%] h-px bg-white'></div>
-                <div className='flex-1 flex flex-col md:flex-row bg-c-sidebar-dark-green w-full h-full pl-[2%]'>
-                  <div className='h-1/2 w-full md:h-full md:w-1/2'></div>
-                  <div className='h-1/2 w-full md:h-full md:w-1/2'></div>
+                <div className='pl-0 ml-[4%] w-[92%] h-px bg-c-dark-green'></div>
+                <div className='flex-1 flex flex-col sm:flex-row bg-c-paper-white w-full h-full pl-[2%] pr-[2%] rounded'>
+                  <div className='flex flex-col justify-evenly h-1/2 sm:h-full w-full'>
+                  <div className='h-auto w-full'>
+                      <div className='min-h-[35px]'>
+                        <CustomInput title='Energy' placeholder='ex. 286' isDisabled={true} topic='Energy' hasUnit={true} unit='kcal' inSequence={false}/>
+                      </div>
+                    </div>
+                    <div className='h-auto w-full'>
+                      <div className='min-h-[35px]'>
+                        <CustomInput title='Protein' placeholder='ex. 34' isDisabled={true} topic='Protein' hasUnit={true} unit='g' inSequence={false}/>
+                      </div>
+                    </div>
+                    <div className='h-auto w-full'>
+                      <div className='min-h-[35px]'>
+                        <CustomInput title='Total Fat' placeholder='ex. 4.6' isDisabled={true} topic='Total Fat' hasUnit={true} unit='g' inSequence={true}/>
+                        <div className='flex flex-row sm:flex-col'>
+                          <CustomInput title='Sat. Fat' placeholder='ex. 1.5' isDisabled={true} topic='Sat. Fat' hasUnit={true} unit='g' inSequence={true}/>
+                          <CustomInput title='Trans Fat' placeholder='ex. 0' isDisabled={true} topic='Trans Fat' hasUnit={true} unit='g' inSequence={false}/>
+                        </div> 
+                      </div>
+                    </div>                   
+                  </div>
+                  <div className='flex flex-col justify-evenly h-1/2 sm:h-full w-full'>
+                    <div className='h-auto w-full'>
+                      <div className='min-h-[35px]'>
+                        <CustomInput title='Carbs' placeholder='ex. 25' isDisabled={true} topic='Total Carbs' hasUnit={true} unit='g' inSequence={true}/>
+                        <div className='flex flex-row sm:flex-col'>
+                          <CustomInput title='Sugars' placeholder='ex. 1.4' isDisabled={true} topic='Sugars' hasUnit={true} unit='g' inSequence={true}/>
+                          <CustomInput title='Fiber' placeholder='ex. 2' isDisabled={true} topic='Fiber' hasUnit={true} unit='g' inSequence={false}/>
+                        </div>           
+                      </div>
+                    </div>
+                    <div className='h-auto w-full'>
+                      <div className='min-h-[35px]'>
+                        <CustomInput title='Sodium' placeholder='ex. 76' isDisabled={true} topic='Sodium' hasUnit={true} unit='mg' inSequence={false}/>
+                      </div>
+                    </div>
+                    <div className='h-auto w-full'>
+                      <div className='min-h-[35px] flex flex-row sm:flex-col'>
+                        <CustomInput title='Cholesterol' placeholder='ex. 85' isDisabled={true} topic='Chol.' hasUnit={true} unit='mg' inSequence={true}/>
+                        <CustomInput title='Vitamins' placeholder='ex. A and B' isDisabled={true} topic='Vitamins' hasUnit={false} unit='null' inSequence={false}/>
+                      </div>
+                    </div>
+                  </div>
                 </div>  
               </div>
             </div>         
           </div>
-          <div className='w-full h-[12.5%] p-1'>
-              <div className='flex bg-c-light-smoke w-full h-full p-1 rounded items-center'>
-                <div className='flex w-full h-8 min-h-8'>            
-                  <CustomTextArea placeholder='Type a small description ...' isSizeRestricted={true} maxCharacters={255} isDisabled={false} isResizable={false} onTextareaValueRequest={handleDescriptionTextAreaResponse}/>
+          <div className='w-full h-[10%] p-1'>
+              <div className='flex bg-c-light-smoke w-full h-full p-1 rounded items-center shadow-md'>
+                <div className='flex w-full h-8 min-h-8 bg-c-paper-white rounded'>            
+                  <CustomTextArea placeholder='Type a small description ...' isSizeRestricted={true} maxCharacters={255} isDisabled={false} isResizable={false} onTextareaValueRequest={handleDescriptionTextAreaResponse} resetRequest={resetDescriptionTextareaValue} onResetCompleted={() => setResetDescriptionTextareaValue(false)}/>
                 </div>
               </div>
           </div>
@@ -536,14 +688,14 @@ const Page = () => {
             <label className="block mt-1.5 mb-1.5 text-sm text-white-900 pt-px"></label>
             <div className='flex items-center justify-between w-full'>
               <span className="flex items-center mb-[0.1rem] text-c-lemon-green whitespace-nowrap overflow-hidden mt-1 ml-0"><FaReceipt className='text-c-lemon-green mb-px inline-block mr-[0.375rem]'/><strong className='truncate'>Enter ingredients or...</strong></span>
-              <button type='button' className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green rounded p-1 pl-1.5 pr-1.5 ml-1.5' title='Photograph Ingredients' onClick={setIngredientsTextArea}>
+              <button type='button' className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green rounded p-1 pl-1.5 pr-1.5 ml-1.5 shadow-md' title='Photograph Ingredients' onClick={setIngredientsTextArea}>
                 <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Scan</strong><IoScanSharp className='ml-[0.25rem] mt-px'/></span>
               </button>
             </div>
-            <textarea ref={textareaRef} placeholder='ex. 1 Banana, 1 egg ...' className='text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded mt-1 p-1 pl-1.5 pr-1.5 w-full h-8 min-h-8 !max-h-[115px]' value={ingredientsTextAreaValue} onChange={handleTextAreaValueChange}></textarea>
+            <textarea ref={textareaRef} placeholder='ex. 1 Banana, 1 egg ...' className='bg-c-paper-white text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded mt-1 p-1 pl-1.5 pr-1.5 w-full h-8 min-h-8 !max-h-[115px]' value={ingredientsTextAreaValue} onChange={handleTextAreaValueChange}></textarea>
           </div>
           <div>
-            <button type='button' className='bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 ml-1 mt-0.5 w-fit transition-all duration-250 ease' title='Submit!' onClick={handleRequestConfirmation}>
+            <button type='button' className='bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 ml-1 mt-0.5 w-fit transition-all duration-250 ease shadow-md' title='Submit!' onClick={handleRequestConfirmation}>
               <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Confirm</strong><IoCheckmark className='ml-[0.25rem] mt-px'/></span>
             </button>
           </div>

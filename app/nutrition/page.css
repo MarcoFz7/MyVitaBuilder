@@ -84,7 +84,7 @@
     overflow-y: auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 828px) {
     .nutrition-page {
         grid-template-columns: 100%; 
     }
@@ -153,6 +153,7 @@ input[type='radio'] {
         margin-top: 0 !important;
     }
     .select .css-13cymwt-control, .select .css-t3ipsp-control {
+        background-color: rgb(var(--paper-white-rgb));
         min-height: 32px;
         margin-right: 4px;
     }
