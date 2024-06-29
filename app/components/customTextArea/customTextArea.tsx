@@ -25,6 +25,7 @@ interface CustomTextAreaProps {
  * @param isSizeRestricted - option to allow to restrict the maximum size of the textarea input
  * @param maxCharacters - option to allow to specify the max allowed characters for the textarea 
  * @param isDisabled - option to allow the input to be editable, or not
+ * @param isResizable - option to allow the user to change the textarea height, or not
  * @param onTextareaValueRequest - callback function to pass the value to the parent 
  * @param resetRequest - option that indicates a request from the parent to reset the textarea value
  * @param osResetCompleted - callback function to reset the variable "resetRequest" allowing to multiple resets

@@ -16,8 +16,8 @@ interface customMessageProps {
  * 
  * @param type - type of the custom message: 1-Info, 2-Warning, 3-Error
  * @param message - content to use in the custom message
- * @param size - size of the icon
- * @param changeOpacity - controls component visibility (mainly to apply smoth transitions)
+ * @param iconSize - size of the icon
+ * @param isOpacityOne - controls component visibility (mainly to apply smoth transitions)
  * @param onTransitionEnd - callback function to invoke when the transition ends and hide message
  * 
  * @returns custom 
@@ -26,6 +26,7 @@ const CustomMessage = ({ type, message, iconSize, isOpacityOne, onTransitionEnd 
    
   const [opacity, setOpacity] = useState<number>(0);
 
+  // Use effect for custom Message smooth transition effect
   useEffect(() => {
     let hideTimeout: NodeJS.Timeout;
   
@@ -34,11 +35,11 @@ const CustomMessage = ({ type, message, iconSize, isOpacityOne, onTransitionEnd 
 
       hideTimeout = setTimeout(() => {
         setOpacity(0);
-      }, 20000500);
+      }, 2500);
   
       setTimeout(() => {
         onTransitionEnd();
-      }, 20000750);
+      }, 2750);
     }
   
     return () => {
