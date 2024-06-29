@@ -6,14 +6,18 @@ import CustomInput from '../components/customInput/customInput';
 import CustomTextArea from '../components/customTextArea/customTextArea';
 import CustomMessage from '../components/customMessage/customMessage';
 
+import MainBtn from '../components/buttons/mainBtn';
+
+import { requestAnswerDTO } from '../components/models/requestAnswerDTO';
+
 import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { FaDrumstickBite, FaUser, FaReceipt, FaRegCopy } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
-import { IoScanSharp, IoCheckmark, IoAddOutline } from "react-icons/io5";
+import { IoScanSharp, IoCheckmark } from "react-icons/io5";
 import { RiRobot2Fill, RiInformation2Fill } from "react-icons/ri";
-import { MdOutlineAutoFixHigh, MdDeleteSweep, MdDeleteOutline  } from "react-icons/md";
+import { MdOutlineAutoFixHigh, MdDeleteSweep, MdDeleteOutline, MdAdd } from "react-icons/md";
 import { LuImageMinus, LuImagePlus } from "react-icons/lu";
 
 import { Inter } from 'next/font/google';
@@ -239,7 +243,7 @@ const Page = () => {
 
   const handleRemoveImage = () => {
     setSelectedImage(null);
-    setImageName(null);
+    setImageName('');
 
     // Reset inputFile value to allow to add the removed image again
     if (inputFile.current) {
@@ -288,6 +292,7 @@ const Page = () => {
   const [fullAnswer, setFullAnswer] = useState<string[]>([]); 
   const [numberOfAnswers, setNumberOfAnswers] = useState<number>(0); 
   const [copiedStatus, setCopiedStatus] = useState(Array(fullAnswer.length).fill(''));
+  const [answerConvertedToPostStatus, setAnswerConvertedToPostStatus] = useState(Array(fullAnswer.length).fill(''));
 
   // Ref to the ingredients textarea (not the one mentioned above)
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -455,7 +460,21 @@ const Page = () => {
   }
 
   useEffect(() => {
-    setCopiedStatus(Array(fullAnswer.length).fill(''));
+    if (fullAnswer.length === 0) {
+      setCopiedStatus([]);
+      setAnswerConvertedToPostStatus([]);
+    } 
+    else {
+      setCopiedStatus(prev => [
+        ...prev,
+        ...Array(fullAnswer.length - prev.length).fill('')
+      ]);
+  
+      setAnswerConvertedToPostStatus(prev => [
+        ...prev,
+        ...Array(fullAnswer.length - prev.length).fill('')
+      ]);
+    }
   }, [fullAnswer]);
 
   const cleanAllAnswers = () => {
@@ -466,14 +485,23 @@ const Page = () => {
   };
 
   /**
-   * This function sets the copiedStatus to the copy operation result - 'true' or 'false'
+   * This function sets the status of the operation result - 'true' or 'false' for the specific answer
    * The empty value '' is used as the default/reseted state
    * 
+   * @param operation - indicates the operation being checked - 1 for CopyAnswer and 2 for ConvertAnswerToPost
    * @param operationResult 
    * @param index 
    */
-  const setCopiedStatusTrueOrFalse = (index: number, operationResult: string) => {
-    setCopiedStatus((prevStatus) => {
+  const setOperationStatusTrueOrFalse = (operation: number, index: number, operationResult: string) => {
+    var x = setCopiedStatus;
+
+    switch (operation) {
+      case 2:
+        x = setAnswerConvertedToPostStatus; 
+        break;
+    }
+
+    x((prevStatus) => {
       const newStatus = [...prevStatus];
       newStatus[index] = operationResult;
 
@@ -492,23 +520,66 @@ const Page = () => {
    */
   const copyAnswer = (answer: string, index: number) => {
     navigator.clipboard.writeText(answer).then(() => {
-      setCopiedStatusTrueOrFalse(index, 'false');
+      setOperationStatusTrueOrFalse(1, index, 'true');
 
       setTimeout(() => {
-        setCopiedStatusTrueOrFalse(index, '');
+        setOperationStatusTrueOrFalse(1, index, '');
       }, 2500);
 
     }).catch(() => {
-      setCopiedStatusTrueOrFalse(index, 'false');
+      setOperationStatusTrueOrFalse(1, index, 'false');
 
       setTimeout(() => {      
-        setCopiedStatusTrueOrFalse(index, '');
+        setOperationStatusTrueOrFalse(1, index, '');
       }, 2500);
     });
   };
 
-  const convertAnswerToPost = () => {
-    
+  /**
+   * 
+   * This function allows the user to convert a answer to the post mandatory nutritional information section
+   * 
+   * @param index 
+   */
+  const convertAnswerToPost = (index: number) => {
+    // Using sample request while microservice is not ready
+    const sampleRequestAnswer: requestAnswerDTO = {
+      introductionText: "This is a sample introduction.",
+      energy: { value: (index+1).toString(), unit: "kcal" },
+      protein: { value: (index+2).toString(), unit: "g" },
+      totalFat: { value: (index+3).toString(), unit: "g" },
+      satFat: { value: (index+4).toString(), unit: "g" },
+      transFat: { value: (index+5).toString(), unit: "g" },
+      totalCarbs: { value: (index+6).toString(), unit: "g" },
+      sugars: { value: (index+7).toString(), unit: "g" },
+      fiber: { value: (index+8).toString(), unit: "g" },
+      sodium: { value: (index+9).toString(), unit: "mg" },
+      cholesterol: { value: (index+10).toString(), unit: "mg" },
+      vitamins: { value: "Vitamin A, C, D" },
+      conclusionText: "This is a sample conclusion."
+    };
+
+    try { 
+      setEnergyInputValue(sampleRequestAnswer.energy.value);
+      setProteinInputValue(sampleRequestAnswer.protein.value);
+      setTotalFatInputValue(sampleRequestAnswer.totalFat.value);
+      setSaturatedFatInputValue(sampleRequestAnswer.satFat.value);
+      setTransFatInputValue(sampleRequestAnswer.transFat.value);
+      setTotalCarbsInputValue(sampleRequestAnswer.totalCarbs.value);
+      setSugarsInputValue(sampleRequestAnswer.sugars.value);
+      setFiberInputValue(sampleRequestAnswer.fiber.value);
+      setSodiumInputValue(sampleRequestAnswer.sodium.value);
+      setCholesterolInputValue(sampleRequestAnswer.cholesterol.value);
+      setVitaminsInputValue(sampleRequestAnswer.vitamins.value);
+
+      setOperationStatusTrueOrFalse(2, index, 'true');
+    } catch (error) {
+      setOperationStatusTrueOrFalse(2, index, 'false');
+    } finally {
+      setTimeout(() => {      
+        setOperationStatusTrueOrFalse(2, index, '');
+      }, 2500);
+    }
   };
   
   return (
@@ -519,15 +590,17 @@ const Page = () => {
 
             <div className='flex flex-col gap-[1%] bg-c-light-smoke rounded h-full p-1 w-full sm:w-1/3 min-w-[205px] shadow-md'>
               <div className='flex flex-row gap-1.5 w-full h-[12%] pb-0.5 sm:pb-0'>
-                <div className='bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-1'>
-                  <button type='button' className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full shadow-lg' title='Add Post!' onClick={handlePostConfirmation}>
+                <div className='bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1 shadow-lg'>
+                  {/* <button type='button' className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title='Add Post!' onClick={handlePostConfirmation}>
                     <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden"><IoAddOutline className='mr-[0.25rem] w-5 h-5'/><strong>Post</strong></span>
-                  </button>
+                  </button> */}
+                  <MainBtn label='Post' isDisabled={false} title='Add Post!' disabledTitle='' icon={<MdAdd className='mr-[0.20rem] w-5 h-5'/>} onClick={handlePostConfirmation}/> 
                 </div>
-                <div className='bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-1'>
-                  <button type='button' disabled={!postHasContent} className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:text-c-dark-smoke disabled:hover:bg-c-dark-green rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full shadow-lg' title={`${!postHasContent ? "Disabled. Post has no content." : "Discard Post!"}`} onClick={handlePostDiscard}>
+                <div className={`bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1 ${!postHasContent ? 'shadow bg-c-light-smoke' : 'shadow-lg'}`}>
+                  {/* <button type='button' disabled={!postHasContent} className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title={`${!postHasContent ? "Disabled. Post has no content." : "Discard Post!"}`} onClick={handlePostDiscard}>
                     <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden"><MdDeleteOutline className='mr-[0.25rem]'/><strong>Discard</strong></span>
-                  </button>
+                  </button> */}
+                  <MainBtn label='Discard' isDisabled={!postHasContent} title='Discard Post!' disabledTitle='Disabled. Post has no content.' icon={<MdDeleteOutline className='mr-[0.25rem] w-4 h-4'/>} onClick={handlePostDiscard}/> 
                 </div> 
               </div>
               <div className='w-full h-[87%] bg-c-paper-white rounded p-2.5 pt-[2%] pb-[2%] max-h-[200px] sm:max-h-full'>
@@ -545,11 +618,11 @@ const Page = () => {
                   )}
                 </div>
                 <div className='flex flex-row mt-[1.5%] h-[19%] items-center'>
-                  <button type='button' disabled={selectedImage == null} className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green disabled:text-c-dark-smoke disabled:hover:text-c-dark-smoke rounded text-white p-1 pl-1.5 pr-1.5 ml-0.5 h-1/2 min-h-[30px] shadow-md' title={`${selectedImage == null ? "Disabled. No image selected." : "Remove image!"}`} onClick={handleRemoveImage}>
+                  <button type='button' disabled={selectedImage == null} className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green disabled:bg-white disabled:text-black/40 rounded text-white p-1 pl-1.5 pr-1.5 ml-0.5 h-1/2 min-h-[30px] shadow transition-all duration-250 ease' title={`${selectedImage == null ? "Disabled. No image selected." : "Remove image!"}`} onClick={handleRemoveImage}>
                     <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Remove</strong><LuImageMinus className='ml-[0.25rem]'/></span>
                   </button>
                   <div className='flex flex-auto justify-center items-center w-1/2 h-1/2 ml-1.5'>
-                    <span className='border-b border-c-dark-green text-c-dark-green h-auto w-fit mt-0.5 whitespace-nowrap	overflow-hidden text-ellipsis'>{(imageName == '' || imageName == null) ? 'No image selected' : imageName}</span>
+                    <span className='border-b border-c-dark-green text-c-dark-green h-auto w-fit mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis'>{(imageName == '' || imageName == null) ? 'No image selected' : imageName}</span>
                   </div>
                 </div>
               </div> 
@@ -570,20 +643,20 @@ const Page = () => {
                   <div className='flex flex-col justify-evenly h-1/2 sm:h-full w-full'>
                   <div className='h-auto w-full'>
                       <div className='min-h-[35px]'>
-                        <CustomInput title='Energy' placeholder='ex. 286' isDisabled={true} topic='Energy' hasUnit={true} unit='kcal' inSequence={false}/>
+                        <CustomInput value={energyInputValue} title='Energy' placeholder='ex. 286' isDisabled={true} topic='Energy' hasUnit={true} unit='kcal' inSequence={false}/>
                       </div>
                     </div>
                     <div className='h-auto w-full'>
                       <div className='min-h-[35px]'>
-                        <CustomInput title='Protein' placeholder='ex. 34' isDisabled={true} topic='Protein' hasUnit={true} unit='g' inSequence={false}/>
+                        <CustomInput value={proteinInputValue} title='Protein' placeholder='ex. 34' isDisabled={true} topic='Protein' hasUnit={true} unit='g' inSequence={false}/>
                       </div>
                     </div>
                     <div className='h-auto w-full'>
                       <div className='min-h-[35px]'>
-                        <CustomInput title='Total Fat' placeholder='ex. 4.6' isDisabled={true} topic='Total Fat' hasUnit={true} unit='g' inSequence={true}/>
+                        <CustomInput value={totalFatInputValue} title='Total Fat' placeholder='ex. 4.6' isDisabled={true} topic='Total Fat' hasUnit={true} unit='g' inSequence={true}/>
                         <div className='flex flex-row sm:flex-col'>
-                          <CustomInput title='Sat. Fat' placeholder='ex. 1.5' isDisabled={true} topic='Sat. Fat' hasUnit={true} unit='g' inSequence={true}/>
-                          <CustomInput title='Trans Fat' placeholder='ex. 0' isDisabled={true} topic='Trans Fat' hasUnit={true} unit='g' inSequence={false}/>
+                          <CustomInput value={saturatedFatInputValue} title='Sat. Fat' placeholder='ex. 1.5' isDisabled={true} topic='Sat. Fat' hasUnit={true} unit='g' inSequence={true}/>
+                          <CustomInput value={transFatInputValue} title='Trans Fat' placeholder='ex. 0' isDisabled={true} topic='Trans Fat' hasUnit={true} unit='g' inSequence={false}/>
                         </div> 
                       </div>
                     </div>                   
@@ -591,22 +664,22 @@ const Page = () => {
                   <div className='flex flex-col justify-evenly h-1/2 sm:h-full w-full'>
                     <div className='h-auto w-full'>
                       <div className='min-h-[35px]'>
-                        <CustomInput title='Carbs' placeholder='ex. 25' isDisabled={true} topic='Total Carbs' hasUnit={true} unit='g' inSequence={true}/>
+                        <CustomInput value={totalCarbsInputValue} title='Carbs' placeholder='ex. 25' isDisabled={true} topic='Total Carbs' hasUnit={true} unit='g' inSequence={true}/>
                         <div className='flex flex-row sm:flex-col'>
-                          <CustomInput title='Sugars' placeholder='ex. 1.4' isDisabled={true} topic='Sugars' hasUnit={true} unit='g' inSequence={true}/>
-                          <CustomInput title='Fiber' placeholder='ex. 2' isDisabled={true} topic='Fiber' hasUnit={true} unit='g' inSequence={false}/>
+                          <CustomInput value={sugarsInputValue} title='Sugars' placeholder='ex. 1.4' isDisabled={true} topic='Sugars' hasUnit={true} unit='g' inSequence={true}/>
+                          <CustomInput value={fiberInputValue} title='Fiber' placeholder='ex. 2' isDisabled={true} topic='Fiber' hasUnit={true} unit='g' inSequence={false}/>
                         </div>           
                       </div>
                     </div>
                     <div className='h-auto w-full'>
                       <div className='min-h-[35px]'>
-                        <CustomInput title='Sodium' placeholder='ex. 76' isDisabled={true} topic='Sodium' hasUnit={true} unit='mg' inSequence={false}/>
+                        <CustomInput value={sodiumInputValue} title='Sodium' placeholder='ex. 76' isDisabled={true} topic='Sodium' hasUnit={true} unit='mg' inSequence={false}/>
                       </div>
                     </div>
                     <div className='h-auto w-full'>
                       <div className='min-h-[35px] flex flex-row sm:flex-col'>
-                        <CustomInput title='Cholesterol' placeholder='ex. 85' isDisabled={true} topic='Chol.' hasUnit={true} unit='mg' inSequence={true}/>
-                        <CustomInput title='Vitamins' placeholder='ex. A and B' isDisabled={true} topic='Vitamins' hasUnit={false} unit='null' inSequence={false}/>
+                        <CustomInput value={cholesterolInputValue} title='Cholesterol' placeholder='ex. 85' isDisabled={true} topic='Chol.' hasUnit={true} unit='mg' inSequence={true}/>
+                        <CustomInput value={vitaminsInputValue} title='Vitamins' placeholder='ex. A and B' isDisabled={true} topic='Vitamins' hasUnit={false} unit='null' inSequence={false}/>
                       </div>
                     </div>
                   </div>
@@ -625,7 +698,7 @@ const Page = () => {
       </div>
       <div className="page-ai-calculator-section" onMouseEnter={handleRobotIconAnimationOnMouseEnter} onMouseLeave={handleRobotIconAnimationOnMouseLeave}>
         <span className='ai-calculator-header'>
-          Get <b>better results</b> through your meals and preparation using <strong>AI</strong>
+          Get <b>better results</b> through your meals and preparation using <strong>AI!</strong>
         </span>
         <div className='ai-calculator-info'>
           <div>
@@ -695,9 +768,12 @@ const Page = () => {
             <textarea ref={textareaRef} placeholder='ex. 1 Banana, 1 egg ...' className='bg-c-paper-white text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded mt-1 p-1 pl-1.5 pr-1.5 w-full h-8 min-h-8 !max-h-[115px]' value={ingredientsTextAreaValue} onChange={handleTextAreaValueChange}></textarea>
           </div>
           <div>
-            <button type='button' className='bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 ml-1 mt-0.5 w-fit transition-all duration-250 ease shadow-md' title='Submit!' onClick={handleRequestConfirmation}>
-              <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Confirm</strong><IoCheckmark className='ml-[0.25rem] mt-px'/></span>
-            </button>
+            <div className='ml-1'>
+              {/* <button type='button' className='max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease shadow-md' title='Submit!' onClick={handleRequestConfirmation}>
+                <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Confirm</strong><IoCheckmark className='ml-[0.25rem] mt-px'/></span>
+              </button> */}
+              <MainBtn label='Confirm' isDisabled={false} title='Confirm Request!' disabledTitle='Disabled. Section not configured.' icon={<IoCheckmark className='mr-[0.25rem] w-5 h-5 mt-px'/>} onClick={handleRequestConfirmation}/> 
+            </div>
           </div>
           <div className="ml-1 flex-1 mb-4 h-full min-h-32">
             <label className="block mt-1.5 mb-1.5 text-sm text-white-900 pt-px bg-white/50"></label>
@@ -737,14 +813,21 @@ const Page = () => {
                               {copiedStatus[index] == '' ? (
                                 <FaRegCopy className='w-4 h-4'/>
                               ) : (copiedStatus[index] == 'true' ? (
-                                  <IoCheckmark className={`w-4 h-4 ${copiedStatus[index] == "true" ? 'opacity-1' : 'opacity-0'}`}/>
+                                  <IoCheckmark className='w-4 h-4'/>
                                 ) : (
-                                  <FaXmark className={`w-4 h-4 text-red-400 ${copiedStatus[index] == "false" ? 'opacity-1' : 'opacity-0'}`}/>
+                                  <FaXmark className='w-4 h-4 text-red-400'/>
                                 )
                               )}
                             </button>
-                            <button type='button' className='text-c-dark-green hover:text-c-lemon-green hover:bg-c-dark-green focus:text-c-lemon-green focus:bg-c-dark-green rounded p-1 w-min transition-all duration-250 ease' title='Convert to Post' onClick={() => convertAnswerToPost()}>
-                              <MdOutlineAutoFixHigh className='w-4 h-4' />
+                            <button type='button' className='text-c-dark-green hover:text-c-lemon-green hover:bg-c-dark-green focus:text-c-lemon-green focus:bg-c-dark-green rounded p-1 w-min transition-opacity duration-250 ease' title='Convert to Post' onClick={() => convertAnswerToPost(index)}>
+                              {answerConvertedToPostStatus[index] == '' ? (
+                                <MdOutlineAutoFixHigh className='w-4 h-4' />
+                              ) : (answerConvertedToPostStatus[index] == 'true' ? (
+                                <IoCheckmark className='w-4 h-4'/>
+                              ) : (
+                                <FaXmark className='w-4 h-4 text-red-400'/>
+                              )
+                            )}
                             </button>
                           </div>
                         ) : null}
