@@ -19,7 +19,7 @@ interface MainBtnProps {
  * @param icon - the icon element to use, and respective css properties (using tailwind)
  * @param onClick - function to notify parent of button click and do something
  * 
- * @returns custom input
+ * @returns custom button
  */
 const MainBtn = ({ label, isDisabled, title, disabledTitle, icon, onClick }: MainBtnProps) => { 
   
