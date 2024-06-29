@@ -41,11 +41,12 @@ const config: Config = {
         'c-fail-red': '#EF5350',
 
         'c-paper-white': '#FDFDFD',
+        'c-shadow-black': '#00000040',
       },
       screens: {
         'sm': '618px',
         'md': '828px',
-      }
+      },
     },
   },
   plugins: [],
