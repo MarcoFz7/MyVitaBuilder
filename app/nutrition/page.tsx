@@ -7,6 +7,7 @@ import CustomTextArea from '../components/customTextArea/customTextArea';
 import CustomMessage from '../components/customMessage/customMessage';
 
 import MainBtn from '../components/buttons/mainBtn';
+import SecondaryBtn from '../components/buttons/secondaryBtn';
 
 import { requestAnswerDTO } from '../components/models/requestAnswerDTO';
 
@@ -15,7 +16,7 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { FaDrumstickBite, FaUser, FaReceipt, FaRegCopy } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
-import { IoScanSharp, IoCheckmark } from "react-icons/io5";
+import { IoScanSharp, IoCheckmark, IoScan } from "react-icons/io5";
 import { RiRobot2Fill, RiInformation2Fill } from "react-icons/ri";
 import { MdOutlineAutoFixHigh, MdDeleteSweep, MdDeleteOutline, MdAdd } from "react-icons/md";
 import { LuImageMinus, LuImagePlus } from "react-icons/lu";
@@ -274,7 +275,7 @@ const Page = () => {
   const [selectedDietaryOption, setSelectedDietaryOption] = useState<Option[]>([]);
   const [selectedCalorieIntakeOption, setSelectedCalorieIntakeOption] = useState<Option[]>([]);
   const [selectedAllergiesAndIntoleranceOptions, setSelectedAllergiesAndIntoleranceOptions] = useState<Option[]>([]);
-  const [ingredientsTextAreaValue, setIngredientsTextAreaValue] = useState<string>("");
+  const [ingredientsTextAreaValue, setIngredientsTextAreaValue] = useState<string>('');
   
   /*
    *
@@ -282,6 +283,38 @@ const Page = () => {
    * Related to AI generated answers text area and other textarea content: Names are self explanatory
    * 
    */
+  const [isAnswerRequestValid, setIsAnswerRequestValid] = useState<boolean>(false);
+
+  const aiSectionFieldsToValidate = {
+    arrayFields: [selectedMealObjectiveOptions, selectedDietaryOption, selectedCalorieIntakeOption, selectedAllergiesAndIntoleranceOptions],
+    stringFields: [ingredientsTextAreaValue]
+  };
+
+
+  /**
+   * UseEffect to check if the AI section already has all the necessary fields
+   */ 
+  useEffect(() => {
+    
+    for (const fieldValue of aiSectionFieldsToValidate.arrayFields) {
+      if (fieldValue.length === 0) {
+        setIsAnswerRequestValid(false);
+        return;
+      } 
+    }
+
+    for (const fieldValue of aiSectionFieldsToValidate.stringFields) {
+      if (fieldValue == '') {
+        setIsAnswerRequestValid(false);
+        return;
+      } 
+    }
+
+    setIsAnswerRequestValid(true);
+
+  }, [selectedMealObjectiveOptions, selectedDietaryOption, selectedCalorieIntakeOption, selectedAllergiesAndIntoleranceOptions, ingredientsTextAreaValue]);
+
+
   const [isRobotRotated, setIsRobotRotated] = useState<boolean>(false);
   const [isRobotTextBoxAnimated, setIsRobotTextBoxAnimated] = useState<boolean>(false);
   const [robotTextBoxText, setRobotTextBoxText] = useState<string>('');
@@ -590,13 +623,13 @@ const Page = () => {
 
             <div className='flex flex-col gap-[1%] bg-c-light-smoke rounded h-full p-1 w-full sm:w-1/3 min-w-[205px] shadow-md'>
               <div className='flex flex-row gap-1.5 w-full h-[12%] pb-0.5 sm:pb-0'>
-                <div className='bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1 shadow-lg'>
+                <div className='bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1 shadow-md'>
                   {/* <button type='button' className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title='Add Post!' onClick={handlePostConfirmation}>
                     <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden"><IoAddOutline className='mr-[0.25rem] w-5 h-5'/><strong>Post</strong></span>
                   </button> */}
                   <MainBtn label='Post' isDisabled={false} title='Add Post!' disabledTitle='' icon={<MdAdd className='mr-[0.20rem] w-5 h-5'/>} onClick={handlePostConfirmation}/> 
                 </div>
-                <div className={`bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1 ${!postHasContent ? 'shadow bg-c-light-smoke' : 'shadow-lg'}`}>
+                <div className={`bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1 shadow-md ${!postHasContent ? 'bg-c-light-smoke' : ''}`}>
                   {/* <button type='button' disabled={!postHasContent} className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title={`${!postHasContent ? "Disabled. Post has no content." : "Discard Post!"}`} onClick={handlePostDiscard}>
                     <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden"><MdDeleteOutline className='mr-[0.25rem]'/><strong>Discard</strong></span>
                   </button> */}
@@ -618,9 +651,12 @@ const Page = () => {
                   )}
                 </div>
                 <div className='flex flex-row mt-[1.5%] h-[19%] items-center'>
-                  <button type='button' disabled={selectedImage == null} className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green disabled:bg-white disabled:text-black/40 rounded text-white p-1 pl-1.5 pr-1.5 ml-0.5 h-1/2 min-h-[30px] shadow transition-all duration-250 ease' title={`${selectedImage == null ? "Disabled. No image selected." : "Remove image!"}`} onClick={handleRemoveImage}>
+                  {/* <button type='button' disabled={selectedImage == null} className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green disabled:bg-white disabled:text-black/40 rounded text-white p-1 pl-1.5 pr-1.5 ml-0.5 h-1/2 min-h-[30px] disabled:shadow shadow-md transition-all duration-250 ease' title={`${selectedImage == null ? "Disabled. No image selected." : "Remove image!"}`} onClick={handleRemoveImage}>
                     <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Remove</strong><LuImageMinus className='ml-[0.25rem]'/></span>
-                  </button>
+                  </button> */}
+                  <div className='bg-white text-white'>
+                    <SecondaryBtn label='Remove' isDisabled={selectedImage == null} title='Remove image!' disabledTitle='Disabled. No image selected.' icon={<LuImageMinus className='ml-[0.25rem] w-4 h-4'/>} onClick={handleRemoveImage}/> 
+                  </div>
                   <div className='flex flex-auto justify-center items-center w-1/2 h-1/2 ml-1.5'>
                     <span className='border-b border-c-dark-green text-c-dark-green h-auto w-fit mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis'>{(imageName == '' || imageName == null) ? 'No image selected' : imageName}</span>
                   </div>
@@ -761,18 +797,19 @@ const Page = () => {
             <label className="block mt-1.5 mb-1.5 text-sm text-white-900 pt-px"></label>
             <div className='flex items-center justify-between w-full'>
               <span className="flex items-center mb-[0.1rem] text-c-lemon-green whitespace-nowrap overflow-hidden mt-1 ml-0"><FaReceipt className='text-c-lemon-green mb-px inline-block mr-[0.375rem]'/><strong className='truncate'>Enter ingredients or...</strong></span>
-              <button type='button' className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green rounded p-1 pl-1.5 pr-1.5 ml-1.5 shadow-md' title='Photograph Ingredients' onClick={setIngredientsTextArea}>
+              {/*  <button type='button' className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green rounded p-1 pl-1.5 pr-1.5 ml-1.5 shadow-md' title='Photograph Ingredients' onClick={setIngredientsTextArea}>
                 <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Scan</strong><IoScanSharp className='ml-[0.25rem] mt-px'/></span>
-              </button>
+              </button> */}
+              <SecondaryBtn label='Scan' isDisabled={false} title='Photograph Ingredients!' disabledTitle='' icon={<IoScanSharp className='ml-[0.25rem]'/>} onClick={setIngredientsTextArea}/> 
             </div>
-            <textarea ref={textareaRef} placeholder='ex. 1 Banana, 1 egg ...' className='bg-c-paper-white text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded mt-1 p-1 pl-1.5 pr-1.5 w-full h-8 min-h-8 !max-h-[115px]' value={ingredientsTextAreaValue} onChange={handleTextAreaValueChange}></textarea>
+            <textarea ref={textareaRef} placeholder='ex. 1 Banana, 1 egg ...' className='bg-c-paper-white text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded mt-1 p-1 pl-1.5 pr-1.5 w-full h-8 min-h-8 !max-h-[52px] sm:!max-h-[115px]' value={ingredientsTextAreaValue} onChange={handleTextAreaValueChange}></textarea>
           </div>
           <div>
-            <div className='ml-1'>
+            <div className='ml-1 rounded shadow-md'>
               {/* <button type='button' className='max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease shadow-md' title='Submit!' onClick={handleRequestConfirmation}>
                 <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Confirm</strong><IoCheckmark className='ml-[0.25rem] mt-px'/></span>
               </button> */}
-              <MainBtn label='Confirm' isDisabled={false} title='Confirm Request!' disabledTitle='Disabled. Section not configured.' icon={<IoCheckmark className='mr-[0.25rem] w-5 h-5 mt-px'/>} onClick={handleRequestConfirmation}/> 
+              <MainBtn label='Confirm' isDisabled={isAnswerRequestValid} title='Confirm Request!' disabledTitle='Disabled. Section not configured.' icon={<IoCheckmark className='mr-[0.25rem] w-5 h-5 mt-px'/>} onClick={handleRequestConfirmation}/> 
             </div>
           </div>
           <div className="ml-1 flex-1 mb-4 h-full min-h-32">
