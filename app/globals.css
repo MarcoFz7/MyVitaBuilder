@@ -7,7 +7,6 @@
   --min-width: 280px !important;
   min-height: var(--min-height);
   min-width: var(--min-width);
-  
 
   /* Light scheme */
   --light-green-rgb: 190, 217, 50;
@@ -19,7 +18,7 @@
   --light-smoke-rgb: 245, 236, 229;
   --dark-smoke-rgb: 176, 172, 162;
   --lemon-green-rgb: 191, 244, 123;
-  
+
   --black-rgb: 1, 1, 1;
   --white-rgb: 255, 255, 255;
   --paper-white-rgb: 253, 253, 253;
@@ -43,7 +42,6 @@ body {
   color: rgb(var(--foreground-rgb));
 }
 
-
 ::-webkit-scrollbar {
   width: 0.25rem;
   height: 0.25rem;
@@ -58,5 +56,3 @@ body {
   background-color: gray;
   border-radius: 0.125rem;
 }
-
-
