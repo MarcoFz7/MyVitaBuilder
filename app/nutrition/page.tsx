@@ -8,6 +8,7 @@ import CustomMessage from '../components/customMessage/customMessage';
 
 import MainBtn from '../components/buttons/mainBtn';
 import SecondaryBtn from '../components/buttons/secondaryBtn';
+import TertiaryBtn from '../components/buttons/tertiaryBtn';
 
 import { requestAnswerDTO } from '../components/models/requestAnswerDTO';
 
@@ -15,8 +16,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { FaDrumstickBite, FaUser, FaReceipt, FaRegCopy } from "react-icons/fa";
-import { FaXmark } from "react-icons/fa6";
-import { IoScanSharp, IoCheckmark, IoScan } from "react-icons/io5";
+import { IoScanSharp, IoCheckmark } from "react-icons/io5";
 import { RiRobot2Fill, RiInformation2Fill } from "react-icons/ri";
 import { MdOutlineAutoFixHigh, MdDeleteSweep, MdDeleteOutline, MdAdd } from "react-icons/md";
 import { LuImageMinus, LuImagePlus } from "react-icons/lu";
@@ -624,16 +624,10 @@ const Page = () => {
             <div className='flex flex-col gap-[1%] bg-c-light-smoke rounded h-full p-1 w-full sm:w-1/3 min-w-[205px] shadow-md'>
               <div className='flex flex-row gap-1.5 w-full h-[12%] pb-0.5 sm:pb-0'>
                 <div className='bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1 shadow-md'>
-                  {/* <button type='button' className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title='Add Post!' onClick={handlePostConfirmation}>
-                    <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden"><IoAddOutline className='mr-[0.25rem] w-5 h-5'/><strong>Post</strong></span>
-                  </button> */}
-                  <MainBtn label='Post' isDisabled={false} title='Add Post!' disabledTitle='' icon={<MdAdd className='mr-[0.20rem] w-5 h-5'/>} onClick={handlePostConfirmation}/> 
+                  <MainBtn label='Post' isDisabled={false} title='Add Post!' disabledTitle='' icon={<MdAdd className='mr-[0.20rem] w-5 h-5'/>} shadow={true} onClick={handlePostConfirmation}/> 
                 </div>
                 <div className={`bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1 shadow-md ${!postHasContent ? 'bg-c-light-smoke' : ''}`}>
-                  {/* <button type='button' disabled={!postHasContent} className='flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full' title={`${!postHasContent ? "Disabled. Post has no content." : "Discard Post!"}`} onClick={handlePostDiscard}>
-                    <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden"><MdDeleteOutline className='mr-[0.25rem]'/><strong>Discard</strong></span>
-                  </button> */}
-                  <MainBtn label='Discard' isDisabled={!postHasContent} title='Discard Post!' disabledTitle='Disabled. Post has no content.' icon={<MdDeleteOutline className='mr-[0.25rem] w-4 h-4'/>} onClick={handlePostDiscard}/> 
+                  <MainBtn label='Discard' isDisabled={!postHasContent} title='Discard Post!' disabledTitle='Disabled. Post has no content.' icon={<MdDeleteOutline className='mr-[0.25rem] w-4 h-4'/>} shadow={false} onClick={handlePostDiscard}/> 
                 </div> 
               </div>
               <div className='w-full h-[87%] bg-c-paper-white rounded p-2.5 pt-[2%] pb-[2%] max-h-[200px] sm:max-h-full'>
@@ -644,21 +638,17 @@ const Page = () => {
                       <img src={selectedImage} alt="Selected" className="max-w-full max-h-full object-contain opacity-100"/>
                     </div>
                   )
-                  : (
-                    <button type='button' className='text-c-dark-green hover:text-c-lemon-green hover:bg-c-dark-green focus:text-c-lemon-green focus:bg-c-dark-green rounded p-1 w-min transition-all duration-250 ease' title='Add image!' onClick={handleAddImageToPost}>
-                      <LuImagePlus className='w-6 h-6' />
-                    </button>
+                  : 
+                  (
+                    <TertiaryBtn operationStatus='' btnIcon={<LuImagePlus className='w-6 h-6'/>} isDisabled={false} inSequence={false} title='Add image!' onClick={handleAddImageToPost}/>                                   
                   )}
                 </div>
                 <div className='flex flex-row mt-[1.5%] h-[19%] items-center'>
-                  {/* <button type='button' disabled={selectedImage == null} className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green disabled:bg-white disabled:text-black/40 rounded text-white p-1 pl-1.5 pr-1.5 ml-0.5 h-1/2 min-h-[30px] disabled:shadow shadow-md transition-all duration-250 ease' title={`${selectedImage == null ? "Disabled. No image selected." : "Remove image!"}`} onClick={handleRemoveImage}>
-                    <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Remove</strong><LuImageMinus className='ml-[0.25rem]'/></span>
-                  </button> */}
                   <div className='bg-white text-white'>
                     <SecondaryBtn label='Remove' isDisabled={selectedImage == null} title='Remove image!' disabledTitle='Disabled. No image selected.' icon={<LuImageMinus className='ml-[0.25rem] w-4 h-4'/>} onClick={handleRemoveImage}/> 
                   </div>
                   <div className='flex flex-auto justify-center items-center w-1/2 h-1/2 ml-1.5'>
-                    <span className='border-b border-c-dark-green text-c-dark-green h-auto w-fit mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis'>{(imageName == '' || imageName == null) ? 'No image selected' : imageName}</span>
+                    <span className='border-b border-c-dark-green text-c-dark-green h-auto w-fit mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis mr-1.5 md:mr-2.5'>{(imageName == '' || imageName == null) ? 'No image selected' : imageName}</span>
                   </div>
                 </div>
               </div> 
@@ -797,19 +787,13 @@ const Page = () => {
             <label className="block mt-1.5 mb-1.5 text-sm text-white-900 pt-px"></label>
             <div className='flex items-center justify-between w-full'>
               <span className="flex items-center mb-[0.1rem] text-c-lemon-green whitespace-nowrap overflow-hidden mt-1 ml-0"><FaReceipt className='text-c-lemon-green mb-px inline-block mr-[0.375rem]'/><strong className='truncate'>Enter ingredients or...</strong></span>
-              {/*  <button type='button' className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green rounded p-1 pl-1.5 pr-1.5 ml-1.5 shadow-md' title='Photograph Ingredients' onClick={setIngredientsTextArea}>
-                <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Scan</strong><IoScanSharp className='ml-[0.25rem] mt-px'/></span>
-              </button> */}
-              <SecondaryBtn label='Scan' isDisabled={false} title='Photograph Ingredients!' disabledTitle='' icon={<IoScanSharp className='ml-[0.25rem]'/>} onClick={setIngredientsTextArea}/> 
+              <SecondaryBtn label='Scan' isDisabled={false} title='Photograph Ingredients!' disabledTitle='' icon={<IoScanSharp className='ml-[0.25rem] mt-px'/>} onClick={setIngredientsTextArea}/> 
             </div>
             <textarea ref={textareaRef} placeholder='ex. 1 Banana, 1 egg ...' className='bg-c-paper-white text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded mt-1 p-1 pl-1.5 pr-1.5 w-full h-8 min-h-8 !max-h-[52px] sm:!max-h-[115px]' value={ingredientsTextAreaValue} onChange={handleTextAreaValueChange}></textarea>
           </div>
           <div>
-            <div className='ml-1 rounded shadow-md'>
-              {/* <button type='button' className='max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease shadow-md' title='Submit!' onClick={handleRequestConfirmation}>
-                <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Confirm</strong><IoCheckmark className='ml-[0.25rem] mt-px'/></span>
-              </button> */}
-              <MainBtn label='Confirm' isDisabled={isAnswerRequestValid} title='Confirm Request!' disabledTitle='Disabled. Section not configured.' icon={<IoCheckmark className='mr-[0.25rem] w-5 h-5 mt-px'/>} onClick={handleRequestConfirmation}/> 
+            <div className='ml-1 rounded shadow-md'>            
+              <MainBtn label='Confirm' isDisabled={!isAnswerRequestValid} title='Confirm Request!' disabledTitle='Disabled. Section not configured.' icon={<IoCheckmark className='mr-[0.25rem] w-5 h-5 mt-px'/>} shadow={true} onClick={handleRequestConfirmation}/> 
             </div>
           </div>
           <div className="ml-1 flex-1 mb-4 h-full min-h-32">
@@ -826,10 +810,8 @@ const Page = () => {
                 </div> 
                 ) : (
                   <>
-                    <div className={`flex justify-end sticky top-0 w-full h-min transition-all duration-250 ease ${fullAnswer.length > 3 ? 'opacity-1 z-10' : 'opacity-0 -z-10'}`}>
-                      <button type='button' className='bg-c-dark-green hover:text-c-lemon-green rounded p-1 pl-1.5 pr-1.5 w-min transition-all duration-250 ease' title='Clean all answers' onClick={cleanAllAnswers}>
-                        <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong>Clean</strong><MdDeleteSweep className='w-4 h-4 ml-[0.25rem] mt-0.5'/></span>
-                      </button>  
+                    <div className={`flex justify-end sticky top-0 w-full h-min ${fullAnswer.length > 3 ? 'opacity-1 z-10' : 'opacity-0 -z-10'}`}>                   
+                      <SecondaryBtn label='Clean' isDisabled={false} title='Clean all answers!' disabledTitle='' icon={<MdDeleteSweep className='w-4 h-4 ml-[0.25rem] mt-0.5'/>} onClick={cleanAllAnswers}/>   
                     </div>                    
                     {fullAnswer.map((answer, index) => (
                       <div key={`${answer}-${index}`} className='flex flex-col pt-0.5 transition-all duration-250 ease'>
@@ -845,27 +827,9 @@ const Page = () => {
                           )}
                         </div>
                         {fullAnswer.length - index < 4 ? (
-                          <div key={index} className='flex flex-row justify-center z-20'>
-                            <button type='button' className='text-c-dark-green hover:text-c-lemon-green hover:bg-c-dark-green focus:text-c-lemon-green focus:bg-c-dark-green rounded p-1 w-min mr-1' title='Copy Response' onClick={() => { numberOfAnswers != (index + 1) ? copyAnswer(answer, index) : copyAnswer(displayedAnswer, index)}}>                                               
-                              {copiedStatus[index] == '' ? (
-                                <FaRegCopy className='w-4 h-4'/>
-                              ) : (copiedStatus[index] == 'true' ? (
-                                  <IoCheckmark className='w-4 h-4'/>
-                                ) : (
-                                  <FaXmark className='w-4 h-4 text-red-400'/>
-                                )
-                              )}
-                            </button>
-                            <button type='button' className='text-c-dark-green hover:text-c-lemon-green hover:bg-c-dark-green focus:text-c-lemon-green focus:bg-c-dark-green rounded p-1 w-min transition-opacity duration-250 ease' title='Convert to Post' onClick={() => convertAnswerToPost(index)}>
-                              {answerConvertedToPostStatus[index] == '' ? (
-                                <MdOutlineAutoFixHigh className='w-4 h-4' />
-                              ) : (answerConvertedToPostStatus[index] == 'true' ? (
-                                <IoCheckmark className='w-4 h-4'/>
-                              ) : (
-                                <FaXmark className='w-4 h-4 text-red-400'/>
-                              )
-                            )}
-                            </button>
+                          <div key={index} className='flex flex-row justify-center z-20'>                           
+                            <TertiaryBtn operationStatus={copiedStatus[index]} btnIcon={<FaRegCopy className='w-4 h-4'/>} isDisabled={false} inSequence={true} title='Copy Answer!' onClick={() => { numberOfAnswers != (index + 1) ? copyAnswer(answer, index) : copyAnswer(displayedAnswer, index)}}/>                        
+                            <TertiaryBtn operationStatus={answerConvertedToPostStatus[index]} btnIcon={<MdOutlineAutoFixHigh className='w-4 h-4'/>} isDisabled={false} inSequence={false} title='Convert to Post!' onClick={() => convertAnswerToPost(index)}/>
                           </div>
                         ) : null}
                       </div>   
