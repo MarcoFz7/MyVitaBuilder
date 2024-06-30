@@ -1,4 +1,4 @@
-import { LoggerConfigs } from "@/app/configs";
+import { loggerConfigs } from "@/app/configs";
 
 export class LoggerHelper {
   private module: string;
@@ -8,7 +8,7 @@ export class LoggerHelper {
   }
 
   error = (...args: any[]) => {
-    if (LoggerConfigs.error) {
+    if (loggerConfigs.error) {
       const now = new Date();
 
       console.error(`${now.toISOString()} :: ${this.module}`, args);
@@ -16,7 +16,7 @@ export class LoggerHelper {
   };
 
   log = (...args: any[]) => {
-    if (LoggerConfigs.log) {
+    if (loggerConfigs.log) {
       const now = new Date();
 
       console.log(`${now.toISOString()} :: ${this.module}`, args);

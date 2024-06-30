@@ -1,4 +1,4 @@
-import { ApiConfig } from "@/app/configs";
+import { apiConfig } from "@/app/configs";
 import React from "react";
 import { useDidMount } from "../useDidMount";
 import { useForceUpdate } from "../useForceUpdate";
@@ -48,7 +48,7 @@ export const useFetch = <TInput, TOutput>({
             data.current.status = "fetching";
             forceUpdate;
 
-            const res = await fetch(`${ApiConfig.baseUrl}/${path}`, {
+            const res = await fetch(`${apiConfig.baseUrl}/${path}`, {
               body: JSON.stringify(passedBody),
               method,
             });
@@ -87,7 +87,7 @@ export const useFetch = <TInput, TOutput>({
     }
   });
 
-  logger.log(data.current);
+  logger.log({ res: data.current, path, apiConfig: apiConfig });
 
   const ret = data.current;
 
