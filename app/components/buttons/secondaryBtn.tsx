@@ -21,7 +21,7 @@ interface SecondaryBtnProps {
  * @param icon - the icon element to use, and respective css properties (using tailwind)
  * @param onClick - function to notify parent of button click and do something
  * 
- * @returns custom button
+ * @returns custom secondary button
  */
 const SecondaryBtn = ({ label, isDisabled, title, disabledTitle, icon, onClick }: SecondaryBtnProps) => { 
   
