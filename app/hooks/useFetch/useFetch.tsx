@@ -6,7 +6,7 @@ import { useLogger } from "../useLogger";
 
 type FetchInputDto<TInput, TOutput> = {
   path: string;
-  method?: string;
+  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   body?: TInput;
   options?: {
     callOnMount?: boolean;
@@ -16,8 +16,12 @@ type FetchInputDto<TInput, TOutput> = {
 
 type FetchOutputDto<TInput, TOutput> = {
   response?: TOutput;
-  status: "none" | "fetching" | "success" | "error";
+  error?: any;
+  status: "none" | "fetching" | "success" | "failed";
   timestamp?: number;
+  retry?: () => void;
+  fetch: (body?: TInput) => void;
+  isFetching: boolean;
 };
 
 export const useFetch = <TInput, TOutput>({
@@ -30,6 +34,8 @@ export const useFetch = <TInput, TOutput>({
   const { callOnMount = false, enable = true } = options;
   const data = React.useRef<FetchOutputDto<TInput, TOutput>>({
     status: "none",
+    fetch: () => {},
+    isFetching: false,
   });
   const forceUpdate = useForceUpdate();
   const retry = React.useRef<() => void>();
@@ -49,11 +55,18 @@ export const useFetch = <TInput, TOutput>({
 
             const response = await res.json();
 
-            data.current.status = "success";
-            data.current.response = response;
+            if (response.status === "success") {
+              data.current.status = "success";
+              data.current.response = response.data;
+            } else {
+              data.current.status = "failed";
+              data.current.response = undefined;
+              data.current.error = response.error;
+            }
           } catch (err) {
-            data.current.status = "error";
+            data.current.status = "failed";
             data.current.response = undefined;
+            data.current.error = err;
 
             logger.error(err);
           } finally {
@@ -74,16 +87,23 @@ export const useFetch = <TInput, TOutput>({
     }
   });
 
-  logger.log("useFetch hook initialized");
+  logger.log(data.current);
 
   const ret = data.current;
 
   Object.defineProperty(ret, "fetch", {
     value: handleCallFetch,
+    writable: true,
   });
 
   Object.defineProperty(ret, "retry", {
     value: retry.current,
+    writable: true,
+  });
+
+  Object.defineProperty(ret, "isFetching", {
+    value: ret.status === "fetching",
+    writable: true,
   });
 
   return ret;

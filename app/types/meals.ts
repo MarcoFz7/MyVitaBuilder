@@ -13,7 +13,8 @@ export type TMealGenerateInputDto = {
     dietary: string[];
     caloricIntake: string;
   };
-  ingredients: string[];
+  ingredients: string;
+  language?: string;
 };
 
 export type TMealOutputDTO = {

@@ -1,13 +1,14 @@
+import { LoggerHelper } from "@/app/helpers";
 import { openai } from "@/app/libs";
 import { TMealGenerateInputDto } from "@/app/types";
 import { z } from "zod";
 
 const prepareInputMessageForAI = ({
   ingredients,
-  language,
+  language = "português",
   mealInformation,
   personalInformation,
-}: TMealGenerateInputDto & { language: string }) => {
+}: TMealGenerateInputDto) => {
   const messages = [
     {
       role: "user",
@@ -41,7 +42,7 @@ const prepareInputMessageForAI = ({
     },
     {
       role: "user",
-      content: `Ingredientes: ${ingredients.join(", ")}`,
+      content: `Ingredientes: ${ingredients}`,
     },
     {
       role: "user",
@@ -70,8 +71,8 @@ const inputSchema = z.object({
     dietary: z.array(z.string()),
     caloricIntake: z.string(),
   }),
-  ingredients: z.array(z.string()),
-  language: z.string(),
+  ingredients: z.string(),
+  language: z.string().optional(),
 });
 
 const outputSchema = z.object({
@@ -95,6 +96,9 @@ const outputSchema = z.object({
 
 export async function POST(request: Request) {
   const input = await request.json();
+  const logger = new LoggerHelper("POST meals/generate");
+
+  logger.log("request", JSON.stringify(input));
 
   try {
     const messages = prepareInputMessageForAI(inputSchema.parse(input));
@@ -106,7 +110,10 @@ export async function POST(request: Request) {
       // temperature: 1.5,
     });
 
+    logger.log("response", JSON.stringify(aiRes));
+
     const response = aiRes.choices[0].message.content;
+
     const data = response ? JSON.parse(response) : undefined;
 
     outputSchema.parse(data);

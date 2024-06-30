@@ -9,8 +9,6 @@ import CustomTextArea from "../components/customTextArea/customTextArea";
 import MainBtn from "../components/buttons/mainBtn";
 import SecondaryBtn from "../components/buttons/secondaryBtn";
 
-import { requestAnswerDTO } from "../components/models/requestAnswerDTO";
-
 import React, { useEffect, useRef, useState } from "react";
 import { FaDrumstickBite, FaReceipt, FaRegCopy, FaUser } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
@@ -23,10 +21,13 @@ import {
   MdOutlineAutoFixHigh,
 } from "react-icons/md";
 import { RiInformation2Fill, RiRobot2Fill } from "react-icons/ri";
-import Select from "react-select";
+import Select, { MultiValue, SingleValue } from "react-select";
 import makeAnimated from "react-select/animated";
 
 import { Inter } from "next/font/google";
+import { useLogger } from "../hooks";
+import { useFetchMealGenerate } from "../services";
+import { TMealOutputDTO } from "../types";
 
 const inter = Inter({ weight: "400", style: "normal", subsets: ["latin"] });
 const animatedComponents = makeAnimated();
@@ -88,6 +89,7 @@ const mealCaloricIntakeOptions: Option[] = [
 ];
 
 const Page = () => {
+  const logger = useLogger("Nutrition Page");
   // ---------------------------- Start of const/hooks/functions and more, related to POST SECTION ----------------------------
   const inputFile = useRef<HTMLInputElement | null>(null);
 
@@ -119,6 +121,15 @@ const Page = () => {
     useState<boolean>(false);
   const [changePostWarningMessageOpacity, setChangePostWarningMessageOpacity] =
     useState<boolean>(false);
+  const numberOfRequests = React.useRef<number>(0);
+
+  const {
+    fetch: fetchMealGenerate,
+    isFetching: fetchMealGenerateIsFetching,
+    status: fetchMealGenerateStatus,
+    response: fetchMealGenerateResponse,
+    retry: fetchMealGenerateRetry,
+  } = useFetchMealGenerate();
 
   const postInputValuesToValidate = [
     energyInputValue,
@@ -172,20 +183,20 @@ const Page = () => {
       setShowPostWarningMessage(false);
       setChangePostWarningMessageOpacity(false);
 
-      console.log("Selected image value: " + selectedImage);
-      console.log("Image name value: " + imageName);
-      console.log("Energy value: " + energyInputValue);
-      console.log("Protein value: " + proteinInputValue);
-      console.log("Total fat value: " + totalFatInputValue);
-      console.log("Saturated fat value: " + saturatedFatInputValue);
-      console.log("Trans fat value: " + transFatInputValue);
-      console.log("Total carbs value: " + totalCarbsInputValue);
-      console.log("Sugars value: " + sugarsInputValue);
-      console.log("Fiber value: " + fiberInputValue);
-      console.log("Sodium value: " + sodiumInputValue);
-      console.log("Cholesterol value: " + cholesterolInputValue);
-      console.log("Vitamins value: " + vitaminsInputValue);
-      console.log("Description value: " + descriptionTextareaValue);
+      logger.log("Selected image value: " + selectedImage);
+      logger.log("Image name value: " + imageName);
+      logger.log("Energy value: " + energyInputValue);
+      logger.log("Protein value: " + proteinInputValue);
+      logger.log("Total fat value: " + totalFatInputValue);
+      logger.log("Saturated fat value: " + saturatedFatInputValue);
+      logger.log("Trans fat value: " + transFatInputValue);
+      logger.log("Total carbs value: " + totalCarbsInputValue);
+      logger.log("Sugars value: " + sugarsInputValue);
+      logger.log("Fiber value: " + fiberInputValue);
+      logger.log("Sodium value: " + sodiumInputValue);
+      logger.log("Cholesterol value: " + cholesterolInputValue);
+      logger.log("Vitamins value: " + vitaminsInputValue);
+      logger.log("Description value: " + descriptionTextareaValue);
     } else {
       setShowPostWarningMessage(true);
       setChangePostWarningMessageOpacity(true);
@@ -223,6 +234,7 @@ const Page = () => {
     cholesterolInputValue,
     vitaminsInputValue,
     descriptionTextareaValue,
+    allInputValues,
   ]);
 
   /**
@@ -354,6 +366,11 @@ const Page = () => {
    * UseEffect to check if the AI section already has all the necessary fields
    */
   useEffect(() => {
+    logger.log(
+      "AI SECTION FIELDS TO VALIDATE: " +
+        JSON.stringify({ aiSectionFieldsToValidate, isAnswerRequestValid })
+    );
+
     for (const fieldValue of aiSectionFieldsToValidate.arrayFields) {
       if (fieldValue.length === 0) {
         setIsAnswerRequestValid(false);
@@ -368,6 +385,11 @@ const Page = () => {
       }
     }
 
+    logger.log(
+      "AI SECTION FIELDS TO VALIDATE: " +
+        JSON.stringify({ set: true, isAnswerRequestValid })
+    );
+
     setIsAnswerRequestValid(true);
   }, [
     selectedMealObjectiveOptions,
@@ -375,6 +397,8 @@ const Page = () => {
     selectedCalorieIntakeOption,
     selectedAllergiesAndIntoleranceOptions,
     ingredientsTextAreaValue,
+    aiSectionFieldsToValidate.arrayFields,
+    aiSectionFieldsToValidate.stringFields,
   ]);
 
   const [isRobotRotated, setIsRobotRotated] = useState<boolean>(false);
@@ -384,16 +408,12 @@ const Page = () => {
   const [answerReceived, setAnswerReceived] = useState<boolean>(false);
   const [preAnswerReceived, setPreAnswerReceived] = useState<boolean>(false);
   const [displayedAnswer, setDisplayedAnswer] = useState<string>("");
-  const [lastAnswer, setLastAnswer] = useState<string>(
-    "This is a answer sample test!"
-  );
-  const [fullAnswer, setFullAnswer] = useState<string[]>([]);
-  const [numberOfAnswers, setNumberOfAnswers] = useState<number>(0);
+  const [fullAnswers, setFullAnswers] = useState<TMealOutputDTO[]>([]);
   const [copiedStatus, setCopiedStatus] = useState(
-    Array(fullAnswer.length).fill("")
+    Array(fullAnswers.length).fill("")
   );
   const [answerConvertedToPostStatus, setAnswerConvertedToPostStatus] =
-    useState(Array(fullAnswer.length).fill(""));
+    useState(Array(fullAnswers.length).fill(""));
 
   // Ref to the ingredients textarea (not the one mentioned above)
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -412,20 +432,42 @@ const Page = () => {
     setisWeightGainSelected(!isWeightGainSelected);
   };
 
-  const handleSelectMealObjectives = (selectedValues: any) => {
-    setSelectedMealObjectiveOptions(selectedValues);
+  const handleSelectMealObjectives = (selectedValues: MultiValue<Option>) => {
+    if (selectedValues) {
+      const value = selectedValues as Option[];
+
+      setSelectedMealObjectiveOptions(value);
+    }
   };
 
-  const handleSelectDietaryOption = (selectedValue: any) => {
-    setSelectedDietaryOption(selectedValue);
+  const handleSelectDietaryOption = (
+    selectedValue: MultiValue<Option> | SingleValue<Option>
+  ) => {
+    if (selectedValue) {
+      const value = selectedValue as Option;
+
+      setSelectedDietaryOption([value]);
+    }
   };
 
-  const handleselectCalorieIntakeOption = (selectedValue: any) => {
-    setSelectedCalorieIntakeOption(selectedValue);
+  const handleSelectCalorieIntakeOption = (
+    selectedValue: MultiValue<Option> | SingleValue<Option>
+  ) => {
+    if (selectedValue) {
+      const value = selectedValue as Option;
+
+      setSelectedCalorieIntakeOption([value]);
+    }
   };
 
-  const handleSelectAllergiesAndIntoleranceOptions = (selectedValue: any) => {
-    setSelectedAllergiesAndIntoleranceOptions(selectedValue);
+  const handleSelectAllergiesAndIntoleranceOptions = (
+    selectedValues: MultiValue<Option>
+  ) => {
+    if (selectedValues) {
+      const value = selectedValues as Option[];
+
+      setSelectedAllergiesAndIntoleranceOptions(value);
+    }
   };
 
   const setIngredientsTextArea = () => {
@@ -488,36 +530,63 @@ const Page = () => {
    * This animation is only applied to the last answer.
    *
    */
-  const handleTextTypingAnimation = () => {
-    if (!lastAnswer) return;
+  const handleTextTypingAnimation = React.useCallback(
+    (lastAnswer: TMealOutputDTO) => {
+      // Resets display message. It should be blank before starting the process each time.
+      setDisplayedAnswer("");
 
-    // Resets display message. It should be blank before starting the process each time.
-    setDisplayedAnswer("");
+      let currentIndex = -1;
 
-    let currentIndex = -1;
-
-    setTimeout(() => {
-      const intervalId = setInterval(() => {
-        setDisplayedAnswer((prev) => {
-          if (currentIndex < lastAnswer.length) {
-            if (currentIndex != -1) {
-              return prev + lastAnswer[currentIndex];
+      setTimeout(() => {
+        const intervalId = setInterval(() => {
+          setDisplayedAnswer((prev) => {
+            if (currentIndex < lastAnswer.description.length) {
+              if (currentIndex != -1) {
+                return prev + lastAnswer.description[currentIndex];
+              } else {
+                return prev + lastAnswer.description[currentIndex + 1];
+              }
             } else {
-              return prev + lastAnswer[currentIndex + 1];
+              clearInterval(intervalId);
+              return prev;
             }
-          } else {
-            clearInterval(intervalId);
-            return prev;
-          }
-        });
-        currentIndex++;
-      }, 10);
+          });
+          currentIndex++;
+        }, 10);
 
-      return () => {
-        clearInterval(intervalId);
-      };
-    }, 500);
-  };
+        return () => {
+          clearInterval(intervalId);
+        };
+      }, 500);
+    },
+    []
+  );
+
+  React.useEffect(() => {
+    if (fullAnswers.length >= numberOfRequests.current) {
+      return;
+    }
+
+    if (
+      fetchMealGenerateStatus === "success" &&
+      fetchMealGenerateResponse?.meals.length
+    ) {
+      setFullAnswers((prevState) => [
+        ...prevState,
+        fetchMealGenerateResponse?.meals?.[0],
+      ]);
+
+      handleTextTypingAnimation(fetchMealGenerateResponse?.meals?.[0]);
+    } else if (fetchMealGenerateStatus === "failed") {
+      fetchMealGenerateRetry?.();
+    }
+  }, [
+    fetchMealGenerateStatus,
+    fetchMealGenerateResponse?.meals,
+    fetchMealGenerateRetry,
+    handleTextTypingAnimation,
+    fullAnswers.length,
+  ]);
 
   /**
    *
@@ -525,23 +594,36 @@ const Page = () => {
    *
    */
   const handleRequestConfirmation = () => {
-    console.log("CONFIRM BTN");
+    logger.log("CONFIRM BTN");
 
-    console.log(
-      "WL: " + isWeightLossSelected + "; WG: " + isWeightGainSelected
-    );
-    console.log(
+    logger.log("WL: " + isWeightLossSelected + "; WG: " + isWeightGainSelected);
+    logger.log(
       "Allergies and intolerances: " +
         JSON.stringify(selectedAllergiesAndIntoleranceOptions)
     );
-    console.log(
+    logger.log(
       "Meal objectives: " + JSON.stringify(selectedMealObjectiveOptions)
     );
-    console.log("Dietary: " + JSON.stringify(selectedDietaryOption));
-    console.log(
+    logger.log("Dietary: " + JSON.stringify(selectedDietaryOption));
+    logger.log(
       "Caloric intake: " + JSON.stringify(selectedCalorieIntakeOption)
     );
-    console.log("Ingredients: " + JSON.stringify(ingredientsTextAreaValue));
+    logger.log("Ingredients: " + JSON.stringify(ingredientsTextAreaValue));
+
+    fetchMealGenerate({
+      ingredients: ingredientsTextAreaValue,
+      mealInformation: {
+        caloricIntake: selectedCalorieIntakeOption?.[0].label,
+        dietary: selectedDietaryOption.map((option) => option.value),
+        objectives: selectedMealObjectiveOptions.map((option) => option.value),
+      },
+      personalInformation: {
+        allergiesOrIntolerances: selectedAllergiesAndIntoleranceOptions.map(
+          (option) => option.value
+        ),
+        goal: isWeightLossSelected ? "Weight Loss" : "Weight Gain",
+      },
+    });
 
     // Reset selected options
     setisWeightGainSelected(false);
@@ -557,12 +639,10 @@ const Page = () => {
     setTimeout(() => {
       setAnswerReceived(true);
     }, 500);
-    handleTextTypingAnimation();
-    setFullAnswer((prevState) => [
-      ...prevState,
-      "This is a answer sample! This is a answer sample! ",
-    ]);
-    setNumberOfAnswers(numberOfAnswers + 1);
+    // setFullAnswer((prevState) => [
+    //   ...prevState,
+    //   "This is a answer sample! This is a answer sample! ",
+    // ]);
 
     // Focus on the last answer every time a new answer is generated. Important, mainly on small screens!
     setTimeout(() => {
@@ -572,30 +652,31 @@ const Page = () => {
         lastAnswer.scrollIntoView({ behavior: "smooth" });
       }
     }, 50);
+
+    numberOfRequests.current++;
   };
 
   useEffect(() => {
-    if (fullAnswer.length === 0) {
+    if (fullAnswers.length === 0) {
       setCopiedStatus([]);
       setAnswerConvertedToPostStatus([]);
     } else {
       setCopiedStatus((prev) => [
         ...prev,
-        ...Array(fullAnswer.length - prev.length).fill(""),
+        ...Array(fullAnswers.length - prev.length).fill(""),
       ]);
 
       setAnswerConvertedToPostStatus((prev) => [
         ...prev,
-        ...Array(fullAnswer.length - prev.length).fill(""),
+        ...Array(fullAnswers.length - prev.length).fill(""),
       ]);
     }
-  }, [fullAnswer]);
+  }, [fullAnswers]);
 
   const cleanAllAnswers = () => {
-    setFullAnswer([]);
+    setFullAnswers([]);
     setAnswerReceived(false);
     setPreAnswerReceived(false);
-    setNumberOfAnswers(0);
   };
 
   /**
@@ -638,7 +719,7 @@ const Page = () => {
    */
   const copyAnswer = (answer: string, index: number) => {
     navigator.clipboard
-      .writeText(answer)
+      .writeText(JSON.stringify(answer))
       .then(() => {
         setOperationStatusTrueOrFalse(1, index, "true");
 
@@ -662,22 +743,7 @@ const Page = () => {
    * @param index
    */
   const convertAnswerToPost = (index: number) => {
-    // Using sample request while microservice is not ready
-    const sampleRequestAnswer: requestAnswerDTO = {
-      introductionText: "This is a sample introduction.",
-      energy: { value: (index + 1).toString(), unit: "kcal" },
-      protein: { value: (index + 2).toString(), unit: "g" },
-      totalFat: { value: (index + 3).toString(), unit: "g" },
-      satFat: { value: (index + 4).toString(), unit: "g" },
-      transFat: { value: (index + 5).toString(), unit: "g" },
-      totalCarbs: { value: (index + 6).toString(), unit: "g" },
-      sugars: { value: (index + 7).toString(), unit: "g" },
-      fiber: { value: (index + 8).toString(), unit: "g" },
-      sodium: { value: (index + 9).toString(), unit: "mg" },
-      cholesterol: { value: (index + 10).toString(), unit: "mg" },
-      vitamins: { value: "Vitamin A, C, D" },
-      conclusionText: "This is a sample conclusion.",
-    };
+    const sampleRequestAnswer = fullAnswers[index];
 
     try {
       setEnergyInputValue(sampleRequestAnswer.energy.value);
@@ -701,6 +767,8 @@ const Page = () => {
       }, 2500);
     }
   };
+
+  logger.log("render", { fullAnswers, displayedAnswer });
 
   return (
     <div className={`${inter.className} nutrition-page`}>
@@ -1087,7 +1155,7 @@ const Page = () => {
               options={mealCaloricIntakeOptions}
               placeholder="Select caloric intake..."
               value={selectedCalorieIntakeOption}
-              onChange={handleselectCalorieIntakeOption}
+              onChange={handleSelectCalorieIntakeOption}
             />
           </div>
           <div className="ml-1">
@@ -1124,7 +1192,7 @@ const Page = () => {
               </button> */}
               <MainBtn
                 label="Confirm"
-                isDisabled={isAnswerRequestValid}
+                isDisabled={!isAnswerRequestValid}
                 title="Confirm Request!"
                 disabledTitle="Disabled. Section not configured."
                 icon={<IoCheckmark className="mr-[0.25rem] w-5 h-5 mt-px" />}
@@ -1175,7 +1243,7 @@ const Page = () => {
                   <>
                     <div
                       className={`flex justify-end sticky top-0 w-full h-min transition-all duration-250 ease ${
-                        fullAnswer.length > 3
+                        fullAnswers.length > 3
                           ? "opacity-1 z-10"
                           : "opacity-0 -z-10"
                       }`}
@@ -1192,7 +1260,7 @@ const Page = () => {
                         </span>
                       </button>
                     </div>
-                    {fullAnswer.map((answer, index) => (
+                    {fullAnswers.map((answer, index) => (
                       <div
                         key={`${answer}-${index}`}
                         className="flex flex-col pt-0.5 transition-all duration-250 ease"
@@ -1202,9 +1270,9 @@ const Page = () => {
                         ) : null}
                         <div className="flex flex-row">
                           <RiRobot2Fill className="w-6 h-6 min-w-6 min-h-6 text-black justify-start mt-0.5 ml-1.5 mr-1 transition-all duration-250 ease" />
-                          {numberOfAnswers != index + 1 ? (
+                          {fullAnswers.length !== index + 1 ? (
                             <span className="text-black mt-0 p-1 pl-1.5 pr-1.5 transition-all duration-250 ease">
-                              {answer}
+                              {answer.description}
                             </span>
                           ) : (
                             <span
@@ -1215,7 +1283,7 @@ const Page = () => {
                             </span>
                           )}
                         </div>
-                        {fullAnswer.length - index < 4 ? (
+                        {fullAnswers.length - index < 4 ? (
                           <div
                             key={index}
                             className="flex flex-row justify-center z-20"
@@ -1225,8 +1293,8 @@ const Page = () => {
                               className="text-c-dark-green hover:text-c-lemon-green hover:bg-c-dark-green focus:text-c-lemon-green focus:bg-c-dark-green rounded p-1 w-min mr-1"
                               title="Copy Response"
                               onClick={() => {
-                                numberOfAnswers != index + 1
-                                  ? copyAnswer(answer, index)
+                                fullAnswers.length != index + 1
+                                  ? copyAnswer(answer.description, index)
                                   : copyAnswer(displayedAnswer, index);
                               }}
                             >
