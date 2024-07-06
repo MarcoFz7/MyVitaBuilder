@@ -10,8 +10,6 @@ import MainBtn from '../components/buttons/mainBtn';
 import SecondaryBtn from '../components/buttons/secondaryBtn';
 import TertiaryBtn from '../components/buttons/tertiaryBtn';
 
-import { requestAnswerDTO } from '../components/models/requestAnswerDTO';
-
 import React, { useState, useEffect, useRef } from 'react';
 import makeAnimated from 'react-select/animated';
 
@@ -843,7 +841,7 @@ const Page = () => {
                     />
                   </div>
                   <div className="flex flex-auto justify-center items-center w-1/2 h-1/2 ml-1.5">
-                    <span className="border-b border-c-dark-green text-c-dark-green h-auto w-fit mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span className="border-b border-c-dark-green text-c-dark-green h-auto w-fit mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis mr-2">
                       {imageName == "" || imageName == null
                         ? "No image selected"
                         : imageName}

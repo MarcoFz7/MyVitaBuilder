@@ -223,7 +223,7 @@ input[type='radio'] {
     }
     .single-select-div .select .css-13cymwt-control, .single-select-div .select .css-t3ipsp-control {
         margin-right: 0px;
-        min-width: 200px;
+        min-width: 205px;
     }
     .single-select-div .select .css-1n6sfyn-MenuList div[aria-selected="true"] {
         background-color: rgba(var(--dark-smoke-rgb), 0.75);
