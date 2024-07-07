@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+
 /**
  * Interface for the main button component with needed props from the parent
  */
@@ -8,6 +11,7 @@ interface MainBtnProps {
     disabledTitle: string;
     icon: React.ReactNode;
     shadow: boolean;
+    isRequestProcessing: boolean;
     onClick: () => void;
 }
 
@@ -23,12 +27,18 @@ interface MainBtnProps {
  * 
  * @returns custom main button
  */
-const MainBtn = ({ label, isDisabled, title, disabledTitle, icon, shadow, onClick }: MainBtnProps) => { 
+const MainBtn = ({ label, isDisabled, title, disabledTitle, icon, shadow, isRequestProcessing, onClick }: MainBtnProps) => { 
   
   return (
     <>
-        <button type='button' disabled={isDisabled} className={`flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full ${shadow && ''}`} title={`${isDisabled ? disabledTitle : title}`} onClick={onClick}>
-            <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden">{icon}<strong>{label}</strong></span>
+        <button type='button' disabled={isDisabled} className={`flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full ${shadow && 'shadow'}`} title={`${isDisabled ? disabledTitle : title}`} onClick={onClick}>
+            <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden">
+              {!isRequestProcessing ? 
+                (icon) 
+                : 
+                (<FontAwesomeIcon icon={faCircleNotch} className="mr-[0.375rem] animate-spin w-[0.7rem] h-[0.7rem]"/>)
+              }
+              <strong>{label}</strong></span>
         </button>
     </>
   );
