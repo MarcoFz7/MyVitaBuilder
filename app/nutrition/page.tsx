@@ -14,8 +14,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import makeAnimated from 'react-select/animated';
 
 import { FaDrumstickBite, FaUser, FaReceipt, FaRegCopy } from "react-icons/fa";
-import { IoScanSharp, IoCheckmark } from "react-icons/io5";
-import { RiRobot2Fill, RiInformation2Fill } from "react-icons/ri";
+import { IoScanSharp } from "react-icons/io5";
+import { RiRobot2Fill, RiInformation2Fill, RiSendPlaneLine } from "react-icons/ri";
 import { LuImageMinus, LuImagePlus } from "react-icons/lu";
 import {
   MdAdd,
@@ -92,6 +92,7 @@ const mealCaloricIntakeOptions: Option[] = [
 
 const Page = () => {
   const logger = useLogger("Nutrition Page");
+
   // ---------------------------- Start of const/hooks/functions and more, related to POST SECTION ----------------------------
   const inputFile = useRef<HTMLInputElement | null>(null);
 
@@ -184,21 +185,6 @@ const Page = () => {
     if (isPostValidated) {
       setShowPostWarningMessage(false);
       setChangePostWarningMessageOpacity(false);
-
-      logger.log("Selected image value: " + selectedImage);
-      logger.log("Image name value: " + imageName);
-      logger.log("Energy value: " + energyInputValue);
-      logger.log("Protein value: " + proteinInputValue);
-      logger.log("Total fat value: " + totalFatInputValue);
-      logger.log("Saturated fat value: " + saturatedFatInputValue);
-      logger.log("Trans fat value: " + transFatInputValue);
-      logger.log("Total carbs value: " + totalCarbsInputValue);
-      logger.log("Sugars value: " + sugarsInputValue);
-      logger.log("Fiber value: " + fiberInputValue);
-      logger.log("Sodium value: " + sodiumInputValue);
-      logger.log("Cholesterol value: " + cholesterolInputValue);
-      logger.log("Vitamins value: " + vitaminsInputValue);
-      logger.log("Description value: " + descriptionTextareaValue);
     } else {
       setShowPostWarningMessage(true);
       setChangePostWarningMessageOpacity(true);
@@ -368,11 +354,6 @@ const Page = () => {
    * UseEffect to check if the AI section already has all the necessary fields
    */
   useEffect(() => {
-    logger.log(
-      "AI SECTION FIELDS TO VALIDATE: " +
-        JSON.stringify({ aiSectionFieldsToValidate, isAnswerRequestValid })
-    );
-
     for (const fieldValue of aiSectionFieldsToValidate.arrayFields) {
       if (fieldValue.length === 0) {
         setIsAnswerRequestValid(false);
@@ -387,11 +368,6 @@ const Page = () => {
       }
     }
 
-    logger.log(
-      "AI SECTION FIELDS TO VALIDATE: " +
-        JSON.stringify({ set: true, isAnswerRequestValid })
-    );
-
     setIsAnswerRequestValid(true);
   }, [
     selectedMealObjectiveOptions,
@@ -403,6 +379,7 @@ const Page = () => {
     aiSectionFieldsToValidate.stringFields,
   ]);
 
+  const [isAnswerRequestProcessing, setIsAnswerRequestProcessing] = useState<boolean>(false);
   const [isRobotRotated, setIsRobotRotated] = useState<boolean>(false);
   const [isRobotTextBoxAnimated, setIsRobotTextBoxAnimated] =
     useState<boolean>(false);
@@ -509,7 +486,7 @@ const Page = () => {
   const handleRobotIconAnimationOnMouseEnter = () => {
     setIsRobotRotated(!isRobotRotated);
     setRobotTextBoxText("Test me!");
-
+    
     setIsRobotTextBoxAnimated(true);
     setTimeout(() => {
       setIsRobotTextBoxAnimated(false);
@@ -564,6 +541,18 @@ const Page = () => {
     []
   );
 
+  // Reset meal request inputs when request is answered sucessfuly
+  const cleanAllMealRequestInputs = () => {
+    // Reset selected options
+    setisWeightGainSelected(false);
+    setisWeightLossSelected(false);
+    setSelectedAllergiesAndIntoleranceOptions([]);
+    setSelectedMealObjectiveOptions([]);
+    setSelectedDietaryOption([]);
+    setSelectedCalorieIntakeOption([]);
+    setIngredientsTextAreaValue("");
+  };
+
   React.useEffect(() => {
     if (fullAnswers.length >= numberOfRequests.current) {
       return;
@@ -579,6 +568,9 @@ const Page = () => {
       ]);
 
       handleTextTypingAnimation(fetchMealGenerateResponse?.meals?.[0]);
+      setIsAnswerRequestProcessing(!isAnswerRequestProcessing);
+      cleanAllMealRequestInputs();
+
     } else if (fetchMealGenerateStatus === "failed") {
       fetchMealGenerateRetry?.();
     }
@@ -596,22 +588,6 @@ const Page = () => {
    *
    */
   const handleRequestConfirmation = () => {
-    logger.log("CONFIRM BTN");
-
-    logger.log("WL: " + isWeightLossSelected + "; WG: " + isWeightGainSelected);
-    logger.log(
-      "Allergies and intolerances: " +
-        JSON.stringify(selectedAllergiesAndIntoleranceOptions)
-    );
-    logger.log(
-      "Meal objectives: " + JSON.stringify(selectedMealObjectiveOptions)
-    );
-    logger.log("Dietary: " + JSON.stringify(selectedDietaryOption));
-    logger.log(
-      "Caloric intake: " + JSON.stringify(selectedCalorieIntakeOption)
-    );
-    logger.log("Ingredients: " + JSON.stringify(ingredientsTextAreaValue));
-
     fetchMealGenerate({
       ingredients: ingredientsTextAreaValue,
       mealInformation: {
@@ -626,25 +602,13 @@ const Page = () => {
         goal: isWeightLossSelected ? "Weight Loss" : "Weight Gain",
       },
     });
-
-    // Reset selected options
-    setisWeightGainSelected(false);
-    setisWeightLossSelected(false);
-    setSelectedAllergiesAndIntoleranceOptions([]);
-    setSelectedMealObjectiveOptions([]);
-    setSelectedDietaryOption([]);
-    setSelectedCalorieIntakeOption([]);
-    setIngredientsTextAreaValue("");
+    setIsAnswerRequestProcessing(!isAnswerRequestProcessing);
 
     // All this stuff is to be done when an answer is actually received from the back end, not when the request is sent!
     setPreAnswerReceived(true);
     setTimeout(() => {
       setAnswerReceived(true);
     }, 500);
-    // setFullAnswer((prevState) => [
-    //   ...prevState,
-    //   "This is a answer sample! This is a answer sample! ",
-    // ]);
 
     // Focus on the last answer every time a new answer is generated. Important, mainly on small screens!
     setTimeout(() => {
@@ -770,29 +734,28 @@ const Page = () => {
     }
   };
 
-  logger.log("render", { fullAnswers, displayedAnswer });
-
   return (
     <div className={`${inter.className} nutrition-page`}>
-      <div className="page-post-section bg-c-light-smoke min-h-[635px] sm:min-h-[430px]">
+      <div className="page-post-section min-h-[635px] sm:min-h-[430px] border border border-grey-100 shadow">
         <div className="flex flex-col w-full h-full text-sm">
-          <div className="flex flex-col sm:flex-row gap-1.5 p-1 w-full h-[90%] min-h-[500px] sm:min-h-[350px]">
-            <div className="flex flex-col gap-[1%] bg-c-light-smoke rounded h-full p-1 w-full sm:w-1/3 min-w-[205px] shadow-md">
+          <div className="flex flex-col sm:flex-row gap-1.5 p-1 w-full h-[87.5%] min-h-[500px] sm:min-h-[350px]">
+            <div className="flex flex-col gap-[1%] rounded h-full p-1 w-full sm:w-1/3 min-w-[205px] shadow">
               <div className="flex flex-row gap-1.5 w-full h-[12%] pb-0.5 sm:pb-0">
-                <div className="bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1 shadow-md">           
+                <div className="flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1">           
                   <MainBtn
                     label="Post"
                     isDisabled={false}
                     title="Add Post!"
                     disabledTitle=""
                     shadow={true}
+                    isRequestProcessing={false}
                     icon={<MdAdd className="mr-[0.20rem] w-5 h-5" />}
                     onClick={handlePostConfirmation}
                   />
                 </div>
                 <div
-                  className={`bg-c-dark-green sm:bg-c-light-smoke flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1 shadow-md ${
-                    !postHasContent ? "bg-c-light-smoke" : ""
+                  className={`flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1 ${
+                    !postHasContent ? " " : ""
                   }`}
                 >
                   <MainBtn
@@ -800,14 +763,15 @@ const Page = () => {
                     isDisabled={!postHasContent}
                     title="Discard Post!"
                     disabledTitle="Disabled. Post has no content."
-                    shadow={false}
+                    shadow={true}
+                    isRequestProcessing={false}
                     icon={<MdDeleteOutline className="mr-[0.25rem] w-4 h-4" />}
                     onClick={handlePostDiscard}
                   />
                 </div>
               </div>
               <div className="w-full h-[87%] bg-c-paper-white rounded p-2.5 pt-[2%] pb-[2%] max-h-[200px] sm:max-h-full">
-                <div className="w-full h-[80%] flex justify-center items-center rounded border border-c-light-smoke border-t-c-paper-white shadow-sm">
+                <div className="w-full h-[80%] flex justify-center items-center rounded border-t-1 border-blue-900">
                   <input
                     title="myimageinput"
                     type="file"
@@ -850,7 +814,7 @@ const Page = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-c-light-smoke rounded h-full w-full sm:w-2/3 p-1 min-w-[205px] text-white shadow-md transition-all duration-2500 ease">
+            <div className="rounded h-full w-full sm:w-2/3 p-1 min-w-[205px] text-white shadow transition-all duration-2500 ease">
               <div className="flex flex-col bg-c-paper-white w-full h-full rounded transition-all duration-2500 ease">
                 <div className="bg-c-paper-white flex-1 flex flex-row rounded w-[99%] h-[12%] min-h-[35px] max-h-[12%] pl-[2%] sm:pl-[4%] justify-center pr-[2%] sm:pr-[4%]">
                   {showPostWarningMessage ? (
@@ -1018,8 +982,9 @@ const Page = () => {
               </div>
             </div>
           </div>
-          <div className="w-full h-[10%] p-1">
-            <div className="flex bg-c-light-smoke w-full h-full p-1 rounded items-center shadow-md">
+          <div className="flex w-full h-[12.5%] p-1">
+            <span className="absolute text-sm font-bold h-min bg-white text-c-dark-green left-[1.3125rem] pr-2 pl-2 translate-y-1/4 sm:-translate-y-1/4 outline-none">Description</span>
+            <div className="flex w-full h-[80%] sm:h-[90%] p-1 rounded items-center self-end border border-grey-100 shadow">
               <div className="flex w-full h-8 min-h-8 bg-c-paper-white rounded">
                 <CustomTextArea
                   placeholder="Type a small description ..."
@@ -1178,7 +1143,8 @@ const Page = () => {
                 title="Confirm Request!"
                 disabledTitle="Disabled. Section not configured."
                 shadow={false}
-                icon={<IoCheckmark className="mr-[0.25rem] w-5 h-5 mt-px" />}
+                isRequestProcessing={isAnswerRequestProcessing}
+                icon={<RiSendPlaneLine className="mr-[0.25rem] w-4 h-4 mt-px" />}
                 onClick={handleRequestConfirmation}
               />
             </div>
