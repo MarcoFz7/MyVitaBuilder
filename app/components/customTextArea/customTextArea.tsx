@@ -86,7 +86,7 @@ const CustomTextArea = ({ placeholder, isSizeRestricted, maxCharacters, isDisabl
 
   return (
     <>
-        <textarea placeholder={placeholder} disabled={isDisabled} className={`text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded p-1 pl-1.5 pr-1.5 w-full h-full ${!isResizable ? 'resize-none' : ''}`} value={descriptionTextareaInputValue} onChange={handleTextAreaInputChange}>
+        <textarea placeholder={placeholder} disabled={isDisabled} className={`text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded p-1 pl-1.5 pr-1.5 w-full h-full outline-none ${!isResizable ? 'resize-none' : ''}`} value={descriptionTextareaInputValue} onChange={handleTextAreaInputChange}>
         </textarea>
         {isSizeRestricted && descriptionTextareaCharCount != 0 && (
             <div className='flex items-center bg-white rounded pl-1 w-min h-full ml-0.5'>

@@ -51,12 +51,13 @@
     height: 100vh;
     width: 100%;
 
-    background-color: rgb(var(--sidebar-dark-green-rgb));
+    background-color: rgba(var(--sidebar-dark-green-rgb));
 
     display: flex;
     flex-direction: column;
 
     padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
 
     transition: right 0.2s ease-out 0.15s;
 }
@@ -75,6 +76,7 @@
     flex-direction: column;
 
     padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
 
     transition: right 0.2s ease-out 0.15s;
 }
@@ -154,25 +156,24 @@
     display: flex;
     align-items: center;
     gap: 0.2rem;
-    padding: 0.2rem 0.3rem 0.2rem 0.2rem;
+    padding: 0.2rem 0.3rem 0.125rem 0.2rem;
     margin-right: 1rem;
     cursor: pointer;
-    border-radius: 0.1rem;
     transition: color 1s, color 0.2s, box-shadow 0.2s;
 }
 
 .option:hover {
-    box-shadow: inset 0 -10px 10px -10px rgba(var(--light-smoke-rgb), 0.3);
+    box-shadow: inset 0 -2px 0px rgba(var(--light-smoke-rgb), 0.5);
 }
 .option.group:hover .icon, .option.group:hover .link-text {
-    color: rgb(var(--light-green-rgb));
+    color: rgb(var(--lemon-green-rgb));
 }
 
 .option.clicked-option {
-    box-shadow: inset 0 -10px 10px -10px rgba(var(--light-smoke-rgb), 0.6);
+    box-shadow: inset 0 -2px 0px rgba(var(--light-smoke-rgb), 1);
 }
 .option.clicked-option:hover {
-    box-shadow: inset 0 -10px 10px -10px rgba(var(--light-smoke-rgb), 0.6) !important;
+    box-shadow: inset 0 -2px 0px rgba(var(--light-smoke-rgb), 1);
 }
 .option.clicked-option .icon, .option.clicked-option .link-text {
     color: rgb(var(--lemon-green-rgb));

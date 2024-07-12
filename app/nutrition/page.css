@@ -15,7 +15,7 @@
 
     display: grid;
     grid-template-columns: 65% auto; 
-    grid-template-rows: 0.50fr; 
+    grid-template-rows: 0.525fr; 
     grid-gap: 0.375rem; 
 
     min-width: var(--min-width);
