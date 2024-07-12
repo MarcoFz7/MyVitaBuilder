@@ -46,7 +46,7 @@ export const useFetch = <TInput, TOutput>({
         (async () => {
           try {
             data.current.status = "fetching";
-            forceUpdate;
+            forceUpdate();
 
             const res = await fetch(`${apiConfig.baseUrl}/${path}`, {
               body: JSON.stringify(passedBody),
