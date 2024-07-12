@@ -31,12 +31,12 @@ const MainBtn = ({ label, isDisabled, title, disabledTitle, icon, shadow, isRequ
   
   return (
     <>
-        <button type='button' disabled={isDisabled} className={`flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full ${shadow && 'shadow'}`} title={`${isDisabled ? disabledTitle : title}`} onClick={onClick}>
+        <button type='button' disabled={isDisabled} className={`flex justify-center items-center max-h-[45px] bg-c-dark-green text-c-lemon-green hover:bg-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full ${shadow && 'shadow'}  ${isRequestProcessing && '!cursor-default !bg-c-lemon-green !text-black'}`} title={`${isDisabled ? disabledTitle : title}`} onClick={() => { !isRequestProcessing && onClick() }}>
             <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden">
               {!isRequestProcessing ? 
                 (icon) 
                 : 
-                (<FontAwesomeIcon icon={faCircleNotch} className="mr-[0.375rem] animate-spin w-[0.7rem] h-[0.7rem]"/>)
+                (<FontAwesomeIcon icon={faCircleNotch} className="mr-[0.375rem] animate-spin w-3 h-3"/>)
               }
               <strong>{label}</strong></span>
         </button>
