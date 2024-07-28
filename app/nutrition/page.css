@@ -22,7 +22,7 @@
 }
 
 .page-post-section,
-.page-written-calculator {
+.goals-preview-section {
     grid-column: 1; 
 
     border-radius: 5px;
@@ -90,7 +90,7 @@
     }
 
     .page-post-section,
-    .page-written-calculator,
+    .goals-preview-section,
     .page-ai-calculator-section {
         grid-column: 1;
         grid-row: span 1;

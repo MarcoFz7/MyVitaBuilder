@@ -6,6 +6,8 @@ import CustomInput from "../components/customInput/customInput";
 import CustomMessage from "../components/customMessage/customMessage";
 import CustomTextArea from "../components/customTextArea/customTextArea";
 
+import GoalsPreview from "../components/goals/goalsPreview/goalsPreview";
+
 import MainBtn from '../components/buttons/mainBtn';
 import SecondaryBtn from '../components/buttons/secondaryBtn';
 import TertiaryBtn from '../components/buttons/tertiaryBtn';
@@ -91,8 +93,6 @@ const mealCaloricIntakeOptions: Option[] = [
 ];
 
 const Page = () => {
-  const logger = useLogger("Nutrition Page");
-
   // ---------------------------- Start of const/hooks/functions and more, related to POST SECTION ----------------------------
   const inputFile = useRef<HTMLInputElement | null>(null);
 
@@ -735,11 +735,11 @@ const Page = () => {
   };
 
   return (
-    <div className={`${inter.className} nutrition-page`}>
+    <div className={`${inter.className} nutrition-page min-h-[635px]`}>
       <div className="page-post-section min-h-[635px] sm:min-h-[430px] border border border-grey-100 shadow">
         <div className="flex flex-col w-full h-full text-sm">
           <div className="flex flex-col sm:flex-row gap-1.5 p-1 w-full h-[87.5%] min-h-[500px] sm:min-h-[350px]">
-            <div className="flex flex-col gap-[1%] rounded h-full p-1 w-full sm:w-1/3 min-w-[205px] shadow">
+            <div className="flex flex-col gap-[1%] bg-c-paper-white rounded h-full p-1 w-full sm:w-1/3 min-w-[205px]">
               <div className="flex flex-row gap-1.5 w-full h-[12%] pb-0.5 sm:pb-0">
                 <div className="flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1">           
                   <MainBtn
@@ -770,8 +770,8 @@ const Page = () => {
                   />
                 </div>
               </div>
-              <div className="w-full h-[87%] bg-c-paper-white rounded p-2.5 pt-[2%] pb-[2%] max-h-[200px] sm:max-h-full">
-                <div className="w-full h-[80%] flex justify-center items-center rounded border-t-1 border-blue-900">
+              <div className="w-full h-[87%] rounded p-2.5 pt-[2%] pb-[2%] max-h-[180px] sm:max-h-full">
+                <div className="w-full h-[80%] flex justify-center items-center rounded border border-[rgb(246,246,246)] bg-white ">
                   <input
                     title="myimageinput"
                     type="file"
@@ -814,7 +814,7 @@ const Page = () => {
                 </div>
               </div>
             </div>
-            <div className="rounded h-full w-full sm:w-2/3 p-1 min-w-[205px] text-white shadow transition-all duration-2500 ease">
+            <div className="rounded h-full w-full sm:w-2/3 p-1 min-w-[205px] text-white transition-all duration-2500 ease">
               <div className="flex flex-col bg-c-paper-white w-full h-full rounded transition-all duration-2500 ease">
                 <div className="bg-c-paper-white flex-1 flex flex-row rounded w-[99%] h-[12%] min-h-[35px] max-h-[12%] pl-[2%] sm:pl-[4%] justify-center pr-[2%] sm:pr-[4%]">
                   {showPostWarningMessage ? (
@@ -836,7 +836,7 @@ const Page = () => {
                 </div>
                 <div className="pl-0 ml-[4%] w-[92%] h-px bg-c-dark-green"></div>
                 <div className="flex-1 flex flex-col sm:flex-row bg-c-paper-white w-full h-full pl-[2%] pr-[2%] rounded">
-                  <div className="flex flex-col justify-evenly h-1/2 sm:h-full w-full">
+                  <div className="flex flex-col justify-between h-1/2 sm:h-full w-full">
                     <div className="h-auto w-full">
                       <div className="min-h-[35px]">
                         <CustomInput
@@ -902,7 +902,7 @@ const Page = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col justify-evenly h-1/2 sm:h-full w-full">
+                  <div className="flex flex-col justify-between h-1/2 sm:h-full w-full">
                     <div className="h-auto w-full">
                       <div className="min-h-[35px]">
                         <CustomInput
@@ -982,10 +982,10 @@ const Page = () => {
               </div>
             </div>
           </div>
-          <div className="flex w-full h-[12.5%] p-1">
-            <span className="absolute text-sm font-bold h-min bg-white text-c-dark-green left-[1.3125rem] pr-2 pl-2 translate-y-1/4 sm:-translate-y-1/4 outline-none">Description</span>
-            <div className="flex w-full h-[80%] sm:h-[90%] p-1 rounded items-center self-end border border-grey-100 shadow">
-              <div className="flex w-full h-8 min-h-8 bg-c-paper-white rounded">
+          <div className="flex w-[98.5%] h-[12.5%] p-1 ml-[0.75%] mb-1">
+            <span className="absolute text-sm font-bold h-min bg-white text-c-dark-green left-[1.3125rem] pr-2 pl-2 translate-y-1/4 sm:-translate-y-1/4">Description</span>
+            <div className="flex w-full h-[80%] sm:h-[90%] p-1 rounded items-center self-end border border-grey-100 shadow-sm">
+              <div className="flex w-full h-8 min-h-8 bg-c-paper-white rounded mt-[0.1rem]">
                 <CustomTextArea
                   placeholder="Type a small description ..."
                   isSizeRestricted={true}
@@ -1004,15 +1004,15 @@ const Page = () => {
         </div>
       </div>
       <div
-        className="page-ai-calculator-section"
+        className="page-ai-calculator-section shadow"
         onMouseEnter={handleRobotIconAnimationOnMouseEnter}
         onMouseLeave={handleRobotIconAnimationOnMouseLeave}
       >
-        <span className="ai-calculator-header">
+        <span className="ai-calculator-header shadow">
           Get <b>better results</b> through your meals and preparation using{" "}
           <strong>AI!</strong>
         </span>
-        <div className="ai-calculator-info">
+        <div className="ai-calculator-info shadow">
           <div>
             <label className="block mb-1.5 text-sm text-white-900 pt-px ml-1.5">
               Please configure this section accordingly.
@@ -1255,7 +1255,9 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <div className="page-written-calculator bg-c-dark-smoke-50"></div>
+      <div className="goals-preview-section border border border-grey-100 shadow p-1 h-[102%] sm:h-auto sm:min-h-[375px]">
+        <GoalsPreview/>
+      </div>
     </div>
   );
 };
