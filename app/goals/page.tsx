@@ -37,7 +37,7 @@ const Page = () => {
   };
   
   return (
-    <div className={`${inter.className} goals-page min-h-[635px] h-screen max-h-screen w-[99%] min-w-min-width absolute left-[0.5%] top-0 pt-[2.85rem] pb-[0.25rem] z-[-1]`}>
+    <div className={`${inter.className} min-h-[635px] h-screen max-h-screen w-[99%] min-w-min-width absolute left-[0.5%] top-0 pt-[2.85rem] pb-[0.25rem] z-[-1]`}>
       <div className="flex flex-col w-full h-full gap-[0.375rem]">
         <div className="flex flex-row h-1/5 w-full p-1 border border border-grey-100 shadow rounded">
           <div className="w-[10%] min-w-fit h-full bg-c-sidebar-dark-green rounded shadow flex flex-col">
@@ -52,7 +52,7 @@ const Page = () => {
               </div>
               <div className="pl-0 ml-[4%] w-[92%] sm:ml-[3%] sm:w-[94%] h-px bg-white"></div>
             </div>
-            <div className="radio-div flex items-center text-white justify-center flex-grow">
+            <div className="flex items-center text-white justify-center flex-grow">
               <div className="flex flex-col gap-[10px] ml-1">
                 <div className="flex items-center">
                   <input
