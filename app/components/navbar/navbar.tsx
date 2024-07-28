@@ -2,6 +2,7 @@
 
 import './navbar.css'
 import Link from 'next/link';
+import { FaTrophy } from "react-icons/fa";
 import { usePathname } from 'next/navigation';
 import { Inter } from 'next/font/google';
 import React, { useState, useEffect } from 'react';
@@ -20,7 +21,7 @@ const menuMainItems=[
   {
       path:"/goals",
       name:"Goals",
-      icon:<TbStar/>
+      icon:<FaTrophy className='w-4 h-4 mr-[0.1rem]'/>
   }
 ]
 
@@ -164,7 +165,7 @@ export default function NavBar() {
                     {
                         menuMainItems.map((item, index) => (                       
                             <Link href={item.path} key={index} className={`option group ${clickedMainIndex === index ? 'clicked-option' : ''}`} onClick={() => handleMainItemClick(index)}>
-                              <div className={`text-c-paper-white group-hover:text-white icon ${clickedMainIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
+                              <div className={`group-hover:text-white icon ${clickedMainIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
                               <h3 className={`${inter.className} group-hover:text-white link-text ${clickedMainIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
                             </Link>
                         ))
@@ -174,7 +175,7 @@ export default function NavBar() {
                     {
                         menuSecondaryItems.map((item, index) => (                       
                             <Link href={item.path} key={index} className={`option group ${clickedSecondaryIndex === index ? 'clicked-option' : ''}`} onClick={() => handleSecondaryItemClick(index)}>
-                                <div className={`text-c-paper-white group-hover:text-white icon ${clickedSecondaryIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
+                                <div className={`group-hover:text-white icon ${clickedSecondaryIndex === index ? 'clicked-icon' : ''}`}>{item.icon}</div>                    
                                 <h3 className={`${inter.className} group-hover:text-white link-text ${clickedSecondaryIndex === index ? 'clicked-text' : ''}`}>{item.name}</h3>
                             </Link>
                         ))

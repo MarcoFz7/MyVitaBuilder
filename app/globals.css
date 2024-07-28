@@ -56,3 +56,38 @@ body {
   background-color: gray;
   border-radius: 0.125rem;
 }
+
+input[type='radio'] {
+  visibility: hidden;
+}
+  input[type='radio']:after {
+      width: 15px;
+      height: 15px;
+      border-radius: 15px;
+      top: -2px;
+      left: -1px;
+      position: relative;
+      background-color: rgb(var(--white-rgb));
+      content: '';
+      display: inline-block;
+      visibility: visible;
+      border: 2px solid rgb(var(--dark-green-rgb));
+      cursor: pointer;
+
+      transition: all 0.5s ease;
+  }
+  input[type='radio']:checked:after {
+      width: 15px;
+      height: 15px;
+      border-radius: 15px;
+      top: -2px;
+      left: -1px;
+      position: relative;
+      background-color: rgb(var(--lemon-green-rgb));
+      content: '';
+      display: inline-block;
+      visibility: visible;
+      border: 2px solid rgb(var(--dark-green-rgb));
+      cursor: pointer;
+  }
+

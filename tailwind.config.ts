@@ -42,13 +42,19 @@ const config: Config = {
 
         'c-paper-white': '#FDFDFD',
         'c-shadow-black': '#00000040',
+
+        'c-custom-shadow-black': '#0000000B',
       },
       screens: {
+        'min-width' : '285px',
         'sm': '618px',
         'md': '828px',
       },
       boxShadow: {
         'customShadow': 'inset 0px -1px 15px 0 rgba(0, 0, 0, 0.075), inset -2px -6px 10px 0 rgba(255, 255, 255, 0.35)',
+      },
+      zIndex: {
+        '-1': '-1',
       },
     },
   },
