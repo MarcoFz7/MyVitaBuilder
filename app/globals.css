@@ -28,6 +28,8 @@
   --medium-font: 16px;
   --big-font: 18px;
   --bigger-font: 20px;
+
+  background-color: #F5F5F5;
 }
 
 @media (prefers-color-scheme: dark) {
