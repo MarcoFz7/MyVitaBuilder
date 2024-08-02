@@ -3,6 +3,7 @@
 import './navbar.css'
 import Link from 'next/link';
 import { FaTrophy } from "react-icons/fa";
+import { FaHeartbeat } from "react-icons/fa";
 import { usePathname } from 'next/navigation';
 import { Inter } from 'next/font/google';
 import React, { useState, useEffect } from 'react';
@@ -16,7 +17,7 @@ const menuMainItems=[
   {
       path:"/nutrition",
       name:"Nutrition",
-      icon:<TbStar/>
+      icon:<FaHeartbeat className='w-4 h-4 mr-[0.1rem]'/>
   },
   {
       path:"/goals",
@@ -149,7 +150,7 @@ export default function NavBar() {
 
     return (
         <div className='navbar-panel'>
-          <div className='navbar'>
+          <div className='navbar shadow-navbarShadow'>
             {isNavbarReady ? 
               <div className='navbar-container'>
                 <div className='navbar-container-info'>

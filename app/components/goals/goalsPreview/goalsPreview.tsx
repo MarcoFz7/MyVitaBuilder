@@ -134,10 +134,10 @@ const GoalsPreview = () => {
                     <div className="pl-0 ml-[4%] w-[92%] sm:ml-[3%] sm:w-[94%] h-px bg-c-dark-green"></div>
                 </div>
                 <div className="flex w-full h-full">
-                    <div className="flex flex-col sm:flex-row w-full h-full max-h-[95%] p-1 pt-2 pl-[3%] pr-[3%] gap-0 sm:gap-[2%]">
+                    <div className="flex flex-col sm:flex-row w-full h-full max-h-[97.5%] p-1 pt-2 pl-[3%] pr-[3%] gap-0 sm:gap-[2%]">
                         <div className="flex flex-col bg-c-paper-white w-full sm:w-1/3 h-full p-1 pr-3 pl-3 rounded text-center">
-                            <span className="bg-c-custom-shadow-black text-c-dark-green rounded p-1 font-bold">Check your daily progress!</span>
-                            <div className="flex flex-col flex-grow text-white h-full justify-center max-h-[80%] pb-3 pt-3">
+                            <span className="bg-c-custom-shadow-black text-c-dark-green rounded p-1 font-bold">Daily progress preview!</span>
+                            <div className="flex flex-col flex-grow text-white h-full justify-center pb-3 pt-3">
                                 <span className="text-black ">Understand your behavior, and adjust your meals for <strong className="text-c-dark-green">better results</strong>.</span>
                                 <span className="text-black">To set the daily target, and have a wider perspective, with <strong className="text-c-dark-green">weekly and monthly Statistics</strong>, go to...</span>
                             </div>
@@ -145,7 +145,7 @@ const GoalsPreview = () => {
                                 <SecondaryBtn label="Goals Page" isDisabled={false} title="Go to Goals page!" disabledTitle="" icon={<CgInternal className='ml-[0.25rem] w-6 h-6 mb-px' />} onClick={() => { }} />
                             </div>
                         </div>
-                        <div className="flex flex-col bg-c-paper-white rounded w-full sm:w-2/3 h-full items-center mt-[1%] sm:mt-0">
+                        <div className="flex flex-col rounded w-full sm:w-2/3 h-full items-center mt-[1%] sm:mt-0">
                             <div className="w-full h-full p-1 pr-3 pl-3 h-min">
                                 <div className="flex w-full justify-center items-center">
                                     <span className="flex items-center text-c-dark-green whitespace-nowrap overflow-hidden p-1 pb-0">
@@ -229,7 +229,7 @@ const GoalsPreview = () => {
                                         />
                                     </div>
                                 </div>
-                                <div className="flex flex-col h-full w-full sm:w-[46%] rounded">
+                                <div className="flex flex-col h-full w-full sm:w-[46%] sm:pb-[10px] rounded">
                                     <div className="flex w-full h-[10%] w-full justify-center items-center">
                                         <span className="flex items-center text-c-dark-green whitespace-nowrap overflow-hidden p-1">
                                             <GoTriangleRight className="text-c-dark-green inline-block mr-[0.25rem] h-5 w-5" />

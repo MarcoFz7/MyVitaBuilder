@@ -44,6 +44,7 @@ const config: Config = {
         'c-shadow-black': '#00000040',
 
         'c-custom-shadow-black': '#0000000B',
+        'c-global-bg-color': '#F5F5F5',
       },
       screens: {
         'min-width' : '285px',
@@ -52,6 +53,7 @@ const config: Config = {
       },
       boxShadow: {
         'customShadow': 'inset 0px -1px 15px 0 rgba(0, 0, 0, 0.075), inset -2px -6px 10px 0 rgba(255, 255, 255, 0.35)',
+        'navbarShadow': '0 1px 3px -1px rgb(0 0 0 / 0.1), 0 2px 3px -2px rgb(0 0 0 / 0.1)',
       },
       zIndex: {
         '-1': '-1',
