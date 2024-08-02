@@ -735,8 +735,8 @@ const Page = () => {
   };
 
   return (
-    <div className={`${inter.className} nutrition-page min-h-[635px]`}>
-      <div className="page-post-section min-h-[635px] sm:min-h-[430px] border border border-grey-100 shadow">
+    <div className={`${inter.className} nutrition-page bg-c-global-bg-color min-h-[635px]`}>
+      <div className={`${inter.className} page-post-section bg-white min-h-[635px] sm:min-h-[430px] border border border-grey-100 shadow-sm`}>
         <div className="flex flex-col w-full h-full text-sm">
           <div className="flex flex-col sm:flex-row gap-1.5 p-1 w-full h-[87.5%] min-h-[500px] sm:min-h-[350px]">
             <div className="flex flex-col gap-[1%] bg-c-paper-white rounded h-full p-1 w-full sm:w-1/3 min-w-[205px]">
@@ -815,8 +815,8 @@ const Page = () => {
               </div>
             </div>
             <div className="rounded h-full w-full sm:w-2/3 p-1 min-w-[205px] text-white transition-all duration-2500 ease">
-              <div className="flex flex-col bg-c-paper-white w-full h-full rounded transition-all duration-2500 ease">
-                <div className="bg-c-paper-white flex-1 flex flex-row rounded w-[99%] h-[12%] min-h-[35px] max-h-[12%] pl-[2%] sm:pl-[4%] justify-center pr-[2%] sm:pr-[4%]">
+              <div className="flex flex-col w-full h-full rounded transition-all duration-2500 ease">
+                <div className="flex-1 flex flex-row rounded w-[99%] h-[12%] min-h-[35px] max-h-[12%] pl-[2%] sm:pl-[4%] justify-center pr-[2%] sm:pr-[4%]">
                   {showPostWarningMessage ? (
                     <CustomMessage
                       type={2}
@@ -835,7 +835,7 @@ const Page = () => {
                   )}
                 </div>
                 <div className="pl-0 ml-[4%] w-[92%] h-px bg-c-dark-green"></div>
-                <div className="flex-1 flex flex-col sm:flex-row bg-c-paper-white w-full h-full pl-[2%] pr-[2%] rounded">
+                <div className="flex-1 flex flex-col sm:flex-row w-full h-full pl-[2%] pr-[2%] rounded">
                   <div className="flex flex-col justify-between h-1/2 sm:h-full w-full">
                     <div className="h-auto w-full">
                       <div className="min-h-[35px]">
@@ -1004,7 +1004,7 @@ const Page = () => {
         </div>
       </div>
       <div
-        className="page-ai-calculator-section shadow"
+        className={`${inter.className} page-ai-calculator-section bg-white border border border-grey-100 shadow-sm`}
         onMouseEnter={handleRobotIconAnimationOnMouseEnter}
         onMouseLeave={handleRobotIconAnimationOnMouseLeave}
       >
@@ -1255,7 +1255,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <div className="goals-preview-section border border border-grey-100 shadow p-1 h-[102%] sm:h-auto sm:min-h-[375px]">
+      <div className={`${inter.className} goals-preview-section bg-white border border border-grey-100 shadow-sm p-1 pb-6 sm:pb-1 h-[102%] sm:h-auto sm:min-h-[375px]`}>
         <GoalsPreview/>
       </div>
     </div>

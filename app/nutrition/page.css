@@ -11,12 +11,12 @@
     width: 99%;
 
     padding-top: 2.85rem;
-    padding-bottom: 0.25rem;
+    padding-bottom: 0.35rem;
 
     display: grid;
     grid-template-columns: 65% auto; 
     grid-template-rows: 0.525fr; 
-    grid-gap: 0.375rem; 
+    grid-gap: 0.5rem; 
 
     min-width: var(--min-width);
 }
@@ -34,7 +34,6 @@
 .page-ai-calculator-section {
     grid-column: 2; 
     grid-row: span 2; 
-    background-color: rgba(var(--dark-smoke-rgb), 0.5);
 
     border-radius: 5px;
 
