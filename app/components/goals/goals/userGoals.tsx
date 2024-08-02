@@ -38,13 +38,13 @@ const UserGoals = () => {
                         <div className="flex flex-col h-full w-1/2">               
                             <div className="flex w-full h-full rounded items-center justify-center p-2">           
                                 <MainBtn
-                                    label="Post"
+                                    label="Update"
                                     isDisabled={false}
-                                    title="Add Post!"
+                                    title="Update Goals!"
                                     disabledTitle=""
                                     shadow={true}
                                     isRequestProcessing={false}
-                                    icon={<GrUpdate className="mr-[0.35rem] mt-px w-[13px] h-[13px]" />}
+                                    icon={<GrUpdate className="mr-[0.35rem] w-[13px] h-[13px]" />}
                                     onClick={handleUpdateGoals}
                                 />
                             </div>
@@ -54,10 +54,10 @@ const UserGoals = () => {
                             }`}
                             >
                                 <MainBtn
-                                    label="Discard"
+                                    label="Cancel"
                                     isDisabled={false}
-                                    title="Discard Post!"
-                                    disabledTitle="Disabled. Post has no content."
+                                    title="Cancel Update!"
+                                    disabledTitle="Disabled. No changes were done."
                                     shadow={true}
                                     isRequestProcessing={false}
                                     icon={<RiProhibited2Line className="mr-[0.25rem] w-4 h-4" />}
