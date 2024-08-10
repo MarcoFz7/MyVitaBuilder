@@ -740,7 +740,7 @@ const Page = () => {
         <div className="flex flex-col w-full h-full text-sm">
           <div className="flex flex-col sm:flex-row gap-1.5 p-1 w-full h-[87.5%] min-h-[500px] sm:min-h-[350px]">
             <div className="flex flex-col gap-[1%] bg-c-paper-white rounded h-full p-1 w-full sm:w-1/3 min-w-[205px]">
-              <div className="flex flex-row gap-1.5 w-full h-[12%] pb-0.5 sm:pb-0 min-h-[30px] max-h-[30px]">
+              <div className="flex flex-row gap-1.5 w-full h-[12%] pb-0.5 sm:pb-0 min-h-[30px]">
                 <div className="flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1">           
                   <MainBtn
                     label="Post"
