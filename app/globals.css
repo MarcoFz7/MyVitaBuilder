@@ -30,6 +30,7 @@
   --bigger-font: 20px;
 
   background-color: #F5F5F5;
+  height: 100vh;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,18 +46,17 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 0.25rem;
+  width: 0.375rem;
   height: 0.25rem;
 }
 
 ::-webkit-scrollbar-track {
   background-color: lightgray;
-  border-radius: 0.125rem;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: gray;
-  border-radius: 0.125rem;
+  border-radius: 0.25rem;
 }
 
 input[type='radio'] {

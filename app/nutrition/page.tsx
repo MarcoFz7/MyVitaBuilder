@@ -740,7 +740,7 @@ const Page = () => {
         <div className="flex flex-col w-full h-full text-sm">
           <div className="flex flex-col sm:flex-row gap-1.5 p-1 w-full h-[87.5%] min-h-[500px] sm:min-h-[350px]">
             <div className="flex flex-col gap-[1%] bg-c-paper-white rounded h-full p-1 w-full sm:w-1/3 min-w-[205px]">
-              <div className="flex flex-row gap-1.5 w-full h-[12%] pb-0.5 sm:pb-0">
+              <div className="flex flex-row gap-1.5 w-full h-[12%] pb-0.5 sm:pb-0 min-h-[30px] max-h-[30px]">
                 <div className="flex w-1/2 h-full rounded justify-center items-center p-0 sm:p-1">           
                   <MainBtn
                     label="Post"
@@ -848,6 +848,7 @@ const Page = () => {
                           hasUnit={true}
                           unit="kcal"
                           inSequence={false}
+                          onInputValueRequest={() => {}}
                         />
                       </div>
                     </div>
@@ -862,47 +863,10 @@ const Page = () => {
                           hasUnit={true}
                           unit="g"
                           inSequence={false}
+                          onInputValueRequest={() => {}}
                         />
                       </div>
                     </div>
-                    <div className="h-auto w-full">
-                      <div className="min-h-[35px]">
-                        <CustomInput
-                          value={totalFatInputValue}
-                          title="Total Fat"
-                          placeholder="ex. 4.6"
-                          isDisabled={true}
-                          topic="Total Fat"
-                          hasUnit={true}
-                          unit="g"
-                          inSequence={true}
-                        />
-                        <div className="flex flex-row sm:flex-col">
-                          <CustomInput
-                            value={saturatedFatInputValue}
-                            title="Sat. Fat"
-                            placeholder="ex. 1.5"
-                            isDisabled={true}
-                            topic="Sat. Fat"
-                            hasUnit={true}
-                            unit="g"
-                            inSequence={true}
-                          />
-                          <CustomInput
-                            value={transFatInputValue}
-                            title="Trans Fat"
-                            placeholder="ex. 0"
-                            isDisabled={true}
-                            topic="Trans Fat"
-                            hasUnit={true}
-                            unit="g"
-                            inSequence={false}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col justify-between h-1/2 sm:h-full w-full">
                     <div className="h-auto w-full">
                       <div className="min-h-[35px]">
                         <CustomInput
@@ -914,6 +878,7 @@ const Page = () => {
                           hasUnit={true}
                           unit="g"
                           inSequence={true}
+                          onInputValueRequest={() => {}}
                         />
                         <div className="flex flex-row sm:flex-col">
                           <CustomInput
@@ -925,6 +890,7 @@ const Page = () => {
                             hasUnit={true}
                             unit="g"
                             inSequence={true}
+                            onInputValueRequest={() => {}}
                           />
                           <CustomInput
                             value={fiberInputValue}
@@ -935,6 +901,48 @@ const Page = () => {
                             hasUnit={true}
                             unit="g"
                             inSequence={false}
+                            onInputValueRequest={() => {}}
+                          />
+                        </div>                       
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col justify-between h-1/2 sm:h-full w-full">
+                    <div className="h-auto w-full">
+                      <div className="min-h-[35px]">
+                        <CustomInput
+                          value={totalFatInputValue}
+                          title="Total Fat"
+                          placeholder="ex. 4.6"
+                          isDisabled={true}
+                          topic="Total Fat"
+                          hasUnit={true}
+                          unit="g"
+                          inSequence={true}
+                          onInputValueRequest={() => {}}
+                        />
+                        <div className="flex flex-row sm:flex-col">
+                          <CustomInput
+                            value={saturatedFatInputValue}
+                            title="Sat. Fat"
+                            placeholder="ex. 1.5"
+                            isDisabled={true}
+                            topic="Sat. Fat"
+                            hasUnit={true}
+                            unit="g"
+                            inSequence={true}
+                            onInputValueRequest={() => {}}
+                          />
+                          <CustomInput
+                            value={transFatInputValue}
+                            title="Trans Fat"
+                            placeholder="ex. 0"
+                            isDisabled={true}
+                            topic="Trans Fat"
+                            hasUnit={true}
+                            unit="g"
+                            inSequence={false}
+                            onInputValueRequest={() => {}}
                           />
                         </div>
                       </div>
@@ -950,6 +958,7 @@ const Page = () => {
                           hasUnit={true}
                           unit="mg"
                           inSequence={false}
+                          onInputValueRequest={() => {}}
                         />
                       </div>
                     </div>
@@ -964,6 +973,7 @@ const Page = () => {
                           hasUnit={true}
                           unit="mg"
                           inSequence={true}
+                          onInputValueRequest={() => {}}
                         />
                         <CustomInput
                           value={vitaminsInputValue}
@@ -974,6 +984,7 @@ const Page = () => {
                           hasUnit={false}
                           unit="null"
                           inSequence={false}
+                          onInputValueRequest={() => {}}
                         />
                       </div>
                     </div>

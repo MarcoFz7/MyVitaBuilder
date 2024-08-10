@@ -17,7 +17,7 @@ const menuMainItems=[
   {
       path:"/nutrition",
       name:"Nutrition",
-      icon:<FaHeartbeat className='w-4 h-4 mr-[0.1rem]'/>
+      icon:<FaHeartbeat className='w-[15px] h-[15px] mr-[0.1rem]'/>
   },
   {
       path:"/goals",
