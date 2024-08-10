@@ -18,31 +18,34 @@ const Page = () => {
   useState<boolean>(false);
 
   const handleDailyRadioClick = () => {
-    if (isDailySelected) {
-      setIsDailySelected(!isDailySelected);
+    if (!isDailySelected) {
+      setIsDailySelected(true);
     }
-    setIsDailySelected(!isDailySelected);
+    setIsWeeklySelected(false);
+    setIsMonthlySelected(false);
   };
 
   const handleWeeklyRadioClick = () => {
-    if (isWeeklySelected) {
-      setIsWeeklySelected(!isWeeklySelected);
+    if (!isWeeklySelected) {
+      setIsWeeklySelected(true);
     }
-    setIsWeeklySelected(!isWeeklySelected);
+    setIsDailySelected(false);
+    setIsMonthlySelected(false);
   };
 
   const handleMonthlyRadioClick = () => {
-    if (isMonthlySelected) {
-      setIsMonthlySelected(!isMonthlySelected);
+    if (!isMonthlySelected) {
+      setIsMonthlySelected(true);
     }
-    setIsMonthlySelected(!isMonthlySelected);
+    setIsDailySelected(false);
+    setIsWeeklySelected(false);
   };
   
   return (
     <div className={`${inter.className} bg-c-global-bg-color min-h-[635px] h-screen max-h-screen w-[99%] min-w-min-width absolute left-[0.5%] top-0 pt-[2.85rem] pb-[0.35rem] z-[-1]`}>
       <div className="flex flex-col w-full h-full gap-[0.5rem]">
-        <div className="flex flex-row h-1/5 w-full gap-[0.35rem]">
-          <div className="w-[20%] min-w-fit h-full p-1 bg-white border border-grey-100 shadow-sm rounded">
+        <div className="flex flex-col sm:flex-row h-full sm:h-auto w-full gap-[0.35rem] min-h-[205px] md:min-h-[180px]">
+          <div className="w-full sm:w-[22.5%] min-w-fit sm:h-full p-1 bg-white border border-grey-100 shadow-sm rounded">
             <div className="flex flex-col w-full h-full bg-c-sidebar-dark-green rounded shadow-sm">
               <div className="rounded w-full h-[12%] min-h-[35px] max-h-[35px]">
                 <div className="flex flex-row w-full h-full">
@@ -55,7 +58,7 @@ const Page = () => {
                 </div>
                 <div className="pl-0 ml-[8%] w-[84%] sm:ml-[7%] sm:w-[86%] h-px bg-white"></div>
               </div>
-              <div className="flex items-center text-white justify-center flex-grow">
+              <div className="flex items-center h-[88%] text-white justify-center p-2 sm:p-0">
                 <div className="flex flex-col gap-[10px] ml-1">
                   <div className="flex items-center">
                     <input
@@ -109,11 +112,11 @@ const Page = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-row w-[80%] h-full p-2 pt-1 pb-1 bg-white border border-grey-100 shadow-sm rounded">
+          <div className="flex flex-row w-full sm:w-[77.5%] h-auto sm:h-full p-2 pt-1 pb-3 bg-white border border-grey-100 shadow-sm rounded">
             <UserGoals/>
           </div>
         </div>
-        <div className="h-4/5 bg-white w-full border border border-grey-100 shadow-sm rounded"></div>
+        <div className="sm:h-full bg-white w-full border border border-grey-100 shadow-sm rounded"></div>
       </div>
     </div>
   );
