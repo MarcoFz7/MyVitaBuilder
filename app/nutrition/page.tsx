@@ -31,7 +31,7 @@ import Select, { MultiValue, SingleValue } from "react-select";
 import { Inter } from "next/font/google";
 import { useLogger } from "../hooks";
 import { useFetchMealGenerate } from "../services";
-import { TMealOutputDTO } from "../types";
+import { TMealRequestOutputDTO } from "../types";
 
 const inter = Inter({ weight: "400", style: "normal", subsets: ["latin"] });
 const animatedComponents = makeAnimated();
@@ -379,15 +379,11 @@ const Page = () => {
     aiSectionFieldsToValidate.stringFields,
   ]);
 
-  const [isAnswerRequestProcessing, setIsAnswerRequestProcessing] = useState<boolean>(false);
   const [isRobotRotated, setIsRobotRotated] = useState<boolean>(false);
-  const [isRobotTextBoxAnimated, setIsRobotTextBoxAnimated] =
-    useState<boolean>(false);
-  const [robotTextBoxText, setRobotTextBoxText] = useState<string>("");
   const [answerReceived, setAnswerReceived] = useState<boolean>(false);
   const [preAnswerReceived, setPreAnswerReceived] = useState<boolean>(false);
   const [displayedAnswer, setDisplayedAnswer] = useState<string>("");
-  const [fullAnswers, setFullAnswers] = useState<TMealOutputDTO[]>([]);
+  const [fullAnswers, setFullAnswers] = useState<TMealRequestOutputDTO[]>([]);
   const [copiedStatus, setCopiedStatus] = useState(
     Array(fullAnswers.length).fill("")
   );
@@ -483,26 +479,6 @@ const Page = () => {
     setIsRobotRotated(!isRobotRotated);
   };
 
-  const handleRobotIconAnimationOnMouseEnter = () => {
-    setIsRobotRotated(!isRobotRotated);
-    setRobotTextBoxText("Test me!");
-    
-    setIsRobotTextBoxAnimated(true);
-    setTimeout(() => {
-      setIsRobotTextBoxAnimated(false);
-    }, 1000);
-  };
-
-  const handleRobotIconAnimationOnMouseLeave = () => {
-    setIsRobotRotated(!isRobotRotated);
-    setRobotTextBoxText("Bye Bye!");
-
-    setIsRobotTextBoxAnimated(true);
-    setTimeout(() => {
-      setIsRobotTextBoxAnimated(false);
-    }, 1000);
-  };
-
   /**
    *
    * Handles the text typing animation for the ai answers text area.
@@ -510,7 +486,7 @@ const Page = () => {
    *
    */
   const handleTextTypingAnimation = React.useCallback(
-    (lastAnswer: TMealOutputDTO) => {
+    (lastAnswer: TMealRequestOutputDTO) => {
       // Resets display message. It should be blank before starting the process each time.
       setDisplayedAnswer("");
 
@@ -553,35 +529,6 @@ const Page = () => {
     setIngredientsTextAreaValue("");
   };
 
-  React.useEffect(() => {
-    if (fullAnswers.length >= numberOfRequests.current) {
-      return;
-    }
-
-    if (
-      fetchMealGenerateStatus === "success" &&
-      fetchMealGenerateResponse?.meals.length
-    ) {
-      setFullAnswers((prevState) => [
-        ...prevState,
-        fetchMealGenerateResponse?.meals?.[0],
-      ]);
-
-      handleTextTypingAnimation(fetchMealGenerateResponse?.meals?.[0]);
-      setIsAnswerRequestProcessing(!isAnswerRequestProcessing);
-      cleanAllMealRequestInputs();
-
-    } else if (fetchMealGenerateStatus === "failed") {
-      fetchMealGenerateRetry?.();
-    }
-  }, [
-    fetchMealGenerateStatus,
-    fetchMealGenerateResponse?.meals,
-    fetchMealGenerateRetry,
-    handleTextTypingAnimation,
-    fullAnswers.length,
-  ]);
-
   /**
    *
    * Handles the request confirmation that will generate the answer.
@@ -602,25 +549,56 @@ const Page = () => {
         goal: isWeightLossSelected ? "Weight Loss" : "Weight Gain",
       },
     });
-    setIsAnswerRequestProcessing(!isAnswerRequestProcessing);
 
-    // All this stuff is to be done when an answer is actually received from the back end, not when the request is sent!
+    // Preparation flags for the typing animation on the answer to be displayed
     setPreAnswerReceived(true);
     setTimeout(() => {
       setAnswerReceived(true);
     }, 500);
 
-    // Focus on the last answer every time a new answer is generated. Important, mainly on small screens!
-    setTimeout(() => {
-      const lastAnswer = document.getElementById("lastAnswer");
-
-      if (lastAnswer) {
-        lastAnswer.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 50);
-
     numberOfRequests.current++;
   };
+
+  /*
+   *
+   * UseEffect to follow the meal request confirmation
+   * The app behavior will be different depending on the request response status
+   * 
+   */
+  useEffect(() => {
+    if (fullAnswers.length >= numberOfRequests.current) {
+      return;
+    }
+
+    if (
+      fetchMealGenerateStatus === "success" &&
+      fetchMealGenerateResponse?.meals.length
+    ) {
+      setFullAnswers((prevState) => [
+        ...prevState,
+        fetchMealGenerateResponse?.meals?.[0],
+      ]);
+
+      handleTextTypingAnimation(fetchMealGenerateResponse?.meals?.[0]);
+      
+      // Focus on the last answer every time a new answer is generated. Important, mainly on small screens!
+      setTimeout(() => {
+        const lastAnswer = document.getElementById("lastAnswer");
+        if (lastAnswer) {
+          lastAnswer.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 500);
+      cleanAllMealRequestInputs();
+
+    } else if (fetchMealGenerateStatus === "failed") {
+      fetchMealGenerateRetry?.();
+    }
+  }, [
+    fetchMealGenerateStatus,
+    fetchMealGenerateResponse?.meals,
+    fetchMealGenerateRetry,
+    fullAnswers.length,
+  ]); 
 
   useEffect(() => {
     if (fullAnswers.length === 0) {
@@ -725,6 +703,15 @@ const Page = () => {
       setVitaminsInputValue(sampleRequestAnswer.vitamins.value);
 
       setOperationStatusTrueOrFalse(2, index, "true");
+
+      // Focus on the meal nutrition details section
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }, 500);
+      
     } catch (error) {
       setOperationStatusTrueOrFalse(2, index, "false");
     } finally {
@@ -1016,8 +1003,6 @@ const Page = () => {
       </div>
       <div
         className={`${inter.className} page-ai-calculator-section bg-white border border border-grey-100 shadow-sm`}
-        onMouseEnter={handleRobotIconAnimationOnMouseEnter}
-        onMouseLeave={handleRobotIconAnimationOnMouseLeave}
       >
         <span className="ai-calculator-header shadow">
           Get <b>better results</b> through your meals and preparation using{" "}
@@ -1154,8 +1139,8 @@ const Page = () => {
                 title="Confirm Request!"
                 disabledTitle="Disabled. Section not configured."
                 shadow={false}
-                isRequestProcessing={isAnswerRequestProcessing}
-                icon={<RiSendPlaneLine className="mr-[0.25rem] w-4 h-4 mt-px" />}
+                isRequestProcessing={fetchMealGenerateIsFetching}
+                icon={<RiSendPlaneLine className="mr-[0.25rem] w-[14px] h-[14px] mt-px" />}
                 onClick={handleRequestConfirmation}
               />
             </div>
@@ -1173,29 +1158,13 @@ const Page = () => {
                     className={`flex flex-col items-center transition-all duration-250 ease ${
                       preAnswerReceived ? "opacity-0" : "opacity-1"
                     }`}
-                  >
-                    <div
-                      className={`border-c-sidebar-dark-green relative left-12 ${
-                        isRobotTextBoxAnimated
-                          ? "top-5 opacity-1"
-                          : "top-7 opacity-0"
-                      } p-1 w-auto h-auto bg-white text-black border border-black rounded z-20 transition-top duration-500 ease`}
-                    >
-                      <span>{robotTextBoxText}</span>
-                    </div>
-                    <div
-                      className={`border-r-[10px] border-r-transparent border-t-[10px] border-c-sidebar-dark-green relative w-0 h-0 ${
-                        isRobotTextBoxAnimated
-                          ? "top-[16px] opacity-1"
-                          : "top-[24px] opacity-0"
-                      } left-[20px] z-4 transition-top duration-500 ease`}
-                    ></div>
+                  >                   
                     <RiRobot2Fill
                       className={`${
                         isRobotRotated
                           ? "animate-rotate-360"
                           : "animate-rotate-360-minus"
-                      } w-16 h-16 text-black justify-start mt-1.5 ml-1.5 mr-1`}
+                      } w-16 h-16 text-black justify-start mt-1.5 ml-1.5 mr-1 hover:cursor-pointer`}
                       onClick={handleRobotIconAnimation}
                     />
                   </div>
@@ -1231,8 +1200,7 @@ const Page = () => {
                               {answer.description}
                             </span>
                           ) : (
-                            <span
-                              id="lastAnswer"
+                            <span                              
                               className="text-black mt-0 p-1 pl-1.5 pr-1.5 transition-all duration-250 ease"
                             >
                               {displayedAnswer}
@@ -1259,6 +1227,7 @@ const Page = () => {
                         ) : null}
                       </div>
                     ))}
+                    <label id="lastAnswer" className="ml-[12.5%] block mt-1 mb-1 text-sm pt-px w-9/12"></label>
                   </>
                 )}
               </div>
