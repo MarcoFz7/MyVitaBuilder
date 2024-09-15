@@ -554,7 +554,7 @@ const Page = () => {
     setPreAnswerReceived(true);
     setTimeout(() => {
       setAnswerReceived(true);
-    }, 500);
+    }, 500); 
 
     numberOfRequests.current++;
   };
@@ -587,7 +587,7 @@ const Page = () => {
         if (lastAnswer) {
           lastAnswer.scrollIntoView({ behavior: "smooth" });
         }
-      }, 500);
+      }, 500); 
       cleanAllMealRequestInputs();
 
     } else if (fetchMealGenerateStatus === "failed") {
@@ -669,14 +669,14 @@ const Page = () => {
 
         setTimeout(() => {
           setOperationStatusTrueOrFalse(1, index, "");
-        }, 2500);
+        }, 2500); 
       })
       .catch(() => {
         setOperationStatusTrueOrFalse(1, index, "false");
 
         setTimeout(() => {
           setOperationStatusTrueOrFalse(1, index, "");
-        }, 2500);
+        }, 2500); 
       });
   };
 
@@ -710,7 +710,7 @@ const Page = () => {
           top: 0,
           behavior: 'smooth'
         });
-      }, 500);
+      }, 500); 
       
     } catch (error) {
       setOperationStatusTrueOrFalse(2, index, "false");
@@ -835,6 +835,9 @@ const Page = () => {
                           hasUnit={true}
                           unit="kcal"
                           inSequence={false}
+                          numbersOnly={true}
+                          maxValue={100000}
+                          minValue={100}
                           onInputValueRequest={() => {}}
                         />
                       </div>
@@ -850,6 +853,9 @@ const Page = () => {
                           hasUnit={true}
                           unit="g"
                           inSequence={false}
+                          numbersOnly={true}
+                          maxValue={100000}
+                          minValue={50}
                           onInputValueRequest={() => {}}
                         />
                       </div>
@@ -865,6 +871,9 @@ const Page = () => {
                           hasUnit={true}
                           unit="g"
                           inSequence={true}
+                          numbersOnly={true}
+                          maxValue={100000}
+                          minValue={50}
                           onInputValueRequest={() => {}}
                         />
                         <div className="flex flex-row sm:flex-col">
@@ -877,6 +886,9 @@ const Page = () => {
                             hasUnit={true}
                             unit="g"
                             inSequence={true}
+                            numbersOnly={true}
+                            maxValue={100000}
+                            minValue={50}
                             onInputValueRequest={() => {}}
                           />
                           <CustomInput
@@ -888,6 +900,9 @@ const Page = () => {
                             hasUnit={true}
                             unit="g"
                             inSequence={false}
+                            numbersOnly={true}
+                            maxValue={100000}
+                            minValue={50}
                             onInputValueRequest={() => {}}
                           />
                         </div>                       
@@ -906,6 +921,9 @@ const Page = () => {
                           hasUnit={true}
                           unit="g"
                           inSequence={true}
+                          numbersOnly={true}
+                          maxValue={100000}
+                          minValue={50}
                           onInputValueRequest={() => {}}
                         />
                         <div className="flex flex-row sm:flex-col">
@@ -918,6 +936,9 @@ const Page = () => {
                             hasUnit={true}
                             unit="g"
                             inSequence={true}
+                            numbersOnly={true}
+                            maxValue={100000}
+                            minValue={50}
                             onInputValueRequest={() => {}}
                           />
                           <CustomInput
@@ -929,6 +950,9 @@ const Page = () => {
                             hasUnit={true}
                             unit="g"
                             inSequence={false}
+                            numbersOnly={true}
+                            maxValue={100000}
+                            minValue={50}
                             onInputValueRequest={() => {}}
                           />
                         </div>
@@ -945,6 +969,9 @@ const Page = () => {
                           hasUnit={true}
                           unit="mg"
                           inSequence={false}
+                          numbersOnly={true}
+                          maxValue={100000}
+                          minValue={50}
                           onInputValueRequest={() => {}}
                         />
                       </div>
@@ -960,6 +987,9 @@ const Page = () => {
                           hasUnit={true}
                           unit="mg"
                           inSequence={true}
+                          numbersOnly={true}
+                          maxValue={100000}
+                          minValue={50}
                           onInputValueRequest={() => {}}
                         />
                         <CustomInput
@@ -971,6 +1001,9 @@ const Page = () => {
                           hasUnit={false}
                           unit="null"
                           inSequence={false}
+                          numbersOnly={false}
+                          maxValue={0}
+                          minValue={0}
                           onInputValueRequest={() => {}}
                         />
                       </div>

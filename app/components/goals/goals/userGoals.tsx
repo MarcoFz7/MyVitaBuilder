@@ -1,6 +1,6 @@
 import MainBtn from "../../buttons/mainBtn";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { GrUpdate } from "react-icons/gr";
 import { RiProhibited2Line } from "react-icons/ri";
@@ -11,6 +11,13 @@ import { IoLockOpen } from "react-icons/io5";
 import CustomInput from "../../customInput/customInput";
 import CustomMessage from "../../customMessage/customMessage";
 
+/**
+ * Interface for the user goals component with needed props from the parent
+ */
+interface UserGoalsProps {
+    cadence: string; 
+}
+
 const userSampleData = {
     "calories": "2100",
     "protein": "150",
@@ -20,9 +27,24 @@ const userSampleData = {
 
 /**
  * 
+ * @param cadence - the cadence selected by the user
+ *  
  * @returns user goals component
  */
-const UserGoals = () => {
+const UserGoals = ({ cadence }: UserGoalsProps) => {
+
+    // Reset the update goals process if the cadence was changed to weekly/monthly
+    useEffect(() => {
+        if (cadence == "Weekly" || cadence == "Monthly") {
+            setIsGoalsChangeAllowed(false);
+
+            setCaloriesInputValue(savedCaloriesInputValue);
+            setProteinInputValue(savedProteinInputValue);
+            setTotalCarbsInputValue(savedTotalCarbsInputValue);
+            setTotalFatInputValue(savedTotalFatInputValue);
+        }
+    }, [cadence]);
+
     const [showUpdateWarningMessage, setShowUpdateWarningMessage] = useState<boolean>(false);
     const [changeUpdateWarningMessageOpacity, setChangeUpdateWarningMessageOpacity] = useState<boolean>(false);
 
@@ -82,22 +104,82 @@ const UserGoals = () => {
             // Reset lock fields icon
             handleLockGoalsClick(false);
         } else {
+            setCustomMessageType(2);
+            setCustomMessageText("Please change at least one value/field!");
             setShowUpdateWarningMessage(true);
             setChangeUpdateWarningMessageOpacity(true);
         }
     }
 
-    
-    const handleCaloriesInputResponse = (responseValue: string) => {
+
+    // Variables and functions for the custom inputs
+    // These next consts have the default custom message for the update warning
+    const [customMessageType, setCustomMessageType] = useState<number>(2);
+    const [customMessageText, setCustomMessageText] = useState<string>("Please change at least one value/field!");
+
+    // Function that will be called on all input handlers for user information/warning messages
+    const handleShowMessage = (responseValue: string, maxMinValue: number) => {
+        if (responseValue == "Invalid") {
+            setCustomMessageType(2);
+            setCustomMessageText("Invalid character.");
+            setShowUpdateWarningMessage(true);
+            setChangeUpdateWarningMessageOpacity(true);
+            return true;
+        }
+
+        if (responseValue == "LowValue") {
+            setCustomMessageType(2);
+            setCustomMessageText(`Value is too Low. Min: ${maxMinValue}.`);
+            setShowUpdateWarningMessage(true);
+            setChangeUpdateWarningMessageOpacity(true);
+            return true;
+        }
+
+        if (responseValue == "HighValue") {
+            setCustomMessageType(2);
+            setCustomMessageText(`Value is too High. Max: ${maxMinValue}.`);
+            setShowUpdateWarningMessage(true);
+            setChangeUpdateWarningMessageOpacity(true);
+            return true;
+        }
+    }
+
+    /**
+     * Handlers for changes on inputs 
+     * Receive the response value, and the max or min value in case the value is higher or lower that the respective value
+     * 
+     * If the warning message is to be shown to the user, the value should not be set
+     */ 
+    const handleCaloriesInputResponse = (responseValue: string, maxMinValue: number) => {
+        const showMessage = handleShowMessage(responseValue, maxMinValue);
+
+        if (showMessage) {
+            return;
+        }
         setCaloriesInputValue(responseValue);
     };
-    const handleProteinInputResponse = (responseValue: string) => {
+    const handleProteinInputResponse = (responseValue: string, maxMinValue: number) => {
+        const showMessage = handleShowMessage(responseValue, maxMinValue);
+
+        if (showMessage) {
+            return;
+        }
         setProteinInputValue(responseValue);
     };
-    const handleTotalCarbsInputResponse = (responseValue: string) => {
+    const handleTotalCarbsInputResponse = (responseValue: string, maxMinValue: number) => {
+        const showMessage = handleShowMessage(responseValue, maxMinValue);
+
+        if (showMessage) {
+            return;
+        }
         setTotalCarbsInputValue(responseValue);
     };
-    const handleTotalFatInputResponse = (responseValue: string) => {
+    const handleTotalFatInputResponse = (responseValue: string, maxMinValue: number) => {
+        const showMessage = handleShowMessage(responseValue, maxMinValue);
+
+        if (showMessage) {
+            return;
+        }
         setTotalFatInputValue(responseValue);
     };
 
@@ -115,18 +197,25 @@ const UserGoals = () => {
         }
     }
 
+    // Function to reset custom message to its default
+    const resetCustomMessage = () => {
+        setShowUpdateWarningMessage(false);
+        setCustomMessageType(2);
+        setCustomMessageText("Please change at least one value/field!");
+    };
+
     return (
         <>
             <div className="flex flex-col w-full h-full">
                 <div className="rounded w-full h-[12%] min-h-[35px] max-h-[35px]">
-                    <div className="flex flex-row w-full h-full justify-center">
+                    <div className="flex flex-row w-[96%] pl-[4%] h-full justify-center">
                         {showUpdateWarningMessage ? (
                             <CustomMessage
-                                type={2}
-                                message="Please change at least one value/field!"
+                                type={customMessageType}
+                                message={customMessageText}
                                 iconSize="text-base"
                                 isOpacityOne={changeUpdateWarningMessageOpacity}
-                                onTransitionEnd={() => setShowUpdateWarningMessage(false)}
+                                onTransitionEnd={resetCustomMessage}
                             />
                         ) : (
                             <div className="flex w-full h-full justify-center items-center text-sm">
@@ -146,7 +235,7 @@ const UserGoals = () => {
                                 <div className="flex w-full h-full rounded items-center justify-center p-2">
                                     <MainBtn
                                         label="Update"
-                                        isDisabled={false}
+                                        isDisabled={cadence != "Daily"}
                                         title="Update Goals!"
                                         disabledTitle=""
                                         shadow={true}
@@ -189,6 +278,9 @@ const UserGoals = () => {
                                                     hasUnit={true}
                                                     unit="kcal"
                                                     inSequence={false}
+                                                    numbersOnly={true}
+                                                    maxValue={100000}
+                                                    minValue={100}
                                                     onInputValueRequest={handleCaloriesInputResponse}
                                                 />
                                             </div>
@@ -204,6 +296,9 @@ const UserGoals = () => {
                                                     hasUnit={true}
                                                     unit="g"
                                                     inSequence={false}
+                                                    numbersOnly={true}
+                                                    maxValue={50000}
+                                                    minValue={10}
                                                     onInputValueRequest={handleProteinInputResponse}
                                                 />
                                             </div>
@@ -212,13 +307,13 @@ const UserGoals = () => {
                                 </div>
                             </div>
                             <div className="flex h-full w-full sm:w-[20px] justify-center sm:items-center sm:pt-3">
-                                {!isGoalsChangeAllowed ? (
+                                {!isGoalsChangeAllowed && cadence == "Daily" ? (
                                     <IoLockClosed title='Open goals for change!' className='fill-c-dark-green w-5 h-5 cursor-pointer' onClick={() => handleLockGoalsClick(true)} />
-                                )
-                                    :
-                                    (
-                                        <IoLockOpen title='Lock goals!' className='fill-c-dark-green w-5 h-5 cursor-pointer' onClick={() => handleLockGoalsClick(true)} />
-                                    )}
+                                ) : cadence == "Daily" ? (
+                                    <IoLockOpen title='Lock goals!' className='fill-c-dark-green w-5 h-5 cursor-pointer' onClick={() => handleLockGoalsClick(true)} />
+                                ) : (
+                                    <IoLockClosed title='Open goals for change!' className='fill-c-custom-shadow-black w-5 h-5 cursor-pointer'/>
+                                )}  
                             </div>
                             <div className="h-full w-full sm:w-1/2 pt-0 md:pt-1 sm:p-1 pl-0 text-white">
                                 <div className="flex flex-col w-full h-full items-center md:pt-1 text-sm">
@@ -234,6 +329,9 @@ const UserGoals = () => {
                                                     hasUnit={true}
                                                     unit="g"
                                                     inSequence={true}
+                                                    numbersOnly={true}
+                                                    maxValue={50000}
+                                                    minValue={10}
                                                     onInputValueRequest={handleTotalCarbsInputResponse}
                                                 />
                                             </div>
@@ -249,6 +347,9 @@ const UserGoals = () => {
                                                     hasUnit={true}
                                                     unit="g"
                                                     inSequence={true}
+                                                    numbersOnly={true}
+                                                    maxValue={10000}
+                                                    minValue={10}
                                                     onInputValueRequest={handleTotalFatInputResponse}
                                                 />
                                             </div>

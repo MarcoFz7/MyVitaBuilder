@@ -16,10 +16,13 @@ const Page = () => {
   useState<boolean>(false);
   const [isMonthlySelected, setIsMonthlySelected] =
   useState<boolean>(false);
+  const [selectedCadence, setSelectedCadence] =
+  useState<string>("Daily");
 
   const handleDailyRadioClick = () => {
     if (!isDailySelected) {
       setIsDailySelected(true);
+      setSelectedCadence("Daily");
     }
     setIsWeeklySelected(false);
     setIsMonthlySelected(false);
@@ -28,6 +31,7 @@ const Page = () => {
   const handleWeeklyRadioClick = () => {
     if (!isWeeklySelected) {
       setIsWeeklySelected(true);
+      setSelectedCadence("Weekly");
     }
     setIsDailySelected(false);
     setIsMonthlySelected(false);
@@ -36,6 +40,7 @@ const Page = () => {
   const handleMonthlyRadioClick = () => {
     if (!isMonthlySelected) {
       setIsMonthlySelected(true);
+      setSelectedCadence("Monthly");
     }
     setIsDailySelected(false);
     setIsWeeklySelected(false);
@@ -113,10 +118,11 @@ const Page = () => {
             </div>
           </div>
           <div className="flex flex-row w-full sm:w-[77.5%] h-auto sm:h-full p-2 pt-1 pb-3 bg-white border border-grey-100 shadow-sm rounded">
-            <UserGoals/>
+            <UserGoals cadence={selectedCadence}/>
           </div>
         </div>
-        <div className="sm:h-full bg-white w-full border border border-grey-100 shadow-sm rounded"></div>
+        <div className="sm:h-full bg-white w-full border border border-grey-100 shadow-sm rounded">
+        </div>
       </div>
     </div>
   );

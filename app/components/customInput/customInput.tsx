@@ -12,10 +12,13 @@ interface CustomInputProps {
     hasUnit: boolean;
     unit: string;
     inSequence: boolean;
+    numbersOnly: boolean;
+    maxValue: number;
+    minValue: number;
 
     // Callback function to handle comunication between parent and child. 
     // In this case this component triggers it and sends the value to the parent, the parent does nothing besides receiving the value
-    onInputValueRequest: (input: string) => void;
+    onInputValueRequest: (input: string, maxMinValue: number) => void;
 }
 
 /**
@@ -28,11 +31,14 @@ interface CustomInputProps {
  * @param hasUnit - option to allow to specify the unit of the topic, in case it has a unit, ex. Calories - kcal
  * @param unit - unit of the input
  * @param inSequence - option to change input when its used in sequence with another one
+ * @param numbersOnly - option to make input accept only numbers
+ * @param maxValue - max value for numbers only input
+ * @param minValue - min value for numbers only input
  * @param onInputValueRequest - function to retrive value on change
  * 
  * @returns custom input
  */
-const CustomInput = ({ value, title, placeholder, isDisabled, topic, hasUnit, unit, inSequence, onInputValueRequest }: CustomInputProps) => {
+const CustomInput = ({ value, title, placeholder, isDisabled, topic, hasUnit, unit, inSequence, numbersOnly, maxValue, minValue, onInputValueRequest }: CustomInputProps) => {
     const [inputValue, setInputValue] = useState(value);
 
     /**
@@ -43,19 +49,48 @@ const CustomInput = ({ value, title, placeholder, isDisabled, topic, hasUnit, un
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
 
+        if (numbersOnly) {
+            if (parseInt(newValue) < minValue) {
+                updateValue("LowValue", minValue);
+                return;
+            }
+
+            if (parseInt(newValue) > maxValue) {
+                updateValue("HighValue", maxValue);
+                return;
+            }
+        }
+
         setInputValue(newValue);
-        updateValue(newValue);
+        updateValue(newValue, 0);
     };
 
-    const updateValue = (newValue: string) => {
-        onInputValueRequest(newValue);
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (numbersOnly) {
+            const key = e.key;
+        
+            // Allow navigation keys, backspace, delete, etc.
+            if (['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'].includes(key)) {
+            return;
+            }
+        
+            // Prevent non-numeric characters
+            if (!/^\d$/.test(key)) {
+            e.preventDefault();
+            updateValue("Invalid", 0);
+            }
+        }
+    };
+
+    const updateValue = (newValue: string, maxMinValue: number) => {
+        onInputValueRequest(newValue, maxMinValue);
     }
 
     return (
         <>
             <div className={`h-full min-h-[32px] p-1.5 sm:p-2 ${inSequence && '!pb-0'}`}>
                 <div className={`flex flex-row justify-between gap-1 w-full h-full rounded p-1 pt-0.5 pb-0.5 pr-0.5 border border-grey-100 ${isDisabled ? 'shadow-customShadow' : 'shadow-inner'} sm:h-[32px]`}>
-                    <input title={title} placeholder={placeholder} disabled={isDisabled} value={value} onChange={handleInputChange} className='flex flex-grow text-black h-full pl-0.5 w-1/3 items-center rounded pt-0.5 bg-transparent focus:outline-none' />
+                    <input title={title} placeholder={placeholder} disabled={isDisabled} value={value} onKeyDown={handleKeyDown} onChange={handleInputChange} className='flex flex-grow text-black h-full pl-0.5 w-1/3 items-center rounded pt-0.5 bg-transparent focus:outline-none'/>
                     <div className='flex w-auto h-full bg-c-dark-green rounded p-0.5 pl-1 pr-1 gap-1'>
                         <span className='flex items-center h-full font-bold text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{topic}</span>
                         {hasUnit && (
