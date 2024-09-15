@@ -1,8 +1,8 @@
 import { useFetch } from "@/app/hooks/useFetch";
-import { TMealGenerateInputDto, TMealOutputDTO } from "@/app/types";
+import { TMealGenerateInputDto, TMealRequestOutputDTO } from "@/app/types";
 
 export const useFetchMealGenerate = () => {
-  return useFetch<TMealGenerateInputDto, { meals: Array<TMealOutputDTO> }>({
+  return useFetch<TMealGenerateInputDto, { meals: Array<TMealRequestOutputDTO> }>({
     path: "meals/generate",
     method: "POST",
   });

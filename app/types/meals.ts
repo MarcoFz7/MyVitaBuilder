@@ -17,7 +17,7 @@ export type TMealGenerateInputDto = {
   language?: string;
 };
 
-export type TMealOutputDTO = {
+export type TMealRequestOutputDTO = {
   description: string;
   energy: TMealItem;
   protein: TMealItem;
