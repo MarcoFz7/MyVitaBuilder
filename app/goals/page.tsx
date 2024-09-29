@@ -5,9 +5,12 @@ import { MdAccessTimeFilled } from "react-icons/md";
 import { Inter } from "next/font/google";
 import { useState } from "react";
 
-import UserGoals from "../components/goals/goals/userGoals";
+import UserGoals from "../components/goals/userGoals/userGoals";
+import Goals from "../components/goals/goals/goals";
+import History from "../components/history/history/history";
 
 const inter = Inter({ weight: "400", style: "normal", subsets: ["latin"] });
+
 
 const Page = () => {
   const [isDailySelected, setIsDailySelected] =
@@ -121,8 +124,18 @@ const Page = () => {
             <UserGoals cadence={selectedCadence}/>
           </div>
         </div>
-        <div className="sm:h-full bg-white w-full border border border-grey-100 shadow-sm rounded">
-        </div>
+        <div className="flex flex-col sm:flex-row h-full w-full gap-[0.35rem]">
+          <div className="sm:h-full p-1 bg-white w-full border border border-grey-100 shadow-sm rounded">
+            <div className="w-full h-full rounded">
+              <Goals cadence={selectedCadence}/>
+            </div>       
+          </div> 
+          <div className="sm:h-full p-1 bg-white w-full border border border-grey-100 shadow-sm rounded">
+            <div className="w-full h-full rounded">
+              <History/>
+            </div>
+          </div> 
+        </div> 
       </div>
     </div>
   );
