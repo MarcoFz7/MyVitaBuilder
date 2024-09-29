@@ -585,7 +585,25 @@ const Page = () => {
       setTimeout(() => {
         const lastAnswer = document.getElementById("lastAnswer");
         if (lastAnswer) {
-          lastAnswer.scrollIntoView({ behavior: "smooth" });
+          const elementPosition = lastAnswer.getBoundingClientRect().bottom;
+          const windowHeight = window.innerHeight;
+
+          if (elementPosition > windowHeight) {
+            window.scrollBy({
+              top: elementPosition - windowHeight - 100,
+              behavior: "smooth",
+            });
+          }
+        }
+
+        // Scroll to bottom of answers div
+        const answersDiv = document.getElementById("answersDiv");
+
+        if (answersDiv) {
+          answersDiv.scrollTo({
+            top: answersDiv.scrollHeight,
+            behavior: "smooth"
+          });
         }
       }, 500); 
       cleanAllMealRequestInputs();
@@ -1182,6 +1200,7 @@ const Page = () => {
             <label className="block mt-1.5 mb-1.5 text-sm text-white-900 pt-px bg-white/50"></label>
             <div className="h-full w-full rounded-sm bg-white/50 flex flex-col justify-end">
               <div
+                id="answersDiv"
                 className={`flex flex-col p-1 ${
                   answerReceived ? "overflow-y-auto" : "overflow-y-hidden"
                 }`}

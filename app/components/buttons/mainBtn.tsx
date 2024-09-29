@@ -36,7 +36,7 @@ const MainBtn = ({ label, isDisabled, title, disabledTitle, icon, shadow, isRequ
               {!isRequestProcessing ? 
                 (icon) 
                 : 
-                (<FontAwesomeIcon icon={faCircleNotch} className="mr-[0.375rem] animate-spin w-3 h-3"/>)
+                (<FontAwesomeIcon icon={faCircleNotch} className="mt-0.5 mr-[0.375rem] animate-spin w-3 h-3"/>)
               }
               <strong>{label}</strong></span>
         </button>

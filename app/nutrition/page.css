@@ -68,7 +68,7 @@
     flex-direction: column;
     width: 98%;
     height: auto;
-    max-height:min-content;
+    max-height: 100%;
 
     margin: 1% 0px 0px 1%;
     padding: 0.5% 3% 2% 2%;
