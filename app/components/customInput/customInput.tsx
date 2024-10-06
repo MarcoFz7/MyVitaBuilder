@@ -93,7 +93,7 @@ const CustomInput = ({ value, title, placeholder, isDisabled, topic, hasUnit, un
             <div className={`h-full min-h-[32px] p-1.5 sm:p-2 ${inSequence && '!pb-0'}`}>
                 <div className={`flex flex-row justify-between gap-1 w-full h-full rounded p-1 pt-0.5 pb-0.5 pr-0.5 border border-grey-100 ${isDisabled ? 'shadow-customShadow' : 'shadow-inner'} sm:h-[32px]`}>
                     <input title={title} placeholder={placeholder} disabled={isDisabled} value={value} onKeyDown={handleKeyDown} onChange={handleInputChange} className='flex flex-grow text-black h-full pl-0.5 w-1/3 items-center rounded pt-0.5 bg-transparent focus:outline-none'/>
-                    <div className={`flex w-auto h-full bg-c-dark-green rounded justify-between p-0.5 pl-1 pr-1 gap-1 w-[95px] ${isSmallerInput && 'max-w-[67.5px] sm:!max-w-full'}`}>
+                    <div className={`flex h-full bg-c-dark-green rounded justify-between p-0.5 pl-1 pr-1 gap-1 w-[95px] ${isSmallerInput && 'max-w-[67.5px] sm:!max-w-full'}`}>
                         <div className="flex w-full justify-center">
                             <span className='flex items-center h-full font-bold text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{topic}</span>
                         </div>
