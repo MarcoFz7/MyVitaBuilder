@@ -87,7 +87,7 @@ const Goals = ({ cadence } : GoalsProps) => {
                         </div>             
                         </div>
                         <div className="grid pl-0 ml-[2%] w-[96%] h-px bg-c-dark-green justify-center">
-                            <GoTriangleDown className={`relative text-c-dark-green top-[-15px] w-6 h-6 hover:cursor-pointer hover:text-c-sidebar-dark-green rotate-180 ${!isGoalsSectionExpanded && '!top-[-8px] rotate-0'}`} title={`${isGoalsSectionExpanded ? 'Close Goals Section!' : 'Expand Goals Section!'}`} onClick={handleGoalsSectionExpand}/>
+                            <GoTriangleDown className={`relative text-c-dark-green top-[-15px] w-6 h-6 hover:cursor-pointer hover:text-c-sidebar-dark-green ${!isGoalsSectionExpanded ? '!top-[-8px] rotate-0' : 'rotate-180'}`} title={`${isGoalsSectionExpanded ? 'Close Goals Section!' : 'Expand Goals Section!'}`} onClick={handleGoalsSectionExpand}/>
                         </div>
                     </div>
                     {isGoalsSectionExpanded ? (
