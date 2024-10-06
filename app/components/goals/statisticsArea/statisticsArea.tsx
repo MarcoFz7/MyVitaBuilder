@@ -82,7 +82,7 @@ const StatisticsArea = ({ userDataToUseUnit, userDataToUsePercentage, initialize
                         </span>
                     </div>
                 </div>
-                <div className={`flex ${initializeWithPhoneLayout ? 'flex-col' : 'flex-col sm:flex-row'} w-full h-full gap-[2%] sm:gap-[8%] mt-[1%] sm:mt-0`}>
+                <div className={`flex ${initializeWithPhoneLayout ? 'flex-col sm:!gap-[2%]' : 'flex-col sm:flex-row'} w-full h-full gap-[2%] sm:gap-[8%] mt-[1%] sm:mt-0`}>
                     <div className={`flex flex-col h-full w-full ${initializeWithPhoneLayout ? 'w-full' : 'sm:w-[46%]'} rounded`}>
                         <div className="flex w-full h-[10%] w-full justify-center items-center">
                             <span className="flex items-center text-c-dark-green whitespace-nowrap overflow-hidden p-1">

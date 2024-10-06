@@ -853,6 +853,7 @@ const Page = () => {
                           hasUnit={true}
                           unit="kcal"
                           inSequence={false}
+                          isSmallerInput={false}
                           numbersOnly={true}
                           maxValue={100000}
                           minValue={100}
@@ -871,6 +872,7 @@ const Page = () => {
                           hasUnit={true}
                           unit="g"
                           inSequence={false}
+                          isSmallerInput={false}
                           numbersOnly={true}
                           maxValue={100000}
                           minValue={50}
@@ -889,6 +891,7 @@ const Page = () => {
                           hasUnit={true}
                           unit="g"
                           inSequence={true}
+                          isSmallerInput={false}
                           numbersOnly={true}
                           maxValue={100000}
                           minValue={50}
@@ -905,6 +908,7 @@ const Page = () => {
                             unit="g"
                             inSequence={true}
                             numbersOnly={true}
+                            isSmallerInput={true}
                             maxValue={100000}
                             minValue={50}
                             onInputValueRequest={() => {}}
@@ -919,6 +923,7 @@ const Page = () => {
                             unit="g"
                             inSequence={false}
                             numbersOnly={true}
+                            isSmallerInput={true}
                             maxValue={100000}
                             minValue={50}
                             onInputValueRequest={() => {}}
@@ -940,6 +945,7 @@ const Page = () => {
                           unit="g"
                           inSequence={true}
                           numbersOnly={true}
+                          isSmallerInput={false}
                           maxValue={100000}
                           minValue={50}
                           onInputValueRequest={() => {}}
@@ -955,6 +961,7 @@ const Page = () => {
                             unit="g"
                             inSequence={true}
                             numbersOnly={true}
+                            isSmallerInput={true}
                             maxValue={100000}
                             minValue={50}
                             onInputValueRequest={() => {}}
@@ -964,11 +971,12 @@ const Page = () => {
                             title="Trans Fat"
                             placeholder="ex. 0"
                             isDisabled={true}
-                            topic="Trans Fat"
+                            topic="Tra. Fat"
                             hasUnit={true}
                             unit="g"
                             inSequence={false}
                             numbersOnly={true}
+                            isSmallerInput={true}
                             maxValue={100000}
                             minValue={50}
                             onInputValueRequest={() => {}}
@@ -988,6 +996,7 @@ const Page = () => {
                           unit="mg"
                           inSequence={false}
                           numbersOnly={true}
+                          isSmallerInput={false}
                           maxValue={100000}
                           minValue={50}
                           onInputValueRequest={() => {}}
@@ -1006,6 +1015,7 @@ const Page = () => {
                           unit="mg"
                           inSequence={true}
                           numbersOnly={true}
+                          isSmallerInput={true}
                           maxValue={100000}
                           minValue={50}
                           onInputValueRequest={() => {}}
@@ -1019,6 +1029,7 @@ const Page = () => {
                           hasUnit={false}
                           unit="null"
                           inSequence={false}
+                          isSmallerInput={true}
                           numbersOnly={false}
                           maxValue={0}
                           minValue={0}
@@ -1057,7 +1068,8 @@ const Page = () => {
       >
         <span className="ai-calculator-header shadow">
           Get <b>better results</b> through your meals and preparation using{" "}
-          <strong>AI!</strong>
+          <strong>AI</strong>!
+          Obtain the best recipes, convert them to posts and share them!
         </span>
         <div className="ai-calculator-info shadow">
           <div>
