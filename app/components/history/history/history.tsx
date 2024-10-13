@@ -2,6 +2,7 @@ import { useState } from "react";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 
 import { MdHistory } from "react-icons/md";
+import { ContinuousCalendar } from "../calendar/calendar";
 
 /**
  * 
@@ -16,7 +17,7 @@ const History = () => {
   
   return (
     <>
-      <div className={`h-full p-2 pt-0 bg-white w-full border border border-grey-100 shadow-sm rounded transition-all duration-500 ease ${!isHistorySectionExpanded && '!h-[35px]'}`}>
+      <div className={`h-auto p-2 pt-0 bg-white w-full border border border-grey-100 shadow-sm rounded transition-all duration-500 ease ${!isHistorySectionExpanded && '!h-[35px]'}`}>
         <div className="w-full h-full rounded">
           <div className={`flex flex-col rounded w-full h-full items-center text-sm ${isHistorySectionExpanded ? 'mt-1' : 'mt-0'}`}>
             <div className="rounded w-full h-[12%] min-h-[35px] max-h-[35px]">
@@ -46,8 +47,8 @@ const History = () => {
               )}
             </div>
             {isHistorySectionExpanded && (
-              <div className="w-full h-full p-5 pr-10 pl-10">
-                  
+              <div className="w-full h-full p-1 pr-2 pl-2">
+                  <ContinuousCalendar/>
               </div>
             )}
           </div>

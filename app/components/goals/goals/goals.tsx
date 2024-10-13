@@ -66,7 +66,7 @@ const userDataSamplePercentage = [
  * @returns goals component
  */
 const Goals = ({ cadence }: GoalsProps) => {
-    const [isGoalsSectionExpanded, setIsGoalsSectionExpanded] = useState<boolean>(true);
+    const [isGoalsSectionExpanded, setIsGoalsSectionExpanded] = useState<boolean>(false);
 
     const handleGoalsSectionExpand = () => {
         setIsGoalsSectionExpanded(!isGoalsSectionExpanded);

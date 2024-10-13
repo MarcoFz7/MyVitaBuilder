@@ -155,6 +155,8 @@ input[type='radio'] {
         background-color: rgb(var(--paper-white-rgb));
         min-height: 32px;
         margin-right: 4px;
+
+        cursor: pointer;
     }
     .select .css-1fdsijx-ValueContainer {
         padding-left: 0.25rem;

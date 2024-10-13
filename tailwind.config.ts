@@ -48,6 +48,7 @@ const config: Config = {
       },
       screens: {
         'min-width' : '285px',
+        'ssm-calendar' : '480px',
         'sm': '618px',
         'md': '828px',
       },
