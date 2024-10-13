@@ -125,12 +125,8 @@ const Page = () => {
           </div>
         </div>
         <div className="flex flex-col h-full w-full gap-[0.35rem]">
-          <Goals cadence={selectedCadence}/>
-          <div className="sm:h-full p-1 bg-white w-full border border border-grey-100 shadow-sm rounded">
-            <div className="w-full h-full rounded">
-              <History/>
-            </div>
-          </div> 
+          <Goals cadence={selectedCadence}/>        
+          <History/>
         </div> 
       </div>
     </div>
