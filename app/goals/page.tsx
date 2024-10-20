@@ -124,7 +124,7 @@ const Page = () => {
             <UserGoals cadence={selectedCadence}/>
           </div>
         </div>
-        <div className="flex flex-col h-full w-full gap-[0.35rem]">
+        <div className="flex flex-col h-full w-full gap-[0.35rem] pb-[0.35rem]">
           <Goals cadence={selectedCadence}/>        
           <History/>
         </div> 

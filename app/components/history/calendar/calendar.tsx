@@ -1,6 +1,9 @@
+// Credit to Farzan Yaz - Component developed using React Continuous Calendar as a base!
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import SecondaryBtn from '../../buttons/secondaryBtn';
+import { CgCalendarToday } from "react-icons/cg";
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -40,23 +43,46 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
     }
 
     const generateCalendar = useMemo(() => {
-        // This function returns the days of the selected month.
+
+        // This function returns the days of the selected month, and completes the calendar with the previous month last days and next month first days.
         const daysOfSelectedMonth = (): { month: number; day: number }[] => {
             const daysOfMonth = [];
-            const daysInMonth = new Date(year, selectedMonth + 1, 0).getDate();
-
+            const firstDayOfMonth = new Date(year, selectedMonth, 1).getDay(); // Get the weekday for the 1st day of the selected month
+            const daysInMonth = new Date(year, selectedMonth + 1, 0).getDate(); // Total days in the selected month
+    
+            // Get the number of days in the previous month
+            const daysInPreviousMonth = new Date(year, selectedMonth, 0).getDate(); // Previous month days
+    
+            // Add days from the previous month to fill empty slots (leading days before the 1st of this month)
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                daysOfMonth.push({ month: selectedMonth - 1, day: daysInPreviousMonth - firstDayOfMonth + i + 1 });
+            }
+    
+            // Add the actual days of the selected month
             for (let day = 1; day <= daysInMonth; day++) {
                 daysOfMonth.push({ month: selectedMonth, day });
             }
 
+            // Calculate how many days are left to complete the final row (should have 42 slots if needed, else only 35)
+            const totalSlots = daysOfMonth.length >= 35 ? 42 : 35; // for 42 slots: 6 rows * 7; for 35: 5 rows * 7
+            const remainingSlots = totalSlots - daysOfMonth.length;
+
+            // Add days from the next month to fill the remaining slots
+            for (let i = 1; i <= remainingSlots; i++) {
+                daysOfMonth.push({ month: selectedMonth + 1, day: i }); // First days of next month
+            }
+    
             return daysOfMonth;
         };
-
+    
         const calendarDays = daysOfSelectedMonth();
-
+    
         const calendar = calendarDays.map(({ month, day }, index) => {
-            const isToday = today.getMonth() === month && today.getDate() === day && today.getFullYear() === year;
-
+            const isToday = today.getMonth() === (month % 12) && today.getDate() === day && today.getFullYear() === year;
+    
+            // If the day belongs to the previous month, mark it visually different
+            const isActualMonth = month == selectedMonth;
+    
             return (
                 <div
                     key={`${month}-${day}`}
@@ -64,15 +90,15 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
                     data-month={month}
                     data-day={day}
                     onClick={() => handleDayClick(day, month, year)}
-                    className={`relative z-10 aspect-square w-full cursor-pointer rounded-xl border font-medium transition-all hover:z-20 hover:border-c-sidebar-dark-green justify-self-center h-[10vw] w-[10vw] sm:max-w-[10vw]`}
+                    className={`relative z-10 aspect-square w-full cursor-pointer rounded-xl border font-medium transition-all hover:z-20 hover:border-c-sidebar-dark-green justify-self-center w-[10vw] sm:max-w-[10vw] ${!isActualMonth && 'bg-gray-200 text-gray-400'}`}
                 >
-                    <span className={`absolute left-1 top-1 flex size-5 items-center justify-center rounded-full text-xs sm:size-6 md:size-8 ${isToday ? 'bg-c-sidebar-dark-green font-semibold text-white' : 'text-slate-800'}`}>
+                    <span className={`absolute left-1 top-1 flex size-5 items-center justify-center rounded-full text-xs sm:size-6 md:size-8 ${isToday ? 'bg-c-sidebar-dark-green font-semibold text-white' : ''}`}>
                         {day}
                     </span>
                 </div>
             );
         });
-
+    
         return calendar;
     }, [year, selectedMonth]);
 
@@ -111,15 +137,9 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
             <div className="sticky -top-px z-50 w-full bg-white px-5 pl-0 pr-0 ssm-calendar:!px-10 md:!px-16 pt-2">
                 <div className="flex flex-wrap items-center justify-between w-full">
                     {/* First Child Div */}
-                    <div className="flex gap-3 ssm-calendar:gap-2 ssm-calendar:pl-3">
-                        <Select name="SelectMonth" value={`${selectedMonth}`} options={monthOptions} onChange={handleMonthChange} />
-                        <button
-                            onClick={handleTodayClick}
-                            type="button"
-                            className="whitespace-nowrap rounded bg-gradient-to-r from-c-dark-green to-c-sidebar-dark-green px-3 py-1 text-center text-sm font-medium text-white hover:bg-gradient-to-bl mr-3"
-                        >
-                            Today
-                        </button>
+                    <div className="flex gap-2 ssm-calendar:gap-1 ssm-calendar:pl-3 text-white">
+                        <MonthSelect name="SelectMonth" value={`${selectedMonth}`} options={monthOptions} onChange={handleMonthChange} />
+                        <SecondaryBtn label='Today' isDisabled={false} title='Go to today!' disabledTitle='' icon={<CgCalendarToday className='ml-[0.25rem] w-5 h-5 mb-px' />} onClick={handleTodayClick}/>                   
                     </div>
 
                     {/* Second Child Div */}
@@ -147,25 +167,26 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
                         </button>
                     </div>
                 </div>
+            </div>
 
-                <div className="grid w-full grid-cols-7 justify-between text-slate-500 sm:gap-[10px] md:!gap-[25px]">
+            {/* Calendar days */}
+            <div className='ssm-calendar:px-10'>
+                <div className="grid w-full grid-cols-7 justify-between text-slate-500 gap-px sm:gap-[10px] md:!gap-[20px]">
                     {daysOfWeek.map((day, index) => (
                         <div key={index} className="w-full py-1 text-center font-semibold text-c-dark-green">
                             {day}
                         </div>
                     ))}
                 </div>
-            </div>
-
-            {/* Calendar days */}
-            <div className="grid w-full grid-cols-7 ssm-calendar:px-10 sm:gap-[10px] md:!gap-[25px]">
-                {generateCalendar}
+                <div className="grid w-full grid-cols-7 gap-px sm:gap-[10px] md:!gap-[20px]">
+                    {generateCalendar}
+                </div>
             </div>
         </div>
     );
 };
 
-export interface SelectProps {
+export interface MonthSelectProps {
     name: string;
     value: string;
     label?: string;
@@ -174,7 +195,7 @@ export interface SelectProps {
     className?: string;
 }
 
-export const Select = ({ name, value, label, options = [], onChange, className }: SelectProps) => (
+export const MonthSelect = ({ name, value, label, options = [], onChange, className }: MonthSelectProps) => (
     <div className={`relative ${className}`}>
         {label && (
             <label htmlFor={name} className="mb-2 block font-medium text-slate-800">
