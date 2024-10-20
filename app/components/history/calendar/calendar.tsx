@@ -137,13 +137,13 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
             <div className="sticky -top-px z-50 w-full bg-white px-5 pl-0 pr-0 ssm-calendar:!px-10 md:!px-16 pt-2">
                 <div className="flex flex-wrap items-center justify-between w-full">
                     {/* First Child Div */}
-                    <div className="flex gap-2 ssm-calendar:gap-1 ssm-calendar:pl-3 text-white">
+                    <div className="flex gap-2 ssm-calendar:gap-1 pl-1 ssm-calendar:pl-3 text-white pr-3">
                         <MonthSelect name="SelectMonth" value={`${selectedMonth}`} options={monthOptions} onChange={handleMonthChange} />
                         <SecondaryBtn label='Today' isDisabled={false} title='Go to today!' disabledTitle='' icon={<CgCalendarToday className='ml-[0.25rem] w-5 h-5 mb-px' />} onClick={handleTodayClick}/>                   
                     </div>
 
                     {/* Second Child Div */}
-                    <div className="flex items-center gap-2 flex-shrink-0 mt-2 mb-2 max-h-[35px] ssm-calendar:pr-3">
+                    <div className="flex items-center gap-2 flex-shrink-0 mt-2 mb-2 max-h-[35px] pl-1 ssm-calendar:pr-3">
                         <button
                             type="button"
                             title="Previous Year"
@@ -154,7 +154,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7" />
                             </svg>
                         </button>
-                        <h1 className="text-center text-sm font-semibold text-c-dark-green pr-2 pl-2">{year}</h1>
+                        <h1 className="text-center text-sm font-semibold text-c-dark-green pr-1 pl-1">{year}</h1>
                         <button
                             type="button"
                             title="Next Year"
