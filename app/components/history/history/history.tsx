@@ -53,7 +53,7 @@ const History = () => {
   
   return (
     <>
-      <div className={`h-full p-2 pb-4 pt-0 bg-white w-full border border border-grey-100 shadow-sm rounded ${!isHistorySectionExpanded && '!h-[35px] transition-all duration-500 ease'}`}>
+      <div className={`h-auto p-2 pb-4 pt-0 bg-white w-full border border border-grey-100 shadow-sm rounded ${!isHistorySectionExpanded && '!h-[35px] transition-all duration-500 ease'}`}>
         <div className="w-full h-full rounded">
           <div className='flex flex-col rounded w-full h-full items-center text-sm'>
             <div className="rounded w-full h-[12%] min-h-[35px] max-h-[35px]">

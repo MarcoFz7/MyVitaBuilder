@@ -51,7 +51,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
             const daysInMonth = new Date(year, selectedMonth + 1, 0).getDate(); // Total days in the selected month
     
             // Get the number of days in the previous month
-            const daysInPreviousMonth = new Date(year, selectedMonth, 0).getDate(); // Previous month days
+            const daysInPreviousMonth = new Date(year, selectedMonth, 0).getDate(); 
     
             // Add days from the previous month to fill empty slots (leading days before the 1st of this month)
             for (let i = 0; i < firstDayOfMonth; i++) {
