@@ -27,8 +27,8 @@ const SecondaryBtn = ({ label, isDisabled, title, disabledTitle, icon, onClick }
   
   return (
     <>  
-        <button type='button' disabled={isDisabled} className='bg-c-dark-green mt-[0.075rem] hover:text-c-lemon-green disabled:bg-white disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 ml-1.5 min-h-[30px] shadow transition-all duration-250 ease' title={`${isDisabled ? disabledTitle : title}`} onClick={onClick}>
-            <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong className="mr-[0.15rem]">{label}</strong>{icon}</span>
+        <button type='button' disabled={isDisabled} className={`${!isDisabled && 'bg-gradient-to-r from-c-dark-green to-c-sidebar-dark-green border border-c-dark-green'} font-light mt-[0.075rem] hover:text-c-lemon-green disabled:bg-white disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 ml-1.5 min-h-[30px] shadow transition-all duration-250 ease`} title={`${isDisabled ? disabledTitle : title}`} onClick={onClick}>
+            <span className="flex items-center m-0 whitespace-nowrap overflow-hidden"><strong className="mr-[0.15rem] ml-[0.10rem]">{label}</strong>{icon}</span>
         </button>
     </>
   );
