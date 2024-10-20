@@ -70,7 +70,6 @@ const UserGoals = ({ cadence }: UserGoalsProps) => {
     const handleUpdateValidation = () => {
         for (const inputValue of updateGoalsValuesToValidate) {
             if (inputValue[0] != inputValue[1]) {
-                console.log(inputValue[0] + " vs " + inputValue[1]);
                 return true;
             }
         }

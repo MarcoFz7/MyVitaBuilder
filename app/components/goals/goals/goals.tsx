@@ -74,29 +74,31 @@ const Goals = ({ cadence }: GoalsProps) => {
 
     return (
         <>
-            <div className={`h-full p-2 pt-0 bg-white w-full border border border-grey-100 shadow-sm rounded transition-all duration-500 ease ${!isGoalsSectionExpanded && '!h-[35px]'}`}>
+            <div className={`h-full p-2 pt-0 bg-white w-full border border border-grey-100 shadow-sm rounded ${!isGoalsSectionExpanded && '!h-[35px] transition-all duration-500 ease'}`}>
                 <div className="w-full h-full rounded">
-                    <div className={`flex flex-col rounded w-full h-full items-center text-sm ${isGoalsSectionExpanded ? 'mt-1' : 'mt-0'}`}>
+                    <div className='flex flex-col rounded w-full h-full items-center text-sm'>
                         <div className="rounded w-full h-[12%] min-h-[35px] max-h-[35px]">
                             <div className="flex flex-row w-[96%] pl-[4%] h-full justify-center">
-                                <div className="flex w-full h-full justify-center items-center text-sm">
+                                <div className="flex w-full h-full justify-center items-center text-sm hover:cursor-pointer text-c-sidebar-dark-green hover:text-c-dark-green" onClick={handleGoalsSectionExpand}>
                                     <span className="absolute flex items-center text-c-dark-green whitespace-nowrap overflow-hidden ">
                                         <FaTrophy className="text-c-dark-green inline-block mr-[0.375rem] h-[14px] w-[14px]" />
                                         <strong>{cadence} Goals</strong>
                                     </span>
-                                    <span className="relative max-w-[80px] flex w-full items-center justify-center text-c-sidebar-dark-green whitespace-nowrap overflow-hidden text-[10px] left-[90px]">
-                                        {isGoalsSectionExpanded ? (
-                                            <>
+                                    {isGoalsSectionExpanded ? (
+                                        <span className="relative max-w-[80px] flex w-full items-center justify-center whitespace-nowrap overflow-hidden text-[10px] left-[90px]" title='Close section!'>
+                                            <div className="flex flex-row items-center">
                                                 Expanded
-                                                <GoEye className='relative w-3 h-3 hover:cursor-pointer hover:text-c-sidebar-dark-green ml-1 mt-px' title='Close section!' onClick={handleGoalsSectionExpand} />
-                                            </>
-                                        ) :
-                                            <>
+                                                <GoEye className='relative w-3 h-3 ml-1'/>
+                                            </div>
+                                        </span>
+                                    ) :
+                                        <span className="relative max-w-[80px] flex w-full items-center justify-center whitespace-nowrap overflow-hidden text-[10px] left-[90px]" title='Expand section!'>
+                                            <div className="flex flex-row items-center">
                                                 Closed
-                                                <GoEyeClosed className='relative w-3 h-3 hover:cursor-pointer hover:text-c-sidebar-dark-green ml-1 mt-px' title='Expand section!' onClick={handleGoalsSectionExpand} />
-                                            </>
-                                        }
-                                    </span>
+                                                <GoEyeClosed className='relative w-3 h-3 ml-1'/>
+                                            </div>
+                                        </span>    
+                                    }  
                                 </div>
                             </div>
                             {isGoalsSectionExpanded && (
@@ -104,7 +106,7 @@ const Goals = ({ cadence }: GoalsProps) => {
                             )}
                         </div>
                         {isGoalsSectionExpanded && (
-                            <div className="w-full h-full p-5 pr-10 pl-10">
+                            <div className="w-full h-full p-3 pr-10 pl-10">
                                 <StatisticsArea userDataToUseUnit={userDataSampleUnit} userDataToUsePercentage={userDataSamplePercentage} initializeWithPhoneLayout={true} />
                             </div>
                         )}
