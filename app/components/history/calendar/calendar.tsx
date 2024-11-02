@@ -5,6 +5,10 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import SecondaryBtn from '../../buttons/secondaryBtn';
 import { CgCalendarToday } from "react-icons/cg";
 
+import makeAnimated from 'react-select/animated';
+import Select, { ActionMeta, MultiValue, SingleValue } from "react-select";
+const animatedComponents = makeAnimated();
+
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -18,15 +22,25 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
     const dayRefs = useRef<(HTMLDivElement | null)[]>([]);
     const [year, setYear] = useState<number>(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth());
-    const monthOptions = monthNames.map((month, index) => ({ name: month, value: `${index}` }));
+    const monthOptions = monthNames.map((month, index) => ({ label: month, value: `${index}` }));
 
     const handlePrevYear = () => setYear((prevYear) => prevYear - 1);
     const handleNextYear = () => setYear((prevYear) => prevYear + 1);
 
-    const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    /* const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const monthIndex = parseInt(event.target.value, 10);
         setSelectedMonth(monthIndex);
-    };
+    }; */
+    const handleMonthChange = (
+        selectedValue: MultiValue<Option> | SingleValue<Option>
+      ) => {
+        if (selectedValue) {
+          const value = selectedValue as Option;
+          const intValue = value.value;
+    
+          setSelectedMonth(parseInt(intValue));
+        }
+      };
 
     const handleTodayClick = () => {
         setYear(today.getFullYear());
@@ -186,12 +200,17 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
     );
 };
 
+export interface Option {
+    label: string;
+    value: string;
+}
+
 export interface MonthSelectProps {
     name: string;
     value: string;
     label?: string;
-    options: { 'name': string, 'value': string }[];
-    onChange: (_event: React.ChangeEvent<HTMLSelectElement>) => void;
+    options: Option[];
+    onChange: (newValue: SingleValue<Option> | MultiValue<Option>, actionMeta: ActionMeta<Option>) => void;
     className?: string;
 }
 
@@ -202,12 +221,12 @@ export const MonthSelect = ({ name, value, label, options = [], onChange, classN
                 {label}
             </label>
         )}
-        <select
+        {/* <select
             id={name}
             name={name}
             value={value}
             onChange={onChange}
-            className="h-[35px] cursor-pointer rounded border border-gray-300 bg-white text-sm font-medium text-gray-900 p-1 pr-2 pl-2 outline-none"
+            className="h-[35px] cursor-pointer rounded border border-gray-300 bg-white text-sm font-medium text-gray-900 p-1 pr-2 pl-2 outline-none appearance-none"
             required
         >
             {options.map((option) => (
@@ -215,6 +234,16 @@ export const MonthSelect = ({ name, value, label, options = [], onChange, classN
                     {option.name}
                 </option>
             ))}
-        </select>
+        </select> */}
+        <div className="single-select-div calendar-single-select h-auto">
+            <Select
+                className="select"
+                closeMenuOnSelect={true}
+                components={animatedComponents}
+                options={options}
+                value={options.find(option => option.value === value) || null}
+                onChange={onChange}
+            />
+        </div>
     </div>
 );
