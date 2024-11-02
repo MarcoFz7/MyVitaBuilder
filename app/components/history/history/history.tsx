@@ -53,14 +53,14 @@ const History = () => {
   
   return (
     <>
-      <div className={`h-auto p-2 pb-4 pt-0 bg-white w-full border border border-grey-100 shadow-sm rounded ${!isHistorySectionExpanded && '!h-[35px] transition-all duration-500 ease'}`}>
+      <div className={`h-full p-2 pb-4 pt-0 bg-white w-full border border border-grey-100 shadow-sm rounded ${!isHistorySectionExpanded && '!h-[35px] transition-all duration-500 ease'}`}>
         <div className="w-full h-full rounded">
           <div className='flex flex-col rounded w-full h-full items-center text-sm'>
             <div className="rounded w-full h-[12%] min-h-[35px] max-h-[35px]">
               <div className="flex flex-row w-[96%] pl-[4%] h-full justify-center">
                   <div className="flex w-full h-full justify-center items-center text-sm hover:cursor-pointer text-c-sidebar-dark-green hover:text-c-dark-green" onClick={handleHistorySectionExpand}>
                       <span className="absolute flex items-center text-c-dark-green whitespace-nowrap overflow-hidden ">
-                          <MdHistory className="text-c-dark-green inline-block mr-[0.375rem] h-[14px] w-[14px]" />
+                          <MdHistory className="text-c-dark-green inline-block mr-[0.375rem] h-[16px] w-[16px]" />
                           <strong id="history">History</strong>
                       </span>
                         {isHistorySectionExpanded ? (
