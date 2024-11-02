@@ -1189,7 +1189,7 @@ const Page = () => {
             <textarea
               ref={textareaRef}
               placeholder="ex. 1 Banana, 1 egg ..."
-              className="bg-c-paper-white text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded mt-1 p-1 pl-1.5 pr-1.5 w-full h-8 min-h-8 !max-h-[52px] sm:!max-h-[115px]"
+              className="bg-c-paper-white text-black pt-[0.38rem] placeholder:text-black placeholder:opacity-50 rounded mt-1 p-1 pl-1.5 pr-1.5 w-full h-8 min-h-8 !max-h-[52px] sm:!max-h-[115px] outline-none"
               value={ingredientsTextAreaValue}
               onChange={handleTextAreaValueChange}
             ></textarea>

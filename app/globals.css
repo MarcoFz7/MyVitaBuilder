@@ -93,3 +93,130 @@ input[type='radio'] {
       cursor: pointer;
   }
 
+/* CSS for select used */
+.select {
+  color: rgb(var(--black-rgb));
+  font-size: var(--small-font);
+  padding: 0;
+  width: 100%;
+  margin-left: 0.25rem;
+  margin-top: 0.25rem;
+
+  height: auto;
+  min-height: 32px;
+}
+    .select.first-section {
+        margin-top: 0 !important;
+    }
+    .select .css-13cymwt-control, .select .css-t3ipsp-control {
+        background-color: rgb(var(--paper-white-rgb));
+        min-height: 32px;
+        margin-right: 4px;
+
+        cursor: pointer;
+    }
+    .select .css-1fdsijx-ValueContainer {
+        padding-left: 0.25rem;
+    }
+    .select .css-1fdsijx-ValueContainer .css-1dimb5e-singleValue {
+        font-size: var(--smaller-font);
+    }
+    .select .css-3w2yfm-ValueContainer {
+        padding-left: 0.25rem;
+        padding-top: 1px;
+    }
+    .select .css-qbdosj-Input {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+    .select .css-1xc3v61-indicatorContainer {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+    .select .css-15lsz6c-indicatorContainer {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+    .select .css-1p3m7a8-multiValue {
+        font-size: var(--small-font);
+    }
+    .select.first-section .css-1n6sfyn-MenuList {
+        font-size: var(--smaller-font);
+        height: 290px;
+    }
+        .select .css-1n6sfyn-MenuList div {
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+        .select .css-1n6sfyn-MenuList div:hover {
+            background-color: rgb(var(--light-smoke-rgb));
+        }
+        .select .css-1n6sfyn-MenuList div {
+            background-color: initial;
+        }
+    .select .css-b8dq3m-MenuList {
+        font-size: var(--smaller-font);
+    }
+        .select .css-b8dq3m-MenuList div {
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+        .select .css-b8dq3m-MenuList div:hover {
+            background-color: rgb(var(--light-smoke-rgb));
+        }
+        .select .css-b8dq3m-MenuList div {
+            background-color: initial;
+        }
+    .select .css-1nmdiq5-menu {
+        margin: 0;
+        width: 100%;
+    } 
+
+.single-select-div {
+    display: flex;
+    flex-wrap: wrap;
+}
+    .single-select-div .select {
+        flex: 1;
+    }
+    .single-select-div .select .css-13cymwt-control, .single-select-div .select .css-t3ipsp-control {
+        margin-right: 0px;
+        min-width: 205px;
+
+    }
+    .select .css-13cymwt-control, .select .css-t3ipsp-control {
+        box-shadow: none;
+        border-color: rgba(var(--dark-green-rgb), 0);
+    }
+      .select .css-13cymwt-control:hover, .select .css-t3ipsp-control:hover {
+        border-color: initial;
+      }
+    .single-select-div .select .css-1n6sfyn-MenuList div[aria-selected="true"] {
+        background-color: rgba(var(--dark-smoke-rgb), 0.75);
+        color: rgb(var(--black-rgb));
+    }
+
+.calendar-single-select .css-b62m3t-container {
+    margin: 0;
+    height: 35px;
+}
+.calendar-single-select .css-13cymwt-control, .calendar-single-select .css-t3ipsp-control {
+    height: 35px;
+}
+.calendar-single-select .select .css-13cymwt-control, .calendar-single-select .select .css-t3ipsp-control {
+    min-width: 130px !important;
+}
+.calendar-single-select .css-1dimb5e-singleValue {
+    font-size: 14px !important;
+}
+.calendar-single-select .select .css-1n6sfyn-MenuList div[aria-selected="true"] {
+    background-color: rgba(var(--dark-smoke-rgb), 0.75);
+    color: rgb(var(--black-rgb));
+}
+.calendar-single-select .select .css-13cymwt-control, .calendar-single-select .select .css-t3ipsp-control {
+  border-color: rgb(203 213 225);
+}
+  .calendar-single-select .select .css-13cymwt-control:hover, .calendar-single-select .select .css-t3ipsp-control:hover {
+    border-color: initial;
+  }
+
