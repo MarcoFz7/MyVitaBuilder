@@ -229,7 +229,7 @@ const UserGoals = ({ cadence }: UserGoalsProps) => {
                 </div>
                 <div className="flex flex-col md:flex-row w-full h-full md:gap-2 p-1 md:pr-[5%]">
                     <div className="flex flex-row items-center p-[10px] pt-0 h-auto sm:mt-[0px] sm:p-[0px] sm:h-[27.5%] w-full md:h-full md:w-[25%]">
-                        <div className="flex flex-col w-full h-full items-center pt-[0.9rem] text-sm">
+                        <div className="flex flex-col w-full h-full items-center pt-3 text-sm">
                             <div className="flex flex-row md:flex-col h-full w-full sm:w-1/2 min-w-[120px] min-h-[40px] max-h-[44px] sm:max-h-none">
                                 <div className="flex w-full h-full rounded items-center justify-center p-2">
                                     <MainBtn
