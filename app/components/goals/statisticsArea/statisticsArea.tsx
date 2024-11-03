@@ -61,6 +61,18 @@ const StatisticsArea = ({ userDataToUseUnit, userDataToUsePercentage, initialize
     // ---------------------------- Graph Bar Calculated Colors ----------------------------
     // Remove the last item since the bar graph does not include the total macros
     const invertedCalculatedColorsForBarGraph = invertedCalculatedColors.slice(0, -1);
+    // Add more items for macros without target - info only
+    const macrosWithoutTarget = { 
+        id: "macro", 
+        color: "#D9D9D9"
+    };
+    
+    // Get ammount of macros without target 
+    const ammountOfMacrosWithoutTarget = userDataToUseUnit.length - userDataToUsePercentage.length + 1;
+
+    for (let i=0; i < ammountOfMacrosWithoutTarget; i++) {
+        invertedCalculatedColorsForBarGraph.push(macrosWithoutTarget);
+    }
 
     // ---------------------------- Radial Bar Calculated Colors ----------------------------
     // Mirror the array

@@ -24,6 +24,18 @@ const userDataSampleUnit = [
     {
         "macro": "Carbs",
         "Unit": 80,
+    },
+    {
+        "macro": "Sugar",
+        "Unit": 5,
+    },
+    {
+        "macro": "Fiber",
+        "Unit": 25,
+    },
+    {
+        "macro": "Sodium",
+        "Unit": 8,
     }
 ];
 const userDataSamplePercentage = [
@@ -85,14 +97,14 @@ const Goals = ({ cadence }: GoalsProps) => {
                                         <strong>{cadence} Goals</strong>
                                     </span>
                                     {isGoalsSectionExpanded ? (
-                                        <span className="relative max-w-[80px] flex w-full items-center justify-center whitespace-nowrap overflow-hidden text-[10px] left-[90px]" title='Close section!'>
+                                        <span className="relative max-w-[80px] flex w-full items-center justify-center whitespace-nowrap overflow-hidden text-[10px] left-[95px]" title='Close section!'>
                                             <div className="flex flex-row items-center">
                                                 Expanded
                                                 <GoEye className='relative w-3 h-3 ml-1'/>
                                             </div>
                                         </span>
                                     ) :
-                                        <span className="relative max-w-[80px] flex w-full items-center justify-center whitespace-nowrap overflow-hidden text-[10px] left-[90px]" title='Expand section!'>
+                                        <span className="relative max-w-[80px] flex w-full items-center justify-center whitespace-nowrap overflow-hidden text-[10px] left-[95px]" title='Expand section!'>
                                             <div className="flex flex-row items-center">
                                                 Closed
                                                 <GoEyeClosed className='relative w-3 h-3 ml-1'/>
@@ -107,7 +119,7 @@ const Goals = ({ cadence }: GoalsProps) => {
                         </div>
                         {isGoalsSectionExpanded && (
                             <div className="w-full h-full p-3 pt-1 pr-10 pl-10">
-                                <StatisticsArea userDataToUseUnit={userDataSampleUnit} userDataToUsePercentage={userDataSamplePercentage} initializeWithPhoneLayout={true} />
+                                <StatisticsArea userDataToUseUnit={userDataSampleUnit} userDataToUsePercentage={userDataSamplePercentage} initializeWithPhoneLayout={false} />
                             </div>
                         )}
                     </div>

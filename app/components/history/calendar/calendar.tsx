@@ -187,7 +187,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
             <div className='ssm-calendar:px-10'>
                 <div className="grid w-full grid-cols-7 justify-between text-slate-500 gap-px sm:gap-[10px] md:!gap-[20px]">
                     {daysOfWeek.map((day, index) => (
-                        <div key={index} className="w-full py-1 text-center font-semibold text-c-dark-green">
+                        <div key={index} className="w-full py-1 text-center font-semibold text-c-dark-green text-xs">
                             {day}
                         </div>
                     ))}

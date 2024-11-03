@@ -51,6 +51,7 @@ const config: Config = {
         'ssm-calendar' : '480px',
         'sm': '618px',
         'md': '828px',
+        'xxl': '1920px'
       },
       boxShadow: {
         'customShadow': 'inset 0px -1px 15px 0 rgba(0, 0, 0, 0.075), inset -2px -6px 10px 0 rgba(255, 255, 255, 0.35)',
