@@ -126,7 +126,7 @@
 } 
 
 .openclose-navbar-btn:hover, .openclose-navbar-btn-closed:hover  {
-    color: rgb(var(--light-green-rgb));
+    color: rgb(var(--lemon-green-rgb));
     transition: ease 0.5s;
 }
 

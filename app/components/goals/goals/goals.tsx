@@ -106,7 +106,7 @@ const Goals = ({ cadence }: GoalsProps) => {
                             )}
                         </div>
                         {isGoalsSectionExpanded && (
-                            <div className="w-full h-full p-3 pr-10 pl-10">
+                            <div className="w-full h-full p-3 pt-1 pr-10 pl-10">
                                 <StatisticsArea userDataToUseUnit={userDataSampleUnit} userDataToUsePercentage={userDataSamplePercentage} initializeWithPhoneLayout={true} />
                             </div>
                         )}

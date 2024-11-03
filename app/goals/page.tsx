@@ -52,7 +52,7 @@ const Page = () => {
   return (
     <div className={`${inter.className} bg-c-global-bg-color min-h-[635px] h-screen max-h-screen w-[99%] min-w-min-width absolute left-[0.5%] top-0 pt-[2.85rem] pb-[0.35rem] z-[-1]`}>
       <div className="flex flex-col w-full h-full gap-[0.5rem]">
-        <div className="flex flex-col sm:flex-row h-full sm:h-auto w-full gap-[0.35rem]">
+        <div className="flex flex-col sm:flex-row h-auto w-full gap-[0.35rem]">
           <div className="w-full sm:w-[22.5%] min-w-fit sm:h-full p-1 bg-white border border-grey-100 shadow-sm rounded">
             <div className="flex flex-col w-full h-full bg-c-sidebar-dark-green rounded shadow-sm">
               <div className="rounded w-full h-[12%] min-h-[35px] max-h-[35px]">

@@ -1066,14 +1066,14 @@ const Page = () => {
       <div
         className={`${inter.className} page-ai-calculator-section bg-white border border border-grey-100 shadow-sm`}
       >
-        <span className="ai-calculator-header shadow">
+        <span className="ai-calculator-header shadow text-justify">
           Get <b>better results</b> through your meals and preparation using{" "}
           <strong>AI</strong>!
           Obtain the best recipes, convert them to posts and share them!
         </span>
         <div className="ai-calculator-info shadow">
           <div>
-            <label className="block mb-1.5 text-sm text-white-900 pt-px ml-1.5">
+            <label className="block text-xs text-white-900 pt-1 text-center">
               Please configure this section accordingly.
             </label>
             <span className="flex items-center mb-[0.1rem] text-c-lemon-green whitespace-nowrap overflow-hidden text-ellipsis mt-1 ml-1">
@@ -1228,7 +1228,7 @@ const Page = () => {
                         isRobotRotated
                           ? "animate-rotate-360"
                           : "animate-rotate-360-minus"
-                      } w-16 h-16 text-black justify-start mt-1.5 ml-1.5 mr-1 hover:cursor-pointer`}
+                      } w-16 h-16 text-c-dark-green brightness-75 justify-start mt-1.5 ml-1.5 mr-1 hover:cursor-pointer`}
                       onClick={handleRobotIconAnimation}
                     />
                   </div>
@@ -1258,7 +1258,7 @@ const Page = () => {
                           <label className="ml-[12.5%] block mt-1 mb-1 text-sm text-white-900 pt-px bg-white/50 w-9/12"></label>
                         ) : null}
                         <div className="flex flex-row">
-                          <RiRobot2Fill className="w-6 h-6 min-w-6 min-h-6 text-black justify-start mt-0.5 ml-1.5 mr-1 transition-all duration-250 ease" />
+                          <RiRobot2Fill className="w-6 h-6 min-w-6 min-h-6 text-c-dark-green brightness-75 justify-start mt-0.5 ml-1.5 mr-1 transition-all duration-250 ease" />
                           {fullAnswers.length !== index + 1 ? (
                             <span className="text-black mt-0 p-1 pl-1.5 pr-1.5 transition-all duration-250 ease">
                               {answer.description}

@@ -77,7 +77,7 @@ const StatisticsArea = ({ userDataToUseUnit, userDataToUsePercentage, initialize
                         </span>
                     </div>
                     <div className="flex w-full justify-center items-center text-xs">
-                        <span className="flex items-center text-c-dark-green whitespace-nowrap overflow-hidden">
+                        <span className="flex items-center text-c-dark-green whitespace-nowrap text-ellipsis">
                             Click/hover the bars for more specific info!                                                           
                         </span>
                     </div>

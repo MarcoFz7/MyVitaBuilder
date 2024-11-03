@@ -52,10 +52,12 @@
 
     margin: 1% 0px 0px 1%;
     padding: 0.5% 2% 1% 1rem;
+    padding-left: 12px;
+    padding-right: 12px;
 
     border-radius: 5px;
 
-    font-size: var(--medium-font);
+    font-size: var(--small-font);
     background-color: rgb(var(--sidebar-dark-green-rgb));
     color: rgb(var(--white-rgb));
 }
