@@ -7,6 +7,7 @@ import { CgCalendarToday } from "react-icons/cg";
 
 import makeAnimated from 'react-select/animated';
 import Select, { ActionMeta, MultiValue, SingleValue } from "react-select";
+import CalendarPopup from './calendarPopup';
 const animatedComponents = makeAnimated();
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -20,8 +21,13 @@ interface ContinuousCalendarProps {
 export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeight = false, onClick }) => {
     const today = new Date();
     const dayRefs = useRef<(HTMLDivElement | null)[]>([]);
+
     const [year, setYear] = useState<number>(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth());
+
+    const [isCalendarPopupOpen, setIsCalendarPopupOpen] = useState<boolean>(false);
+    const [calendarPopupDay, setCalendarPopupDay] = useState<string>("");
+
     const monthOptions = monthNames.map((month, index) => ({ label: month, value: `${index}` }));
 
     const handlePrevYear = () => setYear((prevYear) => prevYear - 1);
@@ -48,12 +54,18 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
     };
 
     const handleDayClick = (day: number, month: number, year: number) => {
-        if (!onClick) { return; }
+        /* if (!onClick) { 
+            return; }
         if (month < 0) {
             onClick(day, 11, year - 1);
         } else {
             onClick(day, month, year);
-        }
+        } */ 
+
+        setCalendarPopupDay(`${day}/${month}/${year}`);
+        setTimeout(() => {
+            setIsCalendarPopupOpen(true);
+        }, 50);
     }
 
     const generateCalendar = useMemo(() => {
@@ -104,7 +116,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
                     data-month={month}
                     data-day={day}
                     onClick={() => handleDayClick(day, month, year)}
-                    className={`relative z-10 aspect-square w-full cursor-pointer rounded-xl border font-medium transition-all hover:z-20 hover:border-c-sidebar-dark-green justify-self-center w-[10vw] sm:max-w-[10vw] ${!isActualMonth && 'bg-gray-200 text-gray-400'}`}
+                    className={`relative z-10 aspect-square xxl:!aspect-auto w-full cursor-pointer rounded-xl border font-medium transition-all hover:z-20 hover:border-c-sidebar-dark-green justify-self-center w-[10vw] sm:max-w-[10vw] xxl:h-auto ${!isActualMonth && 'bg-gray-200 text-gray-400'}`}
                 >
                     <span className={`absolute left-1 top-1 flex size-5 items-center justify-center rounded-full text-xs sm:size-6 md:size-8 ${isToday ? 'bg-c-sidebar-dark-green font-semibold text-white' : ''}`}>
                         {day}
@@ -147,7 +159,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
     }, []);
 
     return (
-        <div className={`rounded-2xl bg-white text-slate-800 ${fullHeight ? '' : 'calendar-container'}`}>
+        <div className={`flex flex-col h-full rounded-2xl bg-white text-slate-800 ${fullHeight ? '' : 'calendar-container'}`}>
             <div className="sticky -top-px z-50 w-full bg-white px-5 pl-0 pr-0 ssm-calendar:!px-10 md:!px-16 pt-2">
                 <div className="flex flex-wrap items-center justify-between w-full">
                     {/* First Child Div */}
@@ -184,18 +196,20 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
             </div>
 
             {/* Calendar days */}
-            <div className='ssm-calendar:px-10'>
-                <div className="grid w-full grid-cols-7 justify-between text-slate-500 gap-px sm:gap-[10px] md:!gap-[20px]">
+            <div className='flex flex-col h-full ssm-calendar:px-10'>
+                <div className="grid w-full grid-cols-7 justify-between text-slate-500 gap-px sm:gap-[10px]">
                     {daysOfWeek.map((day, index) => (
                         <div key={index} className="w-full py-1 text-center font-semibold text-c-dark-green text-xs">
                             {day}
                         </div>
                     ))}
                 </div>
-                <div className="grid w-full grid-cols-7 gap-px sm:gap-[10px] md:!gap-[20px]">
+                <div className="grid h-full w-full grid-cols-7 gap-px sm:gap-[10px]">
                     {generateCalendar}
                 </div>
             </div>
+
+            {isCalendarPopupOpen && <CalendarPopup date={calendarPopupDay} managePopupState={() => setIsCalendarPopupOpen(false)}/>}
         </div>
     );
 };
