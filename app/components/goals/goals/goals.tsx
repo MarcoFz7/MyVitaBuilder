@@ -24,18 +24,6 @@ const userDataSampleUnit = [
     {
         "macro": "Carbs",
         "Unit": 80,
-    },
-    {
-        "macro": "Sugar",
-        "Unit": 5,
-    },
-    {
-        "macro": "Fiber",
-        "Unit": 25,
-    },
-    {
-        "macro": "Sodium",
-        "Unit": 8,
     }
 ];
 const userDataSamplePercentage = [

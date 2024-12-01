@@ -72,7 +72,7 @@ const GoalsPreview = () => {
                         <div className="flex w-full h-full justify-center items-center">
                             <span className="flex items-center text-c-dark-green whitespace-nowrap overflow-hidden ">
                                 <FaTrophy className="text-c-dark-green inline-block mr-[0.375rem] h-[14px] w-[14px]" />
-                                <strong>Goals - Daily Preview</strong>
+                                <strong>Goals Preview - Daily</strong>
                             </span>
                         </div>
                     </div>

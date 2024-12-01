@@ -20,7 +20,7 @@ interface customMessageProps {
  * @param isOpacityOne - controls component visibility (mainly to apply smoth transitions)
  * @param onTransitionEnd - callback function to invoke when the transition ends and hide message
  * 
- * @returns custom 
+ * @returns custom message component 
  */
 const CustomMessage = ({ type, message, iconSize, isOpacityOne, onTransitionEnd }: customMessageProps) => { 
    
