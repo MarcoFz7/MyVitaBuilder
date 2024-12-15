@@ -45,19 +45,19 @@ const CalendarPopup = ({ date, managePopupState }: calendarPopupProps) => {
 
     return (
         <>
-            <div className='fixed h-full w-full top-0 left-0 bg-c-shadow-black z-[100] backdrop-blur-[0.85px] flex items-center justify-center'>
-                <div className="w-1/5 h-1/4 min-w-[280px] ssm-calendar:min-w-[380px] flex items-center justify-center bg-c-global-bg-color rounded shadow-md p-2">
+            <div className='fixed h-full w-full top-0 left-0 bg-c-shadow-black z-[100] backdrop-blur-[0.95px] flex items-center justify-center'>
+                <div className="w-1/5 h-1/4 min-w-[280px] ssm-calendar:min-w-[380px] min-h-[175px] flex items-center justify-center bg-c-global-bg-color rounded shadow-lg p-2">
                     <div className="flex flex-col h-full w-full">
-                        <div className="flex flex-row h-1/5 w-full items-center justify-center bg-c-custom-shadow-black rounded gap-1">
-                            <div className="flex w-[87.5%] h-full items-center text-sm pl-2 ssm-calendar:pl-[11.5%]">
-                                <span>Your macronutrients for {date}</span>
+                        <div className="flex flex-row h-1/4 w-full items-center justify-center bg-c-custom-shadow-black rounded gap-1">
+                            <div className="flex w-[87.5%] h-full items-center text-sm pl-4">
+                                <span className="font-semibold text-c-dark-green">Your macronutrients for {date}</span>
                             </div>
                             <div className="flex w-[12.5%] h-auto justify-end pr-2">
                                 <TertiaryBtn operationStatus='' btnIcon={<IoCloseSharp className='w-5 h-5'/>} isDisabled={false} inSequence={false} title='Close Popup!' onClick={managePopupState}/>
                             </div>
                         </div>
                         <div className="flex flex-col h-full w-full justify-center items-center">
-                            <div className="flex flex-col h-3/5 w-full ssm-calendar:w-4/5 p-1 pl-2">
+                            <div className="flex flex-col h-[75%] w-full ssm-calendar:w-4/5 p-1 pt-2 pl-2">
                                 <div className="flex flex-row w-full h-full">
                                     {/* Macros section */}
                                     <div className="flex flex-col w-[70%] h-full">
@@ -65,7 +65,7 @@ const CalendarPopup = ({ date, managePopupState }: calendarPopupProps) => {
                                         {/* Conditionally render data once retrievedData is not null */}
                                         {retrievedData ? retrievedData.map((macro: any, index: any) => (
                                             <div key={index} className="flex h-1/4 w-full items-center">
-                                                <span>{macro.label}: {macro.value}g</span>
+                                                <span><strong>{macro.label}:</strong> {macro.value}g</span>
                                             </div>
                                         )) : <div>Loading...</div>}
                                     </div>
@@ -73,7 +73,7 @@ const CalendarPopup = ({ date, managePopupState }: calendarPopupProps) => {
                                     {/* Target section */}
                                     <div className="flex flex-col w-1/4 h-full justify-center items-center">
                                         <div className="flex h-1/4 w-full items-center justify-center">
-                                            <span>Target</span>
+                                            <span className="font-semibold pb-1">Target</span>
                                         </div>
                                         {retrievedData ? retrievedData.map((macro: any, index: any) => (
                                             <div key={index} className="flex flex-row h-1/4 w-full items-center justify-center gap-px">
@@ -100,7 +100,7 @@ const CalendarPopup = ({ date, managePopupState }: calendarPopupProps) => {
                             <div className="flex flex-col h-1/5 w-full ssm-calendar:w-4/5 p-1 pl-2 justify-center border-t border-c-shadow-black">
                                 <div className="flex h-full w-full items-center">
                                     <div className="w-[70%]">
-                                        <span>Total:</span>
+                                        <span className="font-semibold">Total:</span>
                                     </div>
                                     <div className="flex w-1/4 justify-center">
                                         <span>{targetsAchieved}/3</span>

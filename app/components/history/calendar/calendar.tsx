@@ -13,6 +13,23 @@ const animatedComponents = makeAnimated();
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+const dayColorsMap = {
+    actualMonth: {
+        1: '#EF5350',
+        3: '#FFA500',
+        4: '', 
+        5: '#006400',
+        6: '#FFFF00',
+        12: '#BFF47B'
+    },
+    previousMonth: {
+        30: '#BFF47B'
+    },
+    nextMonth: {
+        1: '#FFA500'
+    },
+};
+
 interface ContinuousCalendarProps {
     fullHeight?: boolean,
     onClick?: (_day: number, _month: number, _year: number) => void;
@@ -33,10 +50,6 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
     const handlePrevYear = () => setYear((prevYear) => prevYear - 1);
     const handleNextYear = () => setYear((prevYear) => prevYear + 1);
 
-    /* const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const monthIndex = parseInt(event.target.value, 10);
-        setSelectedMonth(monthIndex);
-    }; */
     const handleMonthChange = (
         selectedValue: MultiValue<Option> | SingleValue<Option>
       ) => {
@@ -54,15 +67,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
     };
 
     const handleDayClick = (day: number, month: number, year: number) => {
-        /* if (!onClick) { 
-            return; }
-        if (month < 0) {
-            onClick(day, 11, year - 1);
-        } else {
-            onClick(day, month, year);
-        } */ 
-
-        setCalendarPopupDay(`${day}/${month}/${year}`);
+        setCalendarPopupDay(`${day}/${(month + 1).toString().padStart(2, '0')}/${year}`);
         setTimeout(() => {
             setIsCalendarPopupOpen(true);
         }, 50);
@@ -108,7 +113,22 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
     
             // If the day belongs to the previous month, mark it visually different
             const isActualMonth = month == selectedMonth;
-    
+
+            const hexToRGBA = (hex: string, alpha: number) => {
+                if (!hex || hex === '') return 'transparent';
+                const r = parseInt(hex.slice(1, 3), 16);
+                const g = parseInt(hex.slice(3, 5), 16);
+                const b = parseInt(hex.slice(5, 7), 16);
+                return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            };
+
+            // Dynamically set the background color
+            const backgroundColor = isActualMonth
+                ? hexToRGBA(dayColorsMap.actualMonth[day as keyof typeof dayColorsMap.actualMonth], 0.175)
+                : month < selectedMonth
+                ? hexToRGBA(dayColorsMap.previousMonth[day as keyof typeof dayColorsMap.previousMonth], 0.075) 
+                : hexToRGBA(dayColorsMap.nextMonth[day as keyof typeof dayColorsMap.nextMonth], 0.075)
+                
             return (
                 <div
                     key={`${month}-${day}`}
@@ -116,9 +136,16 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({ fullHeig
                     data-month={month}
                     data-day={day}
                     onClick={() => handleDayClick(day, month, year)}
-                    className={`relative z-10 aspect-square xxl:!aspect-auto w-full cursor-pointer rounded-xl border font-medium transition-all hover:z-20 hover:border-c-sidebar-dark-green justify-self-center w-[10vw] sm:max-w-[10vw] xxl:h-auto ${!isActualMonth && 'bg-gray-200 text-gray-400'}`}
+                    className={`relative z-10 aspect-square xxl:!aspect-auto w-full cursor-pointer rounded-xl border font-medium transition-all hover:z-20 border-c-sidebar-dark-green/35 hover:border-c-sidebar-dark-green justify-self-center w-[10vw] sm:max-w-[10vw] xxl:h-auto ${
+                        !isActualMonth && 'text-gray-300 !border-gray-200'
+                    }`}
+                    style={{ backgroundColor }}
                 >
-                    <span className={`absolute left-1 top-1 flex size-5 items-center justify-center rounded-full text-xs sm:size-6 md:size-8 ${isToday ? 'bg-c-sidebar-dark-green font-semibold text-white' : ''}`}>
+                    <span
+                        className={`absolute left-1 top-1 flex size-5 items-center justify-center rounded-full text-xs sm:size-6 md:size-8 ${
+                            isToday ? 'bg-c-sidebar-dark-green font-semibold text-white' : ''
+                        }`}
+                    >
                         {day}
                     </span>
                 </div>
@@ -235,20 +262,6 @@ export const MonthSelect = ({ name, value, label, options = [], onChange, classN
                 {label}
             </label>
         )}
-        {/* <select
-            id={name}
-            name={name}
-            value={value}
-            onChange={onChange}
-            className="h-[35px] cursor-pointer rounded border border-gray-300 bg-white text-sm font-medium text-gray-900 p-1 pr-2 pl-2 outline-none appearance-none"
-            required
-        >
-            {options.map((option) => (
-                <option key={option.value} value={option.value} className='select:bg-c-sidebar-dark-green'>
-                    {option.name}
-                </option>
-            ))}
-        </select> */}
         <div className="single-select-div calendar-single-select h-auto">
             <Select
                 className="select"
