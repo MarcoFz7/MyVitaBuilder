@@ -2,18 +2,23 @@
 
 import './navbar.css'
 import Link from 'next/link';
-import { FaTrophy } from "react-icons/fa";
-import { FaHeartbeat } from "react-icons/fa";
+import { FaTrophy, FaHeartbeat } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
+import { RiUserHeartFill } from "react-icons/ri";
 import { usePathname } from 'next/navigation';
 import { Inter } from 'next/font/google';
 import React, { useState, useEffect } from 'react';
-import { TbStar } from 'react-icons/tb';
 import { GiHamburgerMenu } from 'react-icons/gi'
 
 const inter = Inter({weight: '400', style: "normal", subsets: ["latin"]})
 
 
 const menuMainItems=[
+  {
+    path:"/activity",
+    name:"Activity",
+    icon:<RiUserHeartFill className='w-[16px] h-[16px] mr-[0.1rem] mt-[0.1rem]'/>
+  },
   {
       path:"/nutrition",
       name:"Nutrition",
@@ -28,9 +33,9 @@ const menuMainItems=[
 
 const menuSecondaryItems=[
   {
-      path:"/contacts",
-      name:"Contacts",
-      icon:<TbStar/>
+      path:"/settings",
+      name:"Settings",
+      icon:<IoMdSettings className='w-[18px] h-[18px]'/>
   }
 ]
 
@@ -91,17 +96,20 @@ export default function NavBar() {
     useEffect(() => {
       if (clickedMainIndex == -1) {
         switch (currentPage) {
-          case "/nutrition":
+          case "/activity":
             setClickedMainIndex(0);
             break;
-          case "/goals":
+          case "/nutrition":
             setClickedMainIndex(1);
+            break;
+          case "/goals":
+            setClickedMainIndex(2);
             break;
         } 
       }
       if (clickedSecondaryIndex == -1) {
         switch (currentPage) {
-          case "/contacts":
+          case "/settings":
             setClickedSecondaryIndex(0);
             break;
         } 
@@ -162,7 +170,7 @@ export default function NavBar() {
                   <h3 className={`${inter.className} navbar-app-name${isSmallScreen ? '-small-screen' : ''}`}>MyVitaBuilder</h3>
                 </div>
                 <div className={isSmallScreen ? `sidebar-container-paths${isNavbarOpen ? '' : '-closed'}` : 'navbar-container-paths'}>
-                  <div className={`options${isSmallScreen ? '-small-screen' : ''}`}>                     
+                  <div className={`options${isSmallScreen ? '-small-screen' : ''} md:mr-4`}>                     
                     {
                         menuMainItems.map((item, index) => (                       
                             <Link href={item.path} key={index} className={`option group ${clickedMainIndex === index ? 'clicked-option' : ''}`} onClick={() => handleMainItemClick(index)}>

@@ -156,7 +156,7 @@
     align-items: center;
     gap: 0.2rem;
     padding: 0.2rem 0.3rem 0.125rem 0.2rem;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
     cursor: pointer;
     transition: color 1s, color 0.2s, box-shadow 0.2s;
 }
