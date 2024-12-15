@@ -7,11 +7,11 @@ import StatisticsArea from "../statisticsArea/statisticsArea";
 // Nivo graph data templates - to use dynamic values
 const userDataSampleUnit = [
     {
-        "macro": "Calor.",
+        "macro": "Calories",
         "Unit": 500,
     },
     {
-        "macro": "Prot.",
+        "macro": "Protein",
         "Unit": 10,
     },
     {
@@ -86,7 +86,7 @@ const GoalsPreview = () => {
                                 <span className="text-black ">Understand your behavior, and adjust your meals for <strong className="text-c-dark-green">better results</strong>.</span>
                                 <span className="text-black">To set the daily target, and have a wider perspective, with <strong className="text-c-dark-green">more statistics and progress history</strong>, go to...</span>
                             </div>
-                            <div className="w-auto text-white">
+                            <div className="w-auto text-white pb-[1%]">
                                 <SecondaryBtn label="Goals Page" isDisabled={false} title="Go to Goals page!" disabledTitle="" icon={<CgInternal className='ml-[0.25rem] w-6 h-6 mb-px' />} onClick={() => {handleGoToGoalsPageBtn}} />
                             </div>
                         </div>

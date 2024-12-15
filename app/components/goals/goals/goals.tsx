@@ -14,11 +14,11 @@ interface GoalsProps {
 // Nivo graph data templates - to use dynamic values
 const userDataSampleUnit = [
     {
-        "macro": "Calor.",
+        "macro": "Calories",
         "Unit": 500,
     },
     {
-        "macro": "Prot.",
+        "macro": "Protein",
         "Unit": 10,
     },
     {
