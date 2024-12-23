@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import NavBar from "./components/navbar/navbar";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export const metadata: Metadata = {
   title: "MyVitaBuilder",
@@ -13,13 +14,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="content">
-        <NavBar/>
-        
-        {children}
-   
-      </body>
-    </html>
+    <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID || ""}>
+      <html lang="en">
+        <body className="content">
+          <NavBar/>
+          
+          {children}
+    
+        </body>
+      </html>
+    </GoogleOAuthProvider>
   );
 }

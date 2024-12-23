@@ -14,7 +14,13 @@
     "@nivo/bar": "^0.87.0",
     "@nivo/core": "^0.87.0",
     "@nivo/radial-bar": "^0.87.0",
+    "@react-oauth/google": "^0.12.1",
+    "@vercel/postgres": "^0.10.0",
+    "bcrypt": "^5.1.1",
+    "js-cookie": "^3.0.5",
+    "ldrs": "^1.0.2",
     "next": "^14.2.3",
+    "next-auth": "^5.0.0-beta.25",
     "node": "^22.0.0",
     "openai": "^4.52.2",
     "react": "^18",
@@ -24,6 +30,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
