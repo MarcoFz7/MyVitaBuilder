@@ -1,7 +1,7 @@
 "use client";
 
 import { Inter } from "next/font/google";
-import { isUserAuthorized } from "../auth/isAuth";
+import { isUserAuthorized } from "../auth/isUserAuthorized";
 import AccessBlockedBanner from "../components/auth/accessBlockedBanner";
 import { useEffect, useState } from "react";
 import AccessCheckerBanner from "../components/auth/accessChecker/accessCheckingBanner";
