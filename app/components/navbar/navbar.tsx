@@ -20,22 +20,22 @@ const menuMainItems=[
     icon:<RiUserHeartFill className='w-[16px] h-[16px] mr-[0.1rem] mt-[0.1rem]'/>
   },
   {
-      path:"/nutrition",
-      name:"Nutrition",
-      icon:<FaHeartbeat className='w-[15px] h-[15px] mr-[0.1rem]'/>
+    path:"/nutrition",
+    name:"Nutrition",
+    icon:<FaHeartbeat className='w-[15px] h-[15px] mr-[0.1rem]'/>
   },
   {
-      path:"/goals",
-      name:"Goals",
-      icon:<FaTrophy className='w-4 h-4 mr-[0.1rem]'/>
+    path:"/goals",
+    name:"Goals",
+    icon:<FaTrophy className='w-4 h-4 mr-[0.1rem]'/>
   }
 ]
 
 const menuSecondaryItems=[
   {
-      path:"/settings",
-      name:"Settings",
-      icon:<IoMdSettings className='w-[18px] h-[18px]'/>
+    path:"/settings",
+    name:"Settings",
+    icon:<IoMdSettings className='w-[18px] h-[18px]'/>
   }
 ]
 
