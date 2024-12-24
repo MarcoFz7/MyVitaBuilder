@@ -47,15 +47,19 @@ const Page = () => {
   }
 
   const deactivateAccount = () => {
-    if (!isAuthorized)
+    if (!isAuthorized) {
+      console.log("User not authenticated!");
       return;
+    }
     
     console.log("Account deactivated");
   }
 
   const deletedAccount = () => {
-    if (!isAuthorized)
+    if (!isAuthorized) {
+      console.log("User not authenticated!");
       return;
+    }
 
     console.log("Account deleted");
   }
@@ -101,7 +105,7 @@ const Page = () => {
   );
 
   return (
-    <div className={`${inter.className} bg-c-global-bg-color min-h-[635px] h-screen max-h-screen w-[99%] min-w-min-width absolute left-[0.5%] top-0 pt-[2.85rem] pb-[0.35rem] z-[-1] text-sm`}>
+    <div className={`${inter.className} bg-c-global-bg-color min-h-[635px] h-screen max-h-screen w-[99%] min-w-min-width absolute left-[0.5%] top-0 pt-[2.85rem] pb-[0.35rem] z-[-1] text-sm text-black`}>
       <div className="flex flex-col w-full h-full gap-[0.5rem]">
         { isAuthorized ? (
           <UserSettingsContent/>
