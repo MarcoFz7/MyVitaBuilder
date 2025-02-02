@@ -31,7 +31,12 @@ const MainBtn = ({ label, isDisabled, title, disabledTitle, icon, shadow, isRequ
   
   return (
     <>
-        <button type='button' disabled={isDisabled} className={`flex justify-center items-center max-h-[45px] ${!isDisabled && 'bg-gradient-to-r from-c-dark-green from-[45%] to-c-sidebar-dark-green border border-c-dark-green hover:bg-gradient-to-r hover:from-c-sidebar-dark-green hover:to-c-lemon-green'} text-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full ${shadow && 'shadow'}  ${isRequestProcessing && '!cursor-default !bg-c-lemon-green !text-black'}`} title={`${isDisabled ? disabledTitle : title}`} onClick={() => { !isRequestProcessing && onClick() }}>
+        <button type='button' disabled={isDisabled} className={`flex justify-center items-center max-h-[45px] ${!isDisabled 
+            ? 'bg-gradient-to-r from-c-dark-green from-[45%] to-c-sidebar-dark-green border border-c-dark-green hover:bg-gradient-to-r hover:from-c-sidebar-dark-green hover:to-c-lemon-green' 
+            : 'border border-transparent'} text-c-lemon-green hover:text-black disabled:bg-inherit disabled:text-black/40 rounded p-1 pl-1.5 pr-1.5 w-fit transition-all duration-250 ease h-full w-full 
+          ${shadow && 'shadow'} ${isRequestProcessing && '!cursor-default !bg-c-lemon-green !text-black'}`} 
+          title={`${isDisabled ? disabledTitle : title}`} 
+          onClick={() => { !isRequestProcessing && onClick() }}>
             <span className="flex items-center m-0 mr-[0.25rem] whitespace-nowrap overflow-hidden">
               {!isRequestProcessing ? 
                 (icon) 
