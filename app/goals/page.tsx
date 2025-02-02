@@ -3,11 +3,13 @@
 import { MdAccessTimeFilled } from "react-icons/md";
 
 import { Inter } from "next/font/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import UserGoals from "../components/goals/userGoals/userGoals";
 import Goals from "../components/goals/goals/goals";
 import History from "../components/history/history/history";
+import { isUserAuthorized } from "../auth/isUserAuthorized";
+import AccessBlockedBanner from "../components/auth/accessBlockedBanner";
 
 const inter = Inter({ weight: "400", style: "normal", subsets: ["latin"] });
 
@@ -48,10 +50,22 @@ const Page = () => {
     setIsDailySelected(false);
     setIsWeeklySelected(false);
   };
+
+
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+  useEffect(() => {
+    setIsAuthorized(isUserAuthorized);
+  }, []);
   
   return (
     <div className={`${inter.className} bg-c-global-bg-color min-h-[635px] h-screen max-h-screen w-[99%] min-w-min-width absolute left-[0.5%] top-0 pt-[2.85rem] pb-[0.35rem] z-[-1]`}>
-      <div className="flex flex-col w-full h-full gap-[0.5rem]">
+      
+      {/* Overlay for unauthorized users */}
+      { !isAuthorized && (  
+        <AccessBlockedBanner content={<></>} isAuthorized={isAuthorized} isFullPage={true}/>
+      )}
+
+      <div className="flex flex-col w-full h-full gap-[0.5rem]">  
         <div className="flex flex-col sm:flex-row h-auto w-full gap-[0.35rem]">
           <div className="w-full sm:w-[22.5%] min-w-fit sm:h-full p-1 bg-white border border-grey-100 shadow-sm rounded">
             <div className="flex flex-col w-full h-full bg-c-sidebar-dark-green rounded shadow-sm">

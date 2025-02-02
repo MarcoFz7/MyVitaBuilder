@@ -107,11 +107,14 @@ const Page = () => {
   return (
     <div className={`${inter.className} bg-c-global-bg-color min-h-[635px] h-screen max-h-screen w-[99%] min-w-min-width absolute left-[0.5%] top-0 pt-[2.85rem] pb-[0.35rem] z-[-1] text-sm text-black`}>
       <div className="flex flex-col w-full h-full gap-[0.5rem]">
+
+        {/* Overlay for unauthorized users - Applied only to User Settings Section */}
         { isAuthorized ? (
           <UserSettingsContent/>
         ) : (
-          <AccessBlockedBanner content={<UserSettingsContent/>} isAuthorized={isAuthorized}/>
+          <AccessBlockedBanner content={<UserSettingsContent/>} isAuthorized={isAuthorized} isFullPage={false}/>
         )}
+
         <div className='h-auto p-2 pt-0 bg-white w-full border border border-grey-100 shadow-sm rounded'>
           <div className="w-full h-full rounded">
             <div className='flex flex-col rounded w-full h-full items-center text-sm'>
