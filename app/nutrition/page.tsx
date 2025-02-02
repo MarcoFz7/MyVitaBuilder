@@ -343,11 +343,13 @@ const Page = () => {
   const aiSectionFieldsToValidate = {
     arrayFields: [
       selectedMealObjectiveOptions,
-      selectedDietaryOption,
       selectedCalorieIntakeOption,
-      selectedAllergiesAndIntoleranceOptions,
     ],
     stringFields: [ingredientsTextAreaValue],
+    radioFields: [
+      isWeightLossSelected,
+      isWeightGainSelected,
+    ]
   };
 
   /**
@@ -368,6 +370,18 @@ const Page = () => {
       }
     }
 
+    let radioNotSelectedCount = 0;
+    for (const fieldValue of aiSectionFieldsToValidate.radioFields) {
+      if (fieldValue == false) {
+        radioNotSelectedCount++;
+      }
+    }
+
+    if (radioNotSelectedCount == 2) {
+      setIsAnswerRequestValid(false);
+      return;
+    }
+
     setIsAnswerRequestValid(true);
   }, [
     selectedMealObjectiveOptions,
@@ -377,6 +391,7 @@ const Page = () => {
     ingredientsTextAreaValue,
     aiSectionFieldsToValidate.arrayFields,
     aiSectionFieldsToValidate.stringFields,
+    aiSectionFieldsToValidate.radioFields,
   ]);
 
   const [isRobotRotated, setIsRobotRotated] = useState<boolean>(false);
@@ -1073,14 +1088,10 @@ const Page = () => {
         </span>
         <div className="ai-calculator-info shadow">
           <div>
-            <label className="block text-xs text-white-900 pt-1 text-center">
+            <label className="block text-[10px] text-white-900 pt-1 text-start ml-1.5">
               Please configure this section accordingly.
             </label>
-            <span className="flex items-center mb-[0.1rem] text-c-lemon-green whitespace-nowrap overflow-hidden text-ellipsis mt-1 ml-1">
-              <FaUser className="text-c-lemon-green inline-block mr-[0.375rem]" />
-              <strong>Personal information</strong>
-            </span>
-            <div className="flex flex-row gap-[25px] ml-1">
+            <div className="flex flex-row gap-[25px] ml-1 pl-px mt-1">
               <div className="flex items-center">
                 <input
                   id="weight-loss-radio"
@@ -1121,6 +1132,10 @@ const Page = () => {
               </div>
             </div>
           </div>
+          <span className="flex items-center text-c-lemon-green whitespace-nowrap overflow-hidden text-ellipsis mt-px ml-1 mb-1.5">
+            <FaUser className="text-c-lemon-green inline-block mr-[0.375rem]" />
+            <strong>Personal information</strong>
+          </span>
           <div className="multi-select-div h-auto">
             <Select
               className="select first-section"
@@ -1133,11 +1148,6 @@ const Page = () => {
               value={selectedAllergiesAndIntoleranceOptions}
               onChange={handleSelectAllergiesAndIntoleranceOptions}
             />
-            <label className="block mt-2 mb-1.5 text-sm text-white-900 text-sm pt-px"></label>
-            <span className="flex items-center mb-[0.1rem] text-c-lemon-green whitespace-nowrap overflow-hidden mt-1 ml-1">
-              <FaDrumstickBite className="text-c-lemon-green inline-block mr-[0.375rem]" />
-              <strong>Meal information</strong>
-            </span>
             <Select
               className="select"
               closeMenuOnSelect={false}
@@ -1149,6 +1159,11 @@ const Page = () => {
               value={selectedMealObjectiveOptions}
               onChange={handleSelectMealObjectives}
             />
+            <label className="block mt-2 mb-2.5 text-sm text-white-900 text-sm pt-px"></label>
+            <span className="flex items-center mb-[0.1rem] text-c-lemon-green whitespace-nowrap overflow-hidden mt-1 ml-1 mb-2">
+              <FaDrumstickBite className="text-c-lemon-green inline-block mr-[0.375rem]" />
+              <strong>Meal information</strong>
+            </span>
           </div>
           <div className="single-select-div h-auto">
             <Select
